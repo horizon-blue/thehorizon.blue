@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}Testing...{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Not sure whether this works. XD</h1>
+    <p>顺带一提，现在是{{ moment(current_time).format('LLL', refresh=True) }}.</p>
+</div>
+{% endblock %}
