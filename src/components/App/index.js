@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import './App.css';
+import classnames from 'classnames';
+
+import './style.css';
 import logo from './logo.svg';
 
 class App extends Component {
   render() {
+    const { className, ...props } = this.props;
     return (
-      <div className="App">
+      <div className={classnames('App', className)} {...props}>
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h2>欢迎来到天际林</h2>
