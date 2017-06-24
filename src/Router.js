@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
-
-import Home from '../Home';
-import About from '../About';
-import NotFound from '../NotFound';
+import Home from './components/Home';
+import About from './components/About';
+import NotFound from './components/NotFound';
 
 class Router extends Component {
     render() {
@@ -11,7 +10,7 @@ class Router extends Component {
             <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path="/about" component={About} />
-                <Route path="*" component={NotFound} />
+                <Route component={NotFound} />
             </Switch>
         );
     }
