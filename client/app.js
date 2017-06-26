@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as path from 'path';
 import morgan from 'morgan';
+import { readFile } from 'fs';
 
 const app = express.default();
 
@@ -16,14 +17,21 @@ app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 // For ssl certificate
 app.get('/.well-known/acme-challenge/:tokenValue', (req, res) => {
-    res.sendFile(
+    readFile(
         path.resolve(
             __dirname,
             '..',
             'build',
             '.well-known/acme-challenge/',
             req.params.tokenValue
-        )
+        ),
+        'ascii',
+        function(err, data) {
+            if (err) {
+                return console.log(err);
+            }
+            res.send(data.trim());
+        }
     );
 });
 
