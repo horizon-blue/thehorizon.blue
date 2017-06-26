@@ -19,11 +19,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-
-# for python flask application in /server
-*.pyc
-__pycache__/
-
-# ignore python virtualenv
-serverenv/
