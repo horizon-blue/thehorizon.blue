@@ -21,6 +21,9 @@ yarn-debug.log*
 yarn-error.log*
 
 
-# for python flask application in /test
+# for python flask application in /server
 *.pyc
 __pycache__/
+
+# ignore python virtualenv
+serverenv/
