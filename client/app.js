@@ -14,6 +14,19 @@ app.use(
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
+// For ssl certificate
+app.get('/.well-known/acme-challenge/:tokenValue', (req, res) => {
+    res.sendFile(
+        path.resolve(
+            __dirname,
+            '..',
+            'build',
+            '.well-known/acme-challenge/',
+            req.params.tokenValue
+        )
+    );
+});
+
 // Always return the main index.html, so react-router render the route in the client
 app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '..', 'build', 'index.html'));
