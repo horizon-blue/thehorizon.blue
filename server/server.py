@@ -17,4 +17,4 @@ def letsencrpyt(token_value):
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=2333)
+    app.run(port=2333, debug=True)

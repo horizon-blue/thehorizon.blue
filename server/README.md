@@ -20,9 +20,9 @@ pip install -r requirement.txt
 # To run the server
 ```bash
 # while you are still in activated status
-python wsgi.py
+python server.py
 ```
-Then you can see the server running at http://localhost:2333/
+This will run server at debug mode at http://localhost:2333/
 
 
 # After you are done
