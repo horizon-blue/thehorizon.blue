@@ -1,0 +1,6 @@
+# Python cache files
+*.pyc
+__pycache__/
+
+# ignore python virtualenv
+serverenv/
