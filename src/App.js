@@ -12,7 +12,7 @@ import {
 const client = new ApolloClient({
     networkInterface: createNetworkInterface({
         uri: process.env.USE_TEST_SERVER
-            ? 'http://localhost:2333/graphql'
+            ? 'http://localhost:2333'
             : 'https://api.thehorizon.blue/graphql',
     }),
 });
