@@ -4,6 +4,9 @@
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
 
+process.env.USE_TEST_SERVER =
+  process.argv.length > 2 && process.argv[2] === 'test';
+
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
 // terminate the Node.js process with a non-zero exit code.
@@ -74,6 +77,7 @@ choosePort(HOST, DEFAULT_PORT)
         clearConsole();
       }
       console.log(chalk.cyan('Starting the development client...\n'));
+
       openBrowser(urls.localUrlForBrowser);
     });
 

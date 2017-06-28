@@ -10,6 +10,7 @@
     "morgan": "^1.8.2",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
+    "react-apollo": "^1.4.2",
     "react-dom": "^15.6.1",
     "react-router-dom": "^4.1.1",
     "redux": "^3.7.0"

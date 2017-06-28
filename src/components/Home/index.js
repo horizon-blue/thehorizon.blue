@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 
 import './style.css';
+import './home.graphql';
 
 class Home extends Component {
   render() {
-    const { className, ...props } = this.props;
+    const { className } = this.props;
     return (
-      <div className={classnames('Home', className)} {...props}>
+      <div className={classnames('Home', className)}>
         <p className="App-intro">
           之前一直想写一个<del>酷炫</del>的个人网站，然而一直未果。正好最近在折腾<code>React Native</code>，就想着顺手用<code>React</code>把天际林整理一下好了。
         </p>
