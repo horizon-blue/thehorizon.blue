@@ -6,12 +6,12 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# # for ssl authentication
-# @app.route('/.well-known/acme-challenge/<token_value>')
-# def letsencrpyt(token_value):
-#     with open('.well-known/acme-challenge/{}'.format(token_value)) as f:
-#         answer = f.readline().strip()
-#     return answer
+# for ssl authentication
+@app.route('/.well-known/acme-challenge/<token_value>')
+def letsencrpyt(token_value):
+    with open('.well-known/acme-challenge/{}'.format(token_value)) as f:
+        answer = f.readline().strip()
+    return answer
 
 
 # For graphiql interface

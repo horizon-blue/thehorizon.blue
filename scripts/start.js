@@ -4,8 +4,7 @@
 process.env.BABEL_ENV = 'development';
 process.env.NODE_ENV = 'development';
 
-process.env.USE_TEST_SERVER =
-  process.argv.length > 2 && process.argv[2] === 'test';
+process.env.API_SERVER = process.argv[2];
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
