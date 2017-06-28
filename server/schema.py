@@ -2,10 +2,10 @@ import graphene
 
 
 class Query(graphene.ObjectType):
-    hello = graphene.String(name=graphene.Argument(
-        graphene.String, default_value="stranger"))
+    test = graphene.String(name=graphene.Argument(
+        graphene.String))
 
-    def resolve_hello(self, args, context, info):
-        return 'Hello ' + args['name']
+    def resolve_test(self, args, context, info):
+        return 'HorizonBlue'
 
 schema = graphene.Schema(query=Query)

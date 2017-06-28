@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
+import { gql, graphql } from 'react-apollo';
 
 import './style.css';
-import './home.graphql';
+
+const testQuery = gql`query { test }`;
 
 class Home extends Component {
   render() {
-    const { className } = this.props;
+    const { className, data: { test } } = this.props;
     return (
       <div className={classnames('Home', className)}>
         <p className="App-intro">
@@ -19,11 +21,11 @@ class Home extends Component {
           回见。
         </p>
         <p className="App-intro">
-          — 蓝色天际 | HorizonBlue —
+          — 蓝色天际 | {test} —
         </p>
       </div>
     );
   }
 }
 
-export default Home;
+export default graphql(testQuery)(Home);
