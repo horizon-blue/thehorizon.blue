@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
 import { gql, graphql } from 'react-apollo';
+import { bind as Mousetrap } from 'mousetrap';
 
 import './style.css';
 
 const testQuery = gql`query { test }`;
 
 class Home extends Component {
+  componentWillMount() {
+    // The special hotkeys to enter the main website
+    Mousetrap('up up down down left right left right b a enter', () =>
+      this.props.history.push('/about')
+    );
+  }
   render() {
     const { className, data: { test } } = this.props;
+
     return (
       <div className={classnames('Home', className)}>
         <p className="App-intro">

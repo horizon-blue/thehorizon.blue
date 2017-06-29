@@ -19,11 +19,11 @@ const client = new ApolloClient({
 
 class App extends Component {
     render() {
-        const { className, ...props } = this.props;
+        const { className } = this.props;
         return (
             <ApolloProvider client={client}>
                 <BrowserRouter>
-                    <div className={classnames('App', className)} {...props}>
+                    <div className={classnames('App', className)}>
                         <Header />
                         <Router />
                     </div>
