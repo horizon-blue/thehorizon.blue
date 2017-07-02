@@ -1,31 +1,26 @@
 import React, { Component } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import classnames from 'classnames';
-import Router from './Router';
-import Header from './components/Header';
-import {
-    ApolloClient,
-    ApolloProvider,
-    createNetworkInterface,
-} from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
 
-const client = new ApolloClient({
-    networkInterface: createNetworkInterface({
-        uri: process.env.API_SERVER === 'test'
-            ? 'http://localhost:2333/'
-            : 'https://api.thehorizon.blue/',
-    }),
-});
+import Router from './components/Router';
+import configureStore from './store';
+import { client } from './store/reducer';
+
+// Do not include devtool in real api
+const DevTools = process.env.NODE_ENV === 'development'
+    ? require('./store/DevTools').default
+    : () => null;
+
+const store = configureStore();
 
 class App extends Component {
     render() {
-        const { className } = this.props;
         return (
-            <ApolloProvider client={client}>
+            <ApolloProvider client={client} store={store}>
                 <BrowserRouter>
-                    <div className={classnames('App', className)}>
-                        <Header />
+                    <div>
                         <Router />
+                        <DevTools />
                     </div>
                 </BrowserRouter>
             </ApolloProvider>

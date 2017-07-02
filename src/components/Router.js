@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
-import Home from './components/Home';
-import About from './components/About';
-import NotFound from './components/NotFound';
+import { Switch, Route } from 'react-router-dom';
+import Home from './Home';
+import About from './About';
+import NotFound from './NotFound';
 
 class Router extends Component {
     render() {
