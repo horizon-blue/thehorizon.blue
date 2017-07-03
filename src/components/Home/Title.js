@@ -13,7 +13,7 @@ export default class App extends React.Component {
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
         y="0px"
-        viewBox="0 0 1280 720"
+        viewBox="0 0 1280 100"
       >
         <g fill="none" fill-rule="evenodd" stroke="#0000FF" stroke-width="1">
 

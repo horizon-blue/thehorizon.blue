@@ -1,3 +1,3 @@
 export default {
-    auth: {},
+    auth: null,
 };
