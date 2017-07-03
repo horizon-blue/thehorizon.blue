@@ -15,7 +15,7 @@ export default class App extends React.Component {
         y="0px"
         viewBox="0 0 1280 100"
       >
-        <g fill="none" fill-rule="evenodd" stroke="#0000FF" stroke-width="1">
+        <g fill="none" fillRule="evenodd" stroke="#0000FF" strokeWidth="1">
 
           <Anime
             easing="easeOutQuad"
