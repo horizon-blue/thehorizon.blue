@@ -2,6 +2,7 @@ from flask import Flask
 from flask_graphql import GraphQLView
 from flask_cors import CORS
 from database import db_session
+from schema import schema
 
 
 app = Flask(__name__)
@@ -16,9 +17,7 @@ def letsencrpyt(token_value):
         answer = f.readline().strip()
     return answer
 
-
 # For graphiql interface
-from schema import schema
 app.add_url_rule(
     '/', view_func=GraphQLView.as_view('graphiql', schema=schema, graphiql=True))
 

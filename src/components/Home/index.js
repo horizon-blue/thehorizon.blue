@@ -27,7 +27,7 @@ class Home extends Component {
           回见。
         </p>
         <p className="App-intro">
-          — 蓝色天际 | {test} —
+          — 蓝色天际 | {test}—
         </p>
       </Anime>
     );
