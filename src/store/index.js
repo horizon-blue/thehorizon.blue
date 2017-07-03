@@ -1,10 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import rootReducer from './reducer';
-import client from '../apolloClient';
 import initialState from './initialState';
 
-let middleware = [client.middleware()];
+let middleware = [];
 
 // Add additional middlewares for dev
 if (process.env.NODE_ENV === 'development') {
@@ -32,7 +31,7 @@ function configureStore() {
     if (module.hot) {
         module.hot.accept('./reducer', () =>
             store.replaceReducer(
-                require('./reducer') /*.default if you use Babel 6+ */
+                require('./reducer').default /*.default if you use Babel 6+ */
             )
         );
     }

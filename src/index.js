@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
+import { Provider } from 'react-redux';
 
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
@@ -20,13 +21,15 @@ const store = configureStore();
 class App extends Component {
     render() {
         return (
-            <ApolloProvider client={client} store={store}>
-                <BrowserRouter>
-                    <div>
-                        <Router />
-                        <DevTools />
-                    </div>
-                </BrowserRouter>
+            <ApolloProvider client={client}>
+                <Provider store={store}>
+                    <BrowserRouter>
+                        <div>
+                            <Router />
+                            <DevTools />
+                        </div>
+                    </BrowserRouter>
+                </Provider>
             </ApolloProvider>
         );
     }
