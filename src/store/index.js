@@ -1,13 +1,17 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
-import rootReducer, { client } from './reducer';
+import rootReducer from './reducer';
+import client from '../apolloClient';
 import initialState from './initialState';
 
 let middleware = [client.middleware()];
 
 // Add additional middlewares for dev
 if (process.env.NODE_ENV === 'development') {
-    middleware = [...middleware];
+    const reduxImmutableStateInvariant = require(
+        'redux-immutable-state-invariant'
+    ).default();
+    middleware = [...middleware, reduxImmutableStateInvariant];
 }
 
 let enhancer = [applyMiddleware(...middleware), autoRehydrate()];
