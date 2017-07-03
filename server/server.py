@@ -3,7 +3,6 @@ from flask_graphql import GraphQLView
 from flask_cors import CORS
 from database import db_session
 from schema import schema
-import webbrowser
 
 
 app = Flask(__name__)
@@ -38,5 +37,4 @@ def shutdown_session(exception=None):
 
 
 if __name__ == '__main__':
-    webbrowser.open_new_tab('http://localhost:2333/')
     app.run(port=2333, debug=True)

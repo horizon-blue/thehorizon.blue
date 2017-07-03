@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, Text, TypeDecorator
 from sqlalchemy.orm import validates
 from database import Base
-from utils.passwordHash import PasswordHash
+from .utils import PasswordHash
 
 
 class Password(TypeDecorator):
