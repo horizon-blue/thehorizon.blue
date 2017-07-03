@@ -1,4 +1,4 @@
-# thehorizon.blue
+# thehorizon.blue [![Build Status](https://travis-ci.com/Horizon-Blue/thehorizon.blue.svg?token=XV3X1fzXRsddUMeHcBWZ&branch=master)](https://travis-ci.com/Horizon-Blue/thehorizon.blue)
 ![ICON](./icon.png)
 
 Yet another personal blog.
