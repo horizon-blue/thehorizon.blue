@@ -6,6 +6,7 @@ from .CreateToken import CreateToken
 class Query(graphene.ObjectType):
     users = graphene.List(User)
     test = graphene.String()
+    # context = graphene.String()
 
     def resolve_users(self, args, context, info):
         query = User.get_query(context)  # SQLAlchemy query
@@ -13,6 +14,10 @@ class Query(graphene.ObjectType):
 
     def resolve_test(self, args, context, info):
         return 'HorizonBlue'
+
+    # def resolve_context(self, args, context, info):
+    #     # for debug purpose only
+    #     return str(context.headers.get('authorization'))
 
 
 class Mutation(graphene.ObjectType):
