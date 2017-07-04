@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bind as Mousetrap } from 'mousetrap';
 import { Row, Col } from 'antd';
 import anime from 'animejs';
-import Typist from 'react-typist';
+import Typed from 'typed.js';
 import classNames from 'classnames';
 // import PropTypes from 'prop-types';
 
@@ -30,16 +30,20 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    document.title = '天际蓝 | thehorizon.blue';
     this.timeline = anime.timeline();
+    // this.typing = new Typed(this.logo.typed, {
+    //   stringsElement: this.logo.typecontent,
+    //   typeSpeed: 100,
+    //   showCursor: false,
+    // });
+    // this.typing.stop();
     this.timeline
       .add({
         targets: this.logo.path,
         strokeDashoffset: [anime.setDashoffset, 0],
         easing: 'easeInOutSine',
         duration: 2000,
-        delay: function(el, i) {
-          return i * 250;
-        },
       })
       .add({
         targets: this.logo.container,
@@ -54,23 +58,60 @@ class Home extends Component {
         duration: 1000,
         easing: 'easeInOutQuad',
         offset: '-=1000',
+        // complete: () => this.typing.start(),
+      })
+      .add({
+        targets: this.logo.bgSvg,
+        opacity: [0, 1],
+        duration: 1000,
+        easing: 'easeInOutQuad',
+      })
+      .add({
+        targets: this.title,
+        opacity: [0, 1],
+        translateY: ['-5vh', 0],
+        duration: 1000,
+        easing: 'easeInOutQuad',
+        offset: '-=1000',
+      })
+      .add({
+        targets: this.title,
+        letterSpacing: 10,
+        duration: 1000,
+        easing: 'easeInOutQuad',
+        offset: '-=500',
       });
   }
 
   render() {
     return (
-      <div
-        className={classNames('fullscreen', 'centered', this.props.className)}
+      <Row
+        align="middle"
+        justify="center"
+        type="flex"
+        className={classNames('fullscreen', this.props.className)}
       >
-        <Row align="middle" justify="center" type="flex">
-          <Col span={24}>
-            <Logo ref={logo => (this.logo = logo)} className="centered" />
-          </Col>
-        </Row>
-        <Row align="middle" justify="center" type="flex">
-          <Col span={24} />
-        </Row>
-      </div>
+        <Col span={24} style={{ marginBottom: '20vh' }}>
+          <Logo
+            ref={logo => (this.logo = logo)}
+            className="centered-horizontal"
+            style={{ marginBottom: '3vh' }}
+          />
+          <div className="centered-horizontal">
+            <h1
+              ref={title => (this.title = title)}
+              style={{
+                letterSpacing: 1,
+                fontFamily: 'consolas',
+                wordBreak: 'break-all',
+                color: '#4b84f4',
+              }}
+            >
+              天际蓝 | thehorizon.blue
+            </h1>
+          </div>
+        </Col>
+      </Row>
     );
   }
 }

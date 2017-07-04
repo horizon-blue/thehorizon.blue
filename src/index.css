@@ -15,3 +15,15 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.centered-horizontal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.absolute-center {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+}
