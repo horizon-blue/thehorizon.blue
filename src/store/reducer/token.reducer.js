@@ -6,6 +6,7 @@ export default function(state = initialState.token, action) {
         case types.AUTH_SUCCESS:
             return action.token;
         case types.AUTH_ERROR:
+        case types.LOGOUT_REQUEST:
             return null;
         default:
             return state;

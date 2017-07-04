@@ -69,6 +69,7 @@ class Login extends Component {
     static get propTypes() {
         return {
             dispatch: PropTypes.func.isRequired,
+            form: PropTypes.object.isRequired,
         };
     }
 }
