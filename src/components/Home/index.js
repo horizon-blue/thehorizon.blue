@@ -18,10 +18,16 @@ class Home extends Component {
     return (
       <Row align="middle" justify="center" type="flex">
         <Col span={6} style={{ color: 'white' }}>
-          <Typist>
-            Hi.
-            Animate this text.
-          </Typist>
+          <Row>
+            <Typist>
+              Hi. Animate this text.
+            </Typist>
+          </Row>
+          <Row>
+            <Typist>
+              How are you today?
+            </Typist>
+          </Row>
         </Col>
       </Row>
     );

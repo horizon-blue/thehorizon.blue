@@ -7,8 +7,8 @@ class PasswordHash(Mutable):
         hash_cpy = hash_.decode() if isinstance(hash_, (bytes, bytearray)) else hash_
         assert len(hash_cpy) == 60, 'bcrypt hash should be 60 chars.'
         assert hash_cpy.count('$'), 'bcrypt hash should have 3x "$".'
-        self.hash = hash_cpy
-        self.rounds = int(self.hash.split('$')[2])
+        self.hash = hash_
+        self.rounds = int(hash_cpy.split('$')[2])
         self.desired_rounds = rounds or self.rounds
 
     def __eq__(self, candidate):
@@ -19,8 +19,7 @@ class PasswordHash(Mutable):
         This will also mark the object as having changed (and thus need updating).
         """
         if isinstance(candidate, str):
-            candidate = candidate.encode('utf8')
-            if bcrypt.hashpw(candidate, self.hash) == self.hash:
+            if bcrypt.checkpw(candidate.encode('utf8'), self.hash):
                 if self.rounds < self.desired_rounds:
                     self._rehash(candidate)
                 return True
