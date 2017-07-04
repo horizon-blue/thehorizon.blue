@@ -9,6 +9,10 @@ class Logo extends Component {
                     bottom: 10,
                     textAlign: 'center',
                     position: 'absolute',
+                    marginLeft: 'auto',
+                    marginRight: 'auto',
+                    left: 0,
+                    right: 0,
                 }}
                 sm={7}
                 xs={16}

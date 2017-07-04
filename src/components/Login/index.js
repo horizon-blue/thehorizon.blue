@@ -62,6 +62,11 @@ class Login extends Component {
                         登录
                     </Button>
                 </Form.Item>
+                <Form.Item>
+                    <Button ghost>
+                        取消
+                    </Button>
+                </Form.Item>
             </Form>
         );
     }
