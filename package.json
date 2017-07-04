@@ -19,7 +19,8 @@
     "react-router-dom": "^4.1.1",
     "react-typist": "^1.1.1",
     "redux": "^3.7.1",
-    "redux-persist": "^4.8.2"
+    "redux-persist": "^4.8.2",
+    "redux-saga": "^0.15.4"
   },
   "devDependencies": {
     "autoprefixer": "7.1.0",
