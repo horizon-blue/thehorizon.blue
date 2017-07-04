@@ -1,44 +1,75 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { gql, graphql } from 'react-apollo';
-import { Button } from 'antd';
+import { Button, Form, Input, Icon } from 'antd';
+import { connect } from 'react-redux';
 
-const createToken = gql`
-    mutation createToken($username: String!, $password: String!) {
-    	createToken(username: $username, password: $password) {
-	        token
-	        success
-        }
-    }
-`;
+import { LOGIN_REQUEST } from '../../store/reducer/actionTypes';
 
-@graphql(createToken)
+@connect()
+@Form.create()
 class Login extends Component {
-    static get propTypes() {
-        return {
-            mutate: PropTypes.func.isRequired,
-        };
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {};
     }
 
-    handleClick() {
-        this.props
-            .mutate({
-                variables: { username: 'Horizon', password: 'lisawang123' },
-            })
-            .then(({ data }) => {
-                console.log('got data', data);
-            })
-            .catch(error => {
-                console.log('there was an error sending the query', error);
-            });
+    handleSubmit(e) {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                this.props.dispatch({
+                    type: LOGIN_REQUEST,
+                    username: values.username,
+                    password: values.password,
+                });
+            }
+        });
     }
 
     render() {
+        const { getFieldDecorator } = this.props.form;
         return (
-            <Button ghost type="primary" onClick={() => this.handleClick()}>
-                blah
-            </Button>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Item>
+                    {getFieldDecorator('username', {
+                        rules: [
+                            {
+                                required: true,
+                                message: '你的名字是...？',
+                            },
+                        ],
+                    })(
+                        <Input prefix={<Icon type="user" />} placeholder="名字" />
+                    )}
+
+                </Form.Item>
+                <Form.Item>
+                    {getFieldDecorator('password', {
+                        rules: [{ required: true, message: '密匙不能为空' }],
+                    })(
+                        <Input
+                            prefix={
+                                <Icon type="lock" style={{ fontSize: 13 }} />
+                            }
+                            type="password"
+                            placeholder="密匙"
+                        />
+                    )}
+                </Form.Item>
+                <Form.Item>
+                    <Button ghost type="primary" htmlType="submit">
+                        登录
+                    </Button>
+                </Form.Item>
+            </Form>
         );
+    }
+
+    static get propTypes() {
+        return {
+            dispatch: PropTypes.func.isRequired,
+        };
     }
 }
 

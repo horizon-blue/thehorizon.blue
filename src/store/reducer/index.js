@@ -1,9 +1,9 @@
 import { combineReducers } from 'redux';
-import auth from './auth.reducer';
+import token from './token.reducer';
 import client from '../../apolloClient';
 
 const rootReducer = combineReducers({
-    auth,
+    token,
     apollo: client.reducer(),
 });
 

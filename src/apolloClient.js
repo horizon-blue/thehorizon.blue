@@ -15,6 +15,7 @@ const networkInterface = createBatchingNetworkInterface({
 //     },
 // };
 
+// For compatibility with graphene response format
 const responseTransformAfterware = {
     applyBatchAfterware(res, next) {
         if (!res || !res.responses) next();
@@ -27,6 +28,20 @@ const responseTransformAfterware = {
 };
 
 networkInterface.useAfter([responseTransformAfterware]);
+
+export function applyAuthMiddleWare(store) {
+    // sent the token
+    const authMiddleware = {
+        applyBatchMiddleware(req, next) {
+            if (!req.options.headers) {
+                req.options.headers = {}; // Create the headers object if needed.
+            }
+            req.options.headers['authorization'] = store.getState().token;
+            next();
+        },
+    };
+    networkInterface.use([authMiddleware]);
+}
 
 export default new ApolloClient({
     networkInterface,

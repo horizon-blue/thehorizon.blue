@@ -40,7 +40,7 @@ class Home extends Component {
             </Typist>
           </Row>
           <Row>
-            {test}
+            {JSON.stringify(context, null, 4)}
           </Row>
           <Row><Login /></Row>
         </Col>

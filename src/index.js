@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
-import { Provider } from 'react-redux';
 
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 
 import Router from './components/Router';
 import configureStore from './store';
+import rootSaga from './store/sagas';
 import client from './apolloClient';
 
 // Do not include devtool in real api
@@ -17,19 +17,18 @@ const DevTools = process.env.NODE_ENV === 'development'
     : () => null;
 
 const store = configureStore();
+store.runSaga(rootSaga);
 
 class App extends Component {
     render() {
         return (
-            <ApolloProvider client={client}>
-                <Provider store={store}>
-                    <BrowserRouter>
-                        <div>
-                            <Router />
-                            <DevTools />
-                        </div>
-                    </BrowserRouter>
-                </Provider>
+            <ApolloProvider client={client} store={store}>
+                <BrowserRouter>
+                    <div>
+                        <Router />
+                        <DevTools />
+                    </div>
+                </BrowserRouter>
             </ApolloProvider>
         );
     }

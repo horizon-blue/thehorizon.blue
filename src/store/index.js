@@ -1,9 +1,13 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
+import createSagaMiddleware from 'redux-saga';
 import rootReducer from './reducer';
 import initialState from './initialState';
+import client, { applyAuthMiddleWare } from '../apolloClient';
 
-let middleware = [];
+const sagaMiddleware = createSagaMiddleware();
+
+let middleware = [client.middleware(), sagaMiddleware];
 
 // Add additional middlewares for dev
 if (process.env.NODE_ENV === 'development') {
@@ -24,15 +28,16 @@ if (process.env.NODE_ENV === 'development') {
 function configureStore() {
     const store = createStore(rootReducer, initialState, compose(...enhancer));
     persistStore(store, {
-        whitelist: ['auth'],
+        whitelist: ['token'],
     });
+    applyAuthMiddleWare(store);
+
+    store.runSaga = sagaMiddleware.run;
 
     // Hot reload reducers (requires Webpack or Browserify HMR to be enabled)
     if (module.hot) {
         module.hot.accept('./reducer', () =>
-            store.replaceReducer(
-                require('./reducer').default /*.default if you use Babel 6+ */
-            )
+            store.replaceReducer(require('./reducer').default)
         );
     }
     return store;
