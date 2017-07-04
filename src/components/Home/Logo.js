@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Col } from 'antd';
-import MediaQuery from 'react-responsive';
 
 class Logo extends Component {
     renderTypingContent() {
@@ -15,59 +14,60 @@ class Logo extends Component {
                 xs={16}
                 span={7}
             >
-                <div ref={typecontent => (this.typecontent = typecontent)}>
+                <div
+                    ref={typecontent => (this.typecontent = typecontent)}
+                    style={{ opacity: 0 }}
+                >
                     <p>
                         我就随便写点什么测试一下不要太在意细节就随便写点什么测试一下不要太在意细节就随便写点什么测试一下不要太在意细节
                     </p>
                     <p>真的，别太在意细节</p>
                     <p>千万别</p>
                 </div>
-                <span ref={typed => (this.typed = typed)} />
+                <span
+                    ref={typed => (this.typed = typed)}
+                    style={{ opacity: 0 }}
+                />
             </Col>
         );
     }
 
     renderSVG() {
         return (
-            <MediaQuery minDeviceWidth={768}>
-                <svg
-                    version="1.1"
-                    xmlns="http://www.w3.org/2000/svg"
-                    x="0px"
-                    y="0px"
-                    viewBox="0 0 903.5 328"
-                >
-                    <defs>
-                        <linearGradient
-                            id="backgroundGrad"
-                            x1="0"
-                            x2="0"
-                            y1="0"
-                            y2="1"
-                        >
-                            <stop
-                                offset="75%"
-                                stopColor="#111116"
-                                stopOpacity="0"
-                            />
-                            <stop
-                                offset="90%"
-                                stopColor="blue"
-                                stopOpacity="0.3"
-                            />
-                            <stop
-                                offset="100%"
-                                stopColor="#1087FF"
-                                stopOpacity="0.5"
-                            />
-
-                        </linearGradient>
-                    </defs>
-                    <g
-                        fill="url(#backgroundGrad)"
-                        ref={bgSvg => (this.bgSvg = bgSvg)}
+            <svg
+                version="1.1"
+                xmlns="http://www.w3.org/2000/svg"
+                x="0px"
+                y="0px"
+                viewBox="0 0 903.5 328"
+            >
+                <defs>
+                    <linearGradient
+                        id="backgroundGrad"
+                        x1="0"
+                        x2="0"
+                        y1="0"
+                        y2="1"
                     >
-                        <path d="M903,0.5H1l-0.5,327H215c6.7-4.8,11.6-16.4,14.7-23.9c3.7-8.9,6.1-18.1,7.1-27.7c0.2-1.5-0.2-3.1-0.3-4.7
+                        <stop
+                            offset="75%"
+                            stopColor="#111116"
+                            stopOpacity="0"
+                        />
+                        <stop offset="90%" stopColor="blue" stopOpacity="0.3" />
+                        <stop
+                            offset="100%"
+                            stopColor="#1087FF"
+                            stopOpacity="0.5"
+                        />
+
+                    </linearGradient>
+                </defs>
+                <g
+                    fill="url(#backgroundGrad)"
+                    ref={bgSvg => (this.bgSvg = bgSvg)}
+                >
+                    <path d="M903,0.5H1l-0.5,327H215c6.7-4.8,11.6-16.4,14.7-23.9c3.7-8.9,6.1-18.1,7.1-27.7c0.2-1.5-0.2-3.1-0.3-4.7
 				c-0.3-5.8-0.6-11.7-1-17.5c-0.1-1.5-0.2-3-0.5-4.4c-0.6-2.5,0.9-5.4-1.6-6.4l-4-20c-1.9-4.7-7.9-8.4-10.1-12.9
 				c-0.5-1.1-9.4,4-10.2,3.1c0.1-0.2,0.2-0.3,0.4-0.5c-0.5-0.1-0.9-0.1-1-0.1c-0.9-1.8-1.6-3.5-2.5-5.3c-0.9,0.5-1.6,0.9-2.8,1.5
 				c0.5-1,0.8-1.7,1.4-3c-1.8,0.9-3.2,1.6-5,2.4l2.1-3.9c-2,0.9-3.7,1.8-5.5,2.6c-0.1-0.1-0.1-0.3-0.2-0.4c0.6-0.7,1.3-1.5,2.2-2.6
@@ -183,18 +183,18 @@ class Logo extends Component {
 				c-1.4-0.4-2.7-0.8-4.1-1.2c0.1,0.3,0.2,0.6,0.3,0.9c-1.7,0.6-3.3,1.2-5,1.9l0,0c0,0-2.3,1.2-2.4,1.3c-1.6,0.9-18.9-3.3-24.2,0.8
 				c-4.6,3.6,0.6,13.3-6.1,24.5c-0.5,0.8-0.6,0.8-0.9,1.5c-2.1,4.4-1.3,7.7,0.2,19.7c3.9,30.1,13.4,39.2,14.8,46.3l-0.2,0.3l203,0.5
 				v0.5L903,0.5z" />
-                    </g>
+                </g>
 
-                    <g
-                        fill="none"
-                        fillRule="evenodd"
-                        stroke="#0749D0"
-                        strokeWidth="1"
-                        ref={g => (this.g = g)}
-                    >
-                        <path
-                            ref={path => (this.path = path)}
-                            d="M902.5,327.5l-203-0.5l0.2-0.3c-1.4-7.1-10.9-16.3-14.8-46.3c-1.6-12-2.4-15.3-0.2-19.7
+                <g
+                    fill="none"
+                    fillRule="evenodd"
+                    stroke="#0749D0"
+                    strokeWidth="1"
+                    ref={g => (this.g = g)}
+                >
+                    <path
+                        ref={path => (this.path = path)}
+                        d="M902.5,327.5l-203-0.5l0.2-0.3c-1.4-7.1-10.9-16.3-14.8-46.3c-1.6-12-2.4-15.3-0.2-19.7
 			c0.3-0.7,0.4-0.7,0.9-1.5c6.7-11.2,1.5-20.9,6.1-24.5c5.2-4.2,22.6,0.1,24.2-0.8c0.1,0,2.4-1.3,2.4-1.3l0,0c1.6-0.7,3.3-1.3,5-1.9
 			c-0.1-0.3-0.2-0.6-0.3-0.9c1.4,0.4,2.7,0.8,4.1,1.2c0.2-1.6,0.4-3,0.4-3.1c1.9-1.4,3.2-2.3,4.5-3.2c0.8-0.5,1.9-1.6,2.4-1.4
 			c1.9,1,3.5,2.5,5.3,3.8c1.3-1,2.5-1.9,3.6-2.8c0.7,1.8,1.3,3.2,2.1,5.1c1-1.2,1.7-2,2.8-3.2c0.7,1.8,1.2,3.2,1.8,4.7
@@ -308,11 +308,10 @@ class Logo extends Component {
 			c1.8-0.9,3.2-1.6,5-2.4c-0.6,1.2-0.9,1.9-1.4,3c1.1-0.6,1.9-1.1,2.8-1.5c0.9,1.8,1.6,3.5,2.5,5.3c0.1,0,0.6,0.1,1,0.1
 			c-0.1,0.2-0.2,0.3-0.4,0.5c0.7,1,9.6-4.1,10.2-3.1c2.2,4.6,8.1,8.2,10.1,12.9l4,20c2.4,1,1,3.9,1.6,6.4c0.3,1.5,0.5,3,0.5,4.4
 			c0.4,5.8,0.7,11.7,1,17.5c0.1,1.6,0.4,3.1,0.3,4.7c-1,9.6-3.4,18.8-7.1,27.7c-3.1,7.4-8,19.1-14.7,23.9H0.5"
-                        />
-                    </g>
+                    />
+                </g>
 
-                </svg>
-            </MediaQuery>
+            </svg>
         );
     }
     render() {

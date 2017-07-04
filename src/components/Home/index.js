@@ -4,9 +4,12 @@ import { Row, Col } from 'antd';
 import anime from 'animejs';
 import Typed from 'typed.js';
 import classNames from 'classnames';
+import MediaQuery from 'react-responsive';
+
 // import PropTypes from 'prop-types';
 
 import Logo from './Logo';
+import './style.css';
 
 class Home extends Component {
   constructor(props) {
@@ -32,12 +35,6 @@ class Home extends Component {
   componentDidMount() {
     document.title = '天际蓝 | thehorizon.blue';
     this.timeline = anime.timeline();
-    // this.typing = new Typed(this.logo.typed, {
-    //   stringsElement: this.logo.typecontent,
-    //   typeSpeed: 100,
-    //   showCursor: false,
-    // });
-    // this.typing.stop();
     this.timeline
       .add({
         targets: this.logo.path,
@@ -50,7 +47,6 @@ class Home extends Component {
         translateY: ['10vh', 0],
         duration: 1000,
         easing: 'easeInOutQuad',
-        delay: 300,
       })
       .add({
         targets: this.logo.g,
@@ -58,28 +54,40 @@ class Home extends Component {
         duration: 1000,
         easing: 'easeInOutQuad',
         offset: '-=1000',
-        // complete: () => this.typing.start(),
       })
       .add({
         targets: this.logo.bgSvg,
         opacity: [0, 1],
-        duration: 1000,
+        duration: 500,
         easing: 'easeInOutQuad',
       })
       .add({
         targets: this.title,
         opacity: [0, 1],
         translateY: ['-5vh', 0],
-        duration: 1000,
+        duration: 500,
         easing: 'easeInOutQuad',
-        offset: '-=1000',
+        offset: '-=500',
       })
       .add({
         targets: this.title,
-        letterSpacing: 10,
-        duration: 1000,
+        letterSpacing: 9,
+        duration: 300,
         easing: 'easeInOutQuad',
-        offset: '-=500',
+        offset: '-=300',
+      })
+      .add({
+        targets: [this.logo.typecontent, this.logo.typed],
+        opacity: [0, 1],
+        easing: 'easeInOutQuad',
+        duration: 500,
+        begin: () => {
+          this.typing = new Typed(this.logo.typed, {
+            stringsElement: this.logo.typecontent,
+            autoInsertCss: false,
+            typeSpeed: 100,
+          });
+        },
       });
   }
 
@@ -105,9 +113,12 @@ class Home extends Component {
                 fontFamily: 'consolas',
                 wordBreak: 'break-all',
                 color: '#4b84f4',
+                textAlign: 'center',
               }}
             >
-              天际蓝 | thehorizon.blue
+              天际蓝<MediaQuery minDeviceWidth={768}>
+                {match => (match ? <span> | </span> : <br />)}
+              </MediaQuery>thehorizon.blue
             </h1>
           </div>
         </Col>
