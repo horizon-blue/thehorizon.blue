@@ -1,28 +1,9 @@
 import graphene
-import models
-from graphene_sqlalchemy import SQLAlchemyObjectType
 import jwt
 import datetime
+from .User import User
 
 secret = '***REMOVED***'
-
-
-class User(SQLAlchemyObjectType):
-    class Meta:
-        model = models.User
-        exclude_fields = ['password']
-
-
-class Query(graphene.ObjectType):
-    users = graphene.List(User)
-    test = graphene.String()
-
-    def resolve_users(self, args, context, info):
-        query = User.get_query(context)  # SQLAlchemy query
-        return query.all()
-
-    def resolve_test(self, args, context, info):
-        return 'HorizonBlue'
 
 
 def get_tomorrow():
@@ -47,9 +28,3 @@ class CreateToken(graphene.Mutation):
                                secret, algorithm='HS256').decode()
             return CreateToken(token=token, success=True)
         return CreateToken(token=None, success=False)
-
-
-class Mutation(graphene.ObjectType):
-    create_token = CreateToken.Field()
-
-schema = graphene.Schema(query=Query, mutation=Mutation)
