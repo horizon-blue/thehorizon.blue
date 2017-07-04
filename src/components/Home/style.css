@@ -1,15 +1,15 @@
 .typed-cursor {
   opacity: 1;
-  animation: typedjsBlink 0.7s infinite;
-  -webkit-animation: typedjsBlink 0.7s infinite;
-  animation: typedjsBlink 0.7s infinite;
+  animation: typedjs-blink 0.7s infinite;
+  -webkit-animation: typedjs-blink 0.7s infinite;
+  animation: typedjs-blink 0.7s infinite;
 }
-@keyframes typedjsBlink {
+@keyframes typedjs-blink {
   50% {
     opacity: 0.0;
   }
 }
-@-webkit-keyframes typedjsBlink {
+@-webkit-keyframes typedjs-blink {
   0% {
     opacity: 1;
   }
@@ -19,4 +19,22 @@
   100% {
     opacity: 1;
   }
+}
+
+.login-enter {
+  opacity: 0.01;
+}
+
+.login-enter.login-enter-active {
+  opacity: 1;
+  transition: opacity 500ms ease-in;
+}
+
+.login-leave {
+  opacity: 1;
+}
+
+.login-leave.login-leave-active {
+  opacity: 0.01;
+  transition: opacity 300ms ease-in;
 }

@@ -14,16 +14,6 @@ class Logo extends Component {
                 xs={16}
                 span={7}
             >
-                <div
-                    ref={typecontent => (this.typecontent = typecontent)}
-                    style={{ opacity: 0 }}
-                >
-                    <p>
-                        我就随便写点什么测试一下不要太在意细节就随便写点什么测试一下不要太在意细节就随便写点什么测试一下不要太在意细节
-                    </p>
-                    <p>真的，别太在意细节</p>
-                    <p>千万别</p>
-                </div>
                 <span
                     ref={typed => (this.typed = typed)}
                     style={{ opacity: 0 }}
