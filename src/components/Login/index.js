@@ -28,7 +28,7 @@ class Login extends Component {
     }
 
     render() {
-        const { getFieldDecorator } = this.props.form;
+        const { getFieldDecorator, resetFields } = this.props.form;
         return (
             <Form onSubmit={this.handleSubmit} layout="inline">
                 <Form.Item>
@@ -49,9 +49,7 @@ class Login extends Component {
                         rules: [{ required: true, message: '密匙不能为空' }],
                     })(
                         <Input
-                            prefix={
-                                <Icon type="lock" style={{ fontSize: 13 }} />
-                            }
+                            prefix={<Icon type="lock" />}
                             type="password"
                             placeholder="密匙"
                         />
@@ -63,8 +61,8 @@ class Login extends Component {
                     </Button>
                 </Form.Item>
                 <Form.Item>
-                    <Button ghost>
-                        取消
+                    <Button ghost onClick={() => resetFields()}>
+                        重置
                     </Button>
                 </Form.Item>
             </Form>

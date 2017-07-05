@@ -16,7 +16,8 @@ import './style.css';
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { showLogin: false };
+    this.state = { showLogin: false, buttonState: 0 };
+    this.handleHiddenButtonPress = this.handleHiddenButtonPress.bind(this);
   }
   // static get propTypes() {
   //   return {
@@ -102,6 +103,34 @@ class Home extends Component {
       });
   }
 
+  handleHiddenButtonPress(buttonIndex) {
+    const buttonState = this.findNextButtonState(
+      this.state.buttonState,
+      buttonIndex
+    );
+    if (buttonState === 5)
+      this.setState({ showLogin: !this.state.showLogin, buttonState: 0 });
+    else this.setState({ buttonState });
+  }
+
+  findNextButtonState(state, buttonIndex) {
+    switch (state) {
+      case 0:
+      case 2:
+        return buttonIndex ? 1 : 2;
+      case 1:
+        return buttonIndex ? 1 : 3;
+      case 3:
+        return buttonIndex ? 1 : 4;
+      case 4:
+        return buttonIndex ? 5 : 2;
+      case 5:
+        return 5;
+      default:
+        return state;
+    }
+  }
+
   render() {
     return (
       <Row
@@ -113,6 +142,7 @@ class Home extends Component {
           <Logo
             ref={logo => (this.logo = logo)}
             className="centered-horizontal"
+            onHiddenButtonPress={this.handleHiddenButtonPress}
           />
           <div className="centered-horizontal">
             <h1
