@@ -84,8 +84,7 @@ class Login extends Component {
                                 <Col>
                                     <Button
                                         ghost
-                                        onClick={() =>
-                                            this.props.history.goBack()}
+                                        onClick={() => this.props.cancelLogin()}
                                         style={{ marginLeft: 10 }}
                                     >
                                         返回

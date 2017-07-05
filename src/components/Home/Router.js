@@ -21,7 +21,8 @@ class Router extends Component {
                     transitionEnterTimeout={300}
                     transitionLeaveTimeout={300}
                 >
-                    {this.props.showLogin && <Login />}
+                    {this.props.showLogin &&
+                        <Login cancelLogin={this.props.cancelLogin} />}
                 </CSSTransitionGroup>
             </div>
         );
