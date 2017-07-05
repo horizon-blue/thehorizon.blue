@@ -19,10 +19,9 @@ const networkInterface = createBatchingNetworkInterface({
 const responseTransformAfterware = {
     applyBatchAfterware(res, next) {
         if (!res || !res.responses) next();
-        const responses = res.responses.map((r, i) => {
+        res.responses = res.responses.map((r, i) => {
             return { id: i, ...r.payload, status: r.status };
         });
-        res.responses = responses;
         next();
     },
 };
