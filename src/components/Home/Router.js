@@ -1,41 +1,58 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { RouteTransition } from 'react-router-transition';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { CSSTransitionGroup } from 'react-transition-group';
+import { connect } from 'react-redux';
 import About from '../About';
 import NotFound from '../NotFound';
 import Login from '../Login';
-
 import { PrivateRoute } from '../Route';
 
+function mapStateToProps(state, ownProps) {
+    return {
+        token: state.token,
+    };
+}
+
+@connect(mapStateToProps)
 class Router extends Component {
     constructor(props) {
         super(props);
         this.renderLogin = this.renderLogin.bind(this);
     }
-    renderLogin() {
+    renderLogin(props) {
+        const { from } = props.location.state || {
+            from: { pathname: '/about' },
+        };
+
         return (
             <div className="centered-horizontal">
                 <CSSTransitionGroup
                     transitionName="fadeInOut"
-                    transitionEnterTimeout={300}
-                    transitionLeaveTimeout={300}
+                    transitionEnterTimeout={500}
+                    transitionLeaveTimeout={500}
                 >
                     {this.props.showLogin &&
-                        <Login cancelLogin={this.props.cancelLogin} />}
+                        (this.props.token
+                            ? <Redirect to={from} />
+                            : <Login
+                                  key="loginPanel"
+                                  cancelLogin={this.props.cancelLogin}
+                                  submitLogin={() =>
+                                      props.history.push(from.pathname)}
+                              />)}
                 </CSSTransitionGroup>
             </div>
         );
     }
     render() {
+        const { location } = this.props;
         return (
-            <RouteTransition
-                pathname={this.props.location.pathname}
-                atEnter={{ opacity: 0 }}
-                atLeave={{ opacity: 0 }}
-                atActive={{ opacity: 1 }}
+            <CSSTransitionGroup
+                transitionName="fadeInOut"
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={500}
             >
-                <Switch>
+                <Switch key={location.key} location={location}>
                     <Route
                         exact
                         path="/"
@@ -45,7 +62,7 @@ class Router extends Component {
                     <PrivateRoute path="/about" component={About} />
                     <Route component={NotFound} />
                 </Switch>
-            </RouteTransition>
+            </CSSTransitionGroup>
         );
     }
 }

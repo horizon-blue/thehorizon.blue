@@ -14,21 +14,23 @@ const createToken = gql`
 
 // Log in Saga
 export function* resolveloginRequest(action) {
-    const { username, password, onError } = action;
+    const { username, password, onLoginComplete } = action;
     try {
         const res = yield client.networkInterface.query({
             query: createToken,
             variables: { username, password },
         });
         const { success, token } = res.data.createToken;
-        if (success) yield put({ type: types.AUTH_SUCCESS, token: token });
-        else {
-            onError && onError('身份验证失败。');
+        if (success) {
+            onLoginComplete && onLoginComplete();
+            yield put({ type: types.AUTH_SUCCESS, token: token });
+        } else {
+            onLoginComplete && onLoginComplete('身份验证失败。');
             yield put({ type: types.AUTH_ERROR });
         }
     } catch (e) {
         console.log(action.type, e);
-        onError && onError(e.message);
+        onLoginComplete && onLoginComplete(e.message);
         yield put({ type: types.AUTH_ERROR });
     }
 }

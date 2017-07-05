@@ -24,9 +24,13 @@ class Login extends Component {
                     type: LOGIN_REQUEST,
                     username: values.username,
                     password: values.password,
-                    onError: error => {
-                        message.error(error, 5);
+                    onLoginComplete: error => {
                         this.setState({ loading: false });
+                        if (error) message.error(error, 5);
+                        else {
+                            message.success('验证成功，祝旅途愉快。', 5);
+                            this.props.submitLogin();
+                        }
                     },
                 });
             }

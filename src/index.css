@@ -45,5 +45,5 @@ body {
 
 .fadeInOut-leave.fadeInOut-leave-active {
     opacity: 0.01;
-    transition: opacity 300ms ease-in;
+    transition: opacity 500ms ease-in;
 }

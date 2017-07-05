@@ -35,7 +35,6 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    document.title = '天际蓝 | thehorizon.blue';
     this.timeline = anime.timeline();
     this.timeline
       .add({
