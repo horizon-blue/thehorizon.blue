@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -27,6 +28,13 @@ class PrivateRoute extends Component {
               />}
       />
     );
+  }
+  static get propTypes() {
+    return {
+      component: PropTypes.func.isRequired,
+      path: PropTypes.string.isRequired,
+      location: PropTypes.object.isRequired,
+    };
   }
 }
 

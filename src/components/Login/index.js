@@ -105,6 +105,8 @@ class Login extends Component {
         return {
             dispatch: PropTypes.func.isRequired,
             form: PropTypes.object.isRequired,
+            submitLogin: PropTypes.func.isRequired,
+            cancelLogin: PropTypes.func.isRequired,
         };
     }
 }
