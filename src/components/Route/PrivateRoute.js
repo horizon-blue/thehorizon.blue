@@ -1,26 +1,31 @@
 import React, { Component } from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import { CSSTransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 
-@connect()
+function mapStateToProps(state, ownProps) {
+  return {
+    token: state.token,
+  };
+}
+
+@connect(mapStateToProps)
 class PrivateRoute extends Component {
   render() {
-    const { component: Component, ...rest } = this.props;
+    const { component: Component, token, ...rest } = this.props;
     return (
-      <CSSTransitionGroup
-        transitionName="fadeInOut"
-        transitionEnterTimeout={300}
-        transitionLeaveTimeout={300}
-      >
-        <Route
-          {...rest}
-          render={props =>
-            false
-              ? <Component {...this.props} />
-              : <Redirect to="/" from={this.props.path} />}
-        />
-      </CSSTransitionGroup>
+      <Route
+        {...rest}
+        render={props =>
+          token
+            ? <Component {...this.props} />
+            : <Redirect
+                to={{
+                  pathname: '/',
+                  state: { from: this.props.location },
+                }}
+                from={this.props.path}
+              />}
+      />
     );
   }
 }

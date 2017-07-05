@@ -5,8 +5,6 @@ import anime from 'animejs';
 import Typed from 'typed.js';
 import classNames from 'classnames';
 import MediaQuery from 'react-responsive';
-import { CSSTransitionGroup } from 'react-transition-group';
-import Login from '../Login';
 import Router from './Router';
 
 // import PropTypes from 'prop-types';
@@ -17,7 +15,7 @@ import './style.css';
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { showLogin: false, buttonState: 0 };
+    this.state = { buttonState: 0 };
     this.handleHiddenButtonPress = this.handleHiddenButtonPress.bind(this);
   }
   // static get propTypes() {
@@ -88,7 +86,7 @@ class Home extends Component {
         begin: () => {
           this.typing = new Typed(this.logo.typed, {
             strings: [
-              '啊。^1000早上好，迷途的旅者。^1000<br />欢迎来到天空的尽头。^1000<br />不过，^1000还是请回吧。',
+              '啊。^1000早上好，迷途中的旅者。^1000<br />欢迎来到天空的尽头。^1000<br />不过，^1000还是请回吧。',
               '前方是名为天际的一片虚无之地。^1000<br />藤蔓肆虐，荆棘丛生。',
               '那是不应被打扰的一片领域。',
               '因此^1000，请回吧。^1000',
@@ -134,12 +132,8 @@ class Home extends Component {
 
   renderHeader() {
     return (
-      <Row
-        justify="center"
-        type="flex"
-        className={classNames('fullscreen', this.props.className)}
-      >
-        <Col span={24} style={{ marginBottom: '20vh' }}>
+      <Row type="flex" className={classNames(this.props.className)}>
+        <Col span={24}>
           <Logo
             ref={logo => (this.logo = logo)}
             className="centered-horizontal"
@@ -163,16 +157,6 @@ class Home extends Component {
               </MediaQuery>thehorizon.blue
             </h1>
           </div>
-          <CSSTransitionGroup
-            transitionName="fadeInOut"
-            transitionEnterTimeout={300}
-            transitionLeaveTimeout={300}
-          >
-            {this.state.showLogin &&
-              <div className="centered-horizontal">
-                <Login onCancel={() => this.setState({ showLogin: false })} />
-              </div>}
-          </CSSTransitionGroup>
         </Col>
       </Row>
     );
@@ -182,7 +166,11 @@ class Home extends Component {
     return (
       <div className={classNames(this.props.className)}>
         {this.renderHeader()}
-        <Router />
+        <Router
+          {...this.props}
+          showLogin={this.state.showLogin}
+          cancelLogin={() => this.setState({ showLogin: false })}
+        />
       </div>
     );
   }

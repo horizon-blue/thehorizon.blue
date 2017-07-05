@@ -84,7 +84,8 @@ class Login extends Component {
                                 <Col>
                                     <Button
                                         ghost
-                                        onClick={this.props.onCancel}
+                                        onClick={() =>
+                                            this.props.history.goBack()}
                                         style={{ marginLeft: 10 }}
                                     >
                                         返回
@@ -101,7 +102,6 @@ class Login extends Component {
         return {
             dispatch: PropTypes.func.isRequired,
             form: PropTypes.object.isRequired,
-            onCancel: PropTypes.func.isRequired,
         };
     }
 }

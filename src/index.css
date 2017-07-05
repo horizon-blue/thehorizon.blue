@@ -29,3 +29,21 @@ body {
     left: 0;
     right: 0;
 }
+
+.fadeInOut-enter {
+    opacity: 0.01;
+}
+
+.fadeInOut-enter.fadeInOut-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+}
+
+.fadeInOut-leave {
+    opacity: 1;
+}
+
+.fadeInOut-leave.fadeInOut-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in;
+}
