@@ -168,11 +168,8 @@ class Home extends Component {
             transitionLeaveTimeout={300}
           >
             {this.state.showLogin &&
-              <div
-                className="centered-horizontal"
-                ref={loginPanel => (this.loginPanel = loginPanel)}
-              >
-                <Login />
+              <div className="centered-horizontal">
+                <Login onCancel={() => this.setState({ showLogin: false })} />
               </div>}
           </CSSTransitionGroup>
         </Col>
