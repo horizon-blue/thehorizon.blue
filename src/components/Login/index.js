@@ -34,7 +34,7 @@ class Login extends Component {
     }
 
     render() {
-        const { getFieldDecorator, resetFields } = this.props.form;
+        const { getFieldDecorator } = this.props.form;
         return (
             <MediaQuery minDeviceWidth={768}>
                 {matched =>

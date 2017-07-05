@@ -21,20 +21,20 @@
   }
 }
 
-.login-enter {
+.fadeInOut-enter {
   opacity: 0.01;
 }
 
-.login-enter.login-enter-active {
+.fadeInOut-enter.fadeInOut-enter-active {
   opacity: 1;
   transition: opacity 500ms ease-in;
 }
 
-.login-leave {
+.fadeInOut-leave {
   opacity: 1;
 }
 
-.login-leave.login-leave-active {
+.fadeInOut-leave.fadeInOut-leave-active {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }

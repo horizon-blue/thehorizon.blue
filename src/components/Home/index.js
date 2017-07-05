@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import MediaQuery from 'react-responsive';
 import { CSSTransitionGroup } from 'react-transition-group';
 import Login from '../Login';
+import Router from './Router';
 
 // import PropTypes from 'prop-types';
 
@@ -30,7 +31,7 @@ class Home extends Component {
 
   componentWillMount() {
     // The special hotkeys to enter the main website
-    Mousetrap('up down left right', () =>
+    Mousetrap('left right right left', () =>
       this.setState({ showLogin: !this.state.showLogin })
     );
   }
@@ -131,7 +132,7 @@ class Home extends Component {
     }
   }
 
-  render() {
+  renderHeader() {
     return (
       <Row
         justify="center"
@@ -163,7 +164,7 @@ class Home extends Component {
             </h1>
           </div>
           <CSSTransitionGroup
-            transitionName="login"
+            transitionName="fadeInOut"
             transitionEnterTimeout={300}
             transitionLeaveTimeout={300}
           >
@@ -174,6 +175,15 @@ class Home extends Component {
           </CSSTransitionGroup>
         </Col>
       </Row>
+    );
+  }
+
+  render() {
+    return (
+      <div className={classNames(this.props.className)}>
+        {this.renderHeader()}
+        <Router />
+      </div>
     );
   }
 }
