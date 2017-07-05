@@ -28,13 +28,17 @@ class Login extends Component {
                         this.setState({ loading: false });
                         if (error) message.error(error, 5);
                         else {
-                            message.success('验证成功，祝旅途愉快。', 5);
+                            message.success('验证成功。', 5);
                             this.props.submitLogin();
                         }
                     },
                 });
             }
         });
+    }
+
+    componentDidMount() {
+        this.username.focus();
     }
 
     render() {
@@ -58,6 +62,7 @@ class Login extends Component {
                                 <Input
                                     prefix={<Icon type="user" />}
                                     placeholder="名字"
+                                    ref={username => (this.username = username)}
                                 />
                             )}
 

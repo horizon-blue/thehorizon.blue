@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import About from '../About';
 import NotFound from '../NotFound';
 import Login from '../Login';
-import { PrivateRoute } from '../Route';
+import { PrivateRoute } from '../_global/Route';
 
 function mapStateToProps(state, ownProps) {
     return {
@@ -33,7 +33,7 @@ class Router extends Component {
                 >
                     {this.props.showLogin &&
                         (this.props.token
-                            ? <Redirect to={from} />
+                            ? <Redirect to={from} push={true} />
                             : <Login
                                   key="loginPanel"
                                   cancelLogin={this.props.cancelLogin}

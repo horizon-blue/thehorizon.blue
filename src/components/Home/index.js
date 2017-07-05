@@ -7,25 +7,25 @@ import classNames from 'classnames';
 import MediaQuery from 'react-responsive';
 import Router from './Router';
 
-// import PropTypes from 'prop-types';
-
-import Logo from './Logo';
+import Logo from '../_global/Logo';
 import './style.css';
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = { buttonState: 0 };
+    this.state = {
+      buttonState: 0,
+      typingStrings: [
+        '啊。^1000早上好，迷途中的旅者。^1000<br />欢迎来到天空的尽头。^1000<br />不过，^1000还是请回吧。',
+        '前方是名为天际的一片虚无之地。^1000<br />藤蔓肆虐，荆棘丛生。',
+        '那是不应被打扰的一片领域。',
+        '因此^1000，请回吧。^500',
+        '嗯？^1000执意前行吗？^1000<br />...真是没办法呢。^1000<br />那么^1000，请出示你的信物。^500',
+        '祝你旅途愉快。',
+      ],
+    };
     this.handleHiddenButtonPress = this.handleHiddenButtonPress.bind(this);
   }
-  // static get propTypes() {
-  //   return {
-  //     data: PropTypes.shape({
-  //       loading: PropTypes.bool.isRequired,
-  //       test: PropTypes.string,
-  //     }).isRequired,
-  //   };
-  // }
 
   componentWillMount() {
     // The special hotkeys to enter the main website
@@ -35,6 +35,10 @@ class Home extends Component {
   }
 
   componentDidMount() {
+    if (this.props.location.pathname !== '/')
+      this.setState({
+        typingStrings: ['这里是', '欢迎来到天空的尽头。^1000<br />无畏的勇者啊^1000，祝你旅途愉快。'],
+      });
     this.timeline = anime.timeline();
     this.timeline
       .add({
@@ -84,18 +88,12 @@ class Home extends Component {
         duration: 500,
         begin: () => {
           this.typing = new Typed(this.logo.typed, {
-            strings: [
-              '啊。^1000早上好，迷途中的旅者。^1000<br />欢迎来到天空的尽头。^1000<br />不过，^1000还是请回吧。',
-              '前方是名为天际的一片虚无之地。^1000<br />藤蔓肆虐，荆棘丛生。',
-              '那是不应被打扰的一片领域。',
-              '因此^1000，请回吧。^1000',
-              '嗯？^1000执意前行吗？^1000<br />...真是没办法呢。^1000<br />那么^1000，请出示你的信物。',
-            ],
+            strings: this.state.typingStrings,
             autoInsertCss: false,
             typeSpeed: 80,
             backSpeed: 50,
             startDelay: 1000,
-            backDelay: 2000,
+            backDelay: 1000,
           });
         },
       });
@@ -151,9 +149,11 @@ class Home extends Component {
                 textAlign: 'center',
               }}
             >
-              天际蓝<MediaQuery minDeviceWidth={768}>
+              天际蓝
+              <MediaQuery minDeviceWidth={768}>
                 {match => (match ? <span> | </span> : <br />)}
-              </MediaQuery>thehorizon.blue
+              </MediaQuery>
+              thehorizon.blue
             </h1>
           </div>
         </Col>
