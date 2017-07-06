@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import About from '../About';
 import NotFound from '../NotFound';
 import Login from '../Login';
-import { PrivateRoute } from '../_global/Route';
+import { PrivateRoute, RouteWithConfig } from '../_global/Route';
 
 function mapStateToProps(state, ownProps) {
     return {
@@ -60,7 +60,7 @@ class Router extends Component {
                         showLogin={this.props.showLogin}
                     />
                     <PrivateRoute path="/about" component={About} />
-                    <Route component={NotFound} />
+                    <RouteWithConfig component={NotFound} />
                 </Switch>
             </CSSTransitionGroup>
         );

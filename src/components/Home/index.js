@@ -5,11 +5,21 @@ import anime from 'animejs';
 import Typed from 'typed.js';
 import classNames from 'classnames';
 import MediaQuery from 'react-responsive';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Router from './Router';
 
 import Logo from '../_global/Logo';
 import './style.css';
 
+function mapStateToProps(state, ownProps) {
+  return {
+    title: state.routeConfig.title,
+  };
+}
+
+@withRouter
+@connect(mapStateToProps)
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -149,11 +159,7 @@ class Home extends Component {
                 textAlign: 'center',
               }}
             >
-              天际蓝
-              <MediaQuery minDeviceWidth={768}>
-                {match => (match ? <span> | </span> : <br />)}
-              </MediaQuery>
-              thehorizon.blue
+              {this.props.title}
             </h1>
           </div>
         </Col>
@@ -164,14 +170,32 @@ class Home extends Component {
   render() {
     return (
       <div className={classNames(this.props.className)}>
-        {this.renderHeader()}
-        <Router
-          {...this.props}
-          showLogin={this.state.showLogin}
-          cancelLogin={() => this.setState({ showLogin: false })}
-        />
+        <header>
+          {this.renderHeader()}
+        </header>
+        <main>
+          <Router
+            {...this.props}
+            showLogin={this.state.showLogin}
+            cancelLogin={() => this.setState({ showLogin: false })}
+          />
+        </main>
       </div>
     );
+  }
+
+  static get routeConfig() {
+    return {
+      title: (
+        <span>
+          天际蓝
+          <MediaQuery minDeviceWidth={768}>
+            {match => (match ? <span> | </span> : <br />)}
+          </MediaQuery>
+          thehorizon.blue
+        </span>
+      ),
+    };
   }
 }
 

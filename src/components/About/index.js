@@ -18,4 +18,10 @@ export default class About extends Component {
       </div>
     );
   }
+
+  static get routeConfig() {
+    return {
+      title: '关于',
+    };
+  }
 }

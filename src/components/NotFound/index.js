@@ -6,12 +6,20 @@ class NotFound extends Component {
   render() {
     const { className } = this.props;
     return (
-      <Content className={classnames('NotFound', className)} title="404 - 虚无之地">
+      <Content
+        className={classnames('NotFound', className)}
+        title={NotFound.routeConfig.title}
+      >
         <h1>
           404 <small>Not Found :(</small>
         </h1>
       </Content>
     );
+  }
+  static get routeConfig() {
+    return {
+      title: '404 - 虚无之地',
+    };
   }
 }
 
