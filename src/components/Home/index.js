@@ -4,20 +4,19 @@ import { Row, Col } from 'antd';
 import anime from 'animejs';
 import Typed from 'typed.js';
 import classNames from 'classnames';
-import { Redirect } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import { CSSTransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Router from './Router';
-import Login from '../Login';
+import Nav from '../Nav';
 import Logo from '../_global/Logo';
 import './style.css';
 
 function mapStateToProps(state, ownProps) {
   return {
     title: state.routeConfig.title,
-    token: state.token,
+    typingStrings: state.routeConfig.typingStrings,
   };
 }
 
@@ -28,14 +27,6 @@ class Home extends Component {
     super(props);
     this.state = {
       buttonState: 0,
-      typingStrings: [
-        '啊。^1000早上好，迷途中的旅者。^1000<br />欢迎来到天空的尽头。^1000<br />不过，^1000还是请回吧。',
-        '前方是名为天际的一片虚无之地。^1000<br />藤蔓肆虐，荆棘丛生。',
-        '那是不应被打扰的一片领域。',
-        '因此^1000，请回吧。^500',
-        '嗯？^1000执意前行吗？^1000<br />...真是没办法呢。^1000<br />那么^1000，请出示你的信物。^500',
-        '祝你旅途愉快。',
-      ],
     };
     this.handleHiddenButtonPress = this.handleHiddenButtonPress.bind(this);
   }
@@ -43,15 +34,11 @@ class Home extends Component {
   componentWillMount() {
     // The special hotkeys to enter the main website
     Mousetrap('left right right left', () =>
-      this.setState({ showLogin: !this.state.showLogin })
+      this.setState({ showNav: !this.state.showNav })
     );
   }
 
   componentDidMount() {
-    if (this.props.location.pathname !== '/')
-      this.setState({
-        typingStrings: ['这里是', '欢迎来到天空的尽头。^1000<br />无畏的勇者啊^1000，祝你旅途愉快。'],
-      });
     this.timeline = anime.timeline();
     this.timeline
       .add({
@@ -101,7 +88,7 @@ class Home extends Component {
         duration: 500,
         begin: () => {
           this.typing = new Typed(this.logo.typed, {
-            strings: this.state.typingStrings,
+            strings: this.props.typingStrings,
             autoInsertCss: false,
             typeSpeed: 80,
             backSpeed: 50,
@@ -118,7 +105,7 @@ class Home extends Component {
       buttonIndex
     );
     if (buttonState === 5)
-      this.setState({ showLogin: !this.state.showLogin, buttonState: 0 });
+      this.setState({ showNav: !this.state.showNav, buttonState: 0 });
     else this.setState({ buttonState });
   }
 
@@ -150,65 +137,79 @@ class Home extends Component {
             onHiddenButtonPress={this.handleHiddenButtonPress}
           />
           <div className="centered-horizontal">
-            <h1
-              ref={title => (this.title = title)}
-              style={{
-                letterSpacing: 1,
-                marginTop: '3vh',
-                marginBottom: '3vh',
-                fontFamily: 'consolas',
-                wordBreak: 'break-all',
-                color: '#4b84f4',
-                textAlign: 'center',
-              }}
+            <CSSTransitionGroup
+              transitionName="fadeInOut"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={500}
             >
-              {this.props.title}
-            </h1>
+              <h1
+                ref={title => (this.title = title)}
+                style={{
+                  letterSpacing: 1,
+                  marginTop: '3vh',
+                  marginBottom: '3vh',
+                  fontFamily: 'consolas',
+                  wordBreak: 'break-all',
+                  color: '#4b84f4',
+                  textAlign: 'center',
+                }}
+              >
+                {this.props.title}
+              </h1>
+            </CSSTransitionGroup>
           </div>
         </Col>
       </Row>
     );
   }
 
-  render() {
-    return (
-      <div className={classNames(this.props.className)}>
-        <header>
-          {this.renderHeader()}
-        </header>
-        <nav>
-          {this.renderLogin()}
-        </nav>
-        <main>
-          <Router {...this.props} />
-        </main>
-      </div>
-    );
-  }
-
-  renderLogin() {
-    const { from } = this.props.location.state || {
-      from: { pathname: '/about' },
-    };
+  renderNav() {
     return (
       <CSSTransitionGroup
         transitionName="fadeInOut"
         transitionEnterTimeout={500}
         transitionLeaveTimeout={500}
       >
-        {this.state.showLogin &&
-          (this.props.token
-            ? <Redirect to={from} push={true} />
-            : <Login
-                key="loginPanel"
-                cancelLogin={() => this.setState({ showLogin: false })}
-                submitLogin={() => this.props.history.push(from.pathname)}
-              />)}
+        {this.state.showNav &&
+          <Nav
+            key="NavPanel"
+            cancelLogin={() => this.setState({ showNav: false })}
+          />}
       </CSSTransitionGroup>
     );
   }
 
+  render() {
+    const { className, ...rest } = this.props;
+    return (
+      <div className={classNames(className)}>
+        <header>
+          {this.renderHeader()}
+        </header>
+        <nav>
+          {this.renderNav()}
+        </nav>
+        <main>
+          <Router {...rest} />
+        </main>
+      </div>
+    );
+  }
+
   static get routeConfig() {
+    return {
+      typingStrings: [
+        '啊。^1000早上好，迷途中的旅者。^1000<br />欢迎来到天空的尽头。^1000<br />不过，^1000还是请回吧。',
+        '前方是名为天际的一片虚无之地。^1000<br />藤蔓肆虐，荆棘丛生。',
+        '那是不应被打扰的一片领域。',
+        '因此^1000，请回吧。^500',
+        '嗯？^1000执意前行吗？^1000<br />...真是没办法呢。^1000<br />那么^1000，请出示你的信物。^500',
+        '祝你旅途愉快。',
+      ],
+    };
+  }
+
+  static get defaultProps() {
     return {
       title: (
         <span>
@@ -219,6 +220,7 @@ class Home extends Component {
           thehorizon.blue
         </span>
       ),
+      typingStrings: ['这里是', '欢迎来到天空的尽头。^1000<br />无畏的勇者啊^1000，祝你旅途愉快。'],
     };
   }
 }

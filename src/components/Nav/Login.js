@@ -29,7 +29,6 @@ class Login extends Component {
                         if (error) message.error(error, 5);
                         else {
                             message.success('验证成功。', 5);
-                            this.props.submitLogin();
                         }
                     },
                 });
@@ -110,7 +109,6 @@ class Login extends Component {
         return {
             dispatch: PropTypes.func.isRequired,
             form: PropTypes.object.isRequired,
-            submitLogin: PropTypes.func.isRequired,
             cancelLogin: PropTypes.func.isRequired,
         };
     }
