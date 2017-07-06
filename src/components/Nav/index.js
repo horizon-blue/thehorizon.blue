@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Button } from 'antd';
 import PropTypes from 'prop-types';
 import Login from './Login';
 import { connect } from 'react-redux';
 import { CSSTransitionGroup } from 'react-transition-group';
+import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
 
 function mapStateToProps(state, ownProps) {
     return {
@@ -18,7 +19,17 @@ class Nav extends Component {
     }
 
     renderNav() {
-        return <div key="nav" />;
+        return (
+            <div key="nav" className="centered-horizontal">
+                <Button
+                    ghost
+                    onClick={() =>
+                        this.props.dispatch({ type: LOGOUT_REQUEST })}
+                >
+                    登出
+                </Button>
+            </div>
+        );
     }
     render() {
         return (
@@ -31,7 +42,7 @@ class Nav extends Component {
 
                     {this.props.token
                         ? this.renderNav()
-                        : <Col>
+                        : <Col className="centered-horizontal">
                               <Login
                                   cancelLogin={this.props.cancelLogin}
                                   key="loginPanel"

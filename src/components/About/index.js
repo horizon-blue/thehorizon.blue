@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-
-import './style.css';
+import Content from '../_global/Content';
 
 export default class About extends Component {
   // static propTypes = {}
@@ -11,11 +10,14 @@ export default class About extends Component {
   render() {
     const { className } = this.props;
     return (
-      <div className={classnames('About', className)}>
+      <Content
+        className={classnames('About', className)}
+        title={About.routeConfig.title}
+      >
         <h1>
           About
         </h1>
-      </div>
+      </Content>
     );
   }
 
