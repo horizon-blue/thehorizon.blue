@@ -1,4 +1,4 @@
-import initialState from '../initialState';
+import initialState from './initialState';
 import * as types from './actionTypes';
 
 export default function(state = initialState.routeConfig, action) {

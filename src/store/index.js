@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, autoRehydrate } from 'redux-persist';
 import createSagaMiddleware from 'redux-saga';
 import rootReducer from './reducer';
-import initialState from './initialState';
+import initialState from './reducer/initialState';
 import client, { applyAuthMiddleWare } from '../apolloClient';
 
 const sagaMiddleware = createSagaMiddleware();
