@@ -4,17 +4,20 @@ import { Row, Col } from 'antd';
 import anime from 'animejs';
 import Typed from 'typed.js';
 import classNames from 'classnames';
+import { Redirect } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
+import { CSSTransitionGroup } from 'react-transition-group';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Router from './Router';
-
+import Login from '../Login';
 import Logo from '../_global/Logo';
 import './style.css';
 
 function mapStateToProps(state, ownProps) {
   return {
     title: state.routeConfig.title,
+    token: state.token,
   };
 }
 
@@ -173,14 +176,35 @@ class Home extends Component {
         <header>
           {this.renderHeader()}
         </header>
+        <nav>
+          {this.renderLogin()}
+        </nav>
         <main>
-          <Router
-            {...this.props}
-            showLogin={this.state.showLogin}
-            cancelLogin={() => this.setState({ showLogin: false })}
-          />
+          <Router {...this.props} />
         </main>
       </div>
+    );
+  }
+
+  renderLogin() {
+    const { from } = this.props.location.state || {
+      from: { pathname: '/about' },
+    };
+    return (
+      <CSSTransitionGroup
+        transitionName="fadeInOut"
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
+      >
+        {this.state.showLogin &&
+          (this.props.token
+            ? <Redirect to={from} push={true} />
+            : <Login
+                key="loginPanel"
+                cancelLogin={() => this.setState({ showLogin: false })}
+                submitLogin={() => this.props.history.push(from.pathname)}
+              />)}
+      </CSSTransitionGroup>
     );
   }
 
