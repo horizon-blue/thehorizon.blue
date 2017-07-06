@@ -1,11 +1,12 @@
 import graphene
-from .User import User
+from .objectTypes import *
 from .CreateToken import CreateToken
 
 
 class Query(graphene.ObjectType):
     users = graphene.List(User)
     test = graphene.String()
+    posts = graphene.List(Post)
     # context = graphene.String()
 
     def resolve_users(self, args, context, info):
@@ -14,6 +15,10 @@ class Query(graphene.ObjectType):
 
     def resolve_test(self, args, context, info):
         return 'HorizonBlue'
+
+    def resolve_posts(self, args, context, info):
+        query = Post.get_query(context)  # SQLAlchemy query
+        return query.all()
 
     # def resolve_context(self, args, context, info):
     #     # for debug purpose only

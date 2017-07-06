@@ -1,7 +1,7 @@
 import graphene
 import jwt
 import datetime
-from .User import User
+from .objectTypes import User
 
 secret = '***REMOVED***'
 
@@ -24,7 +24,7 @@ class CreateToken(graphene.Mutation):
         password = args.get('password')
         user = User.get_query(context).filter_by(username=username).first()
         if(user and user.password == password):
-            token = jwt.encode({'username': username, 'exp': get_tomorrow()},
+            token = jwt.encode({'sub': user.id, 'exp': get_tomorrow(), 'iat': datetime.datetime.utcnow()},
                                secret, algorithm='HS256').decode()
             return CreateToken(token=token, success=True)
         return CreateToken(token=None, success=False)

@@ -6,3 +6,8 @@ class User(SQLAlchemyObjectType):
     class Meta:
         model = models.User
         exclude_fields = ['password']
+
+
+class Post(SQLAlchemyObjectType):
+    class Meta:
+        model = models.Post
