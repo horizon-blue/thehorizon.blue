@@ -47,6 +47,10 @@ class Blog extends Component {
     );
   }
 
+  renderFooter() {
+    return <div style={{ height: '20vh' }} />;
+  }
+
   render() {
     const { className, data: { loading, posts } } = this.props;
     return (
@@ -69,6 +73,9 @@ class Blog extends Component {
           />
           <Route path="/blog/:postLink" component={Post} />
         </Switch>
+        <footer>
+          {this.renderFooter()}
+        </footer>
       </Content>
     );
   }
