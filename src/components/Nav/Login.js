@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import MediaQuery from 'react-responsive';
 import { Button, Form, Input, Icon, Row, Col, message } from 'antd';
@@ -8,7 +8,7 @@ import { LOGIN_REQUEST } from '../../store/reducer/actionTypes';
 
 @connect()
 @Form.create()
-class Login extends Component {
+class Login extends PureComponent {
     static propTypes = {
         dispatch: PropTypes.func.isRequired,
         form: PropTypes.object.isRequired,

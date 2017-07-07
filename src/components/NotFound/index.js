@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
 import Content from '../_global/Content';
 
-class NotFound extends Component {
+class NotFound extends PureComponent {
   static routeConfig = {
     typingStrings: ['欢迎来到...^1000<br />嗯？^1000你是怎么走到这里来的？'],
     title: '404 - 虚无之地',

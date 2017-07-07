@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 @connect(undefined, mapDispatchToProps)
-class RouteWithConfig extends Component {
+class RouteWithConfig extends PureComponent {
   static propTypes = {
     component: PropTypes.func,
     routeConfig: PropTypes.object,

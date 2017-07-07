@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { PrivateRoute, RouteWithConfig } from '../_global/Route';
@@ -9,7 +9,7 @@ import Lab from '../Lab';
 import About from '../About';
 import NotFound from '../NotFound';
 
-class Router extends Component {
+class Router extends PureComponent {
     static propTypes = {
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,

@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import MediaQuery from 'react-responsive';
 
-class PlaceHolder extends Component {
+class PlaceHolder extends PureComponent {
     static routeConfig = {
         title: (
             <span>

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
@@ -24,7 +24,7 @@ window.addEventListener('load', () => {
     FastClick.attach(document.body);
 });
 
-class App extends Component {
+class App extends PureComponent {
     render() {
         return (
             <ApolloProvider client={client} store={store}>

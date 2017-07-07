@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import PropTypes from 'prop-types';
 
-class FadeView extends Component {
+class FadeView extends PureComponent {
     static propTypes = {
         children: PropTypes.oneOfType([
             PropTypes.object,

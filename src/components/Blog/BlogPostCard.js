@@ -40,11 +40,14 @@ class BlogPostCard extends PureComponent {
         return _.clamp(0.4 * Math.sin(2 * Math.PI * t) + 0.65, 0.65, 1) || 0.65;
     }
 
+    handleClick = () => {
+        const { post: { link }, history, location } = this.props;
+        history.push(`${location.pathname}/${link}`);
+    };
+
     render() {
         const {
-            post: { title, excerpt, publishDate, author, link, tags },
-            history,
-            location,
+            post: { title, excerpt, publishDate, author, tags },
         } = this.props;
         return (
             <div>
@@ -52,7 +55,7 @@ class BlogPostCard extends PureComponent {
                     className="post-container"
                     ref={article => (this.article = article)}
                     style={{ opacity: this.get_opacity() }}
-                    onClick={() => history.push(`${location.pathname}/${link}`)}
+                    onClick={this.handleClick}
                 >
                     <Row type="flex" align="bottom" justify="space-between">
                         <Col><h1>{title}</h1></Col>

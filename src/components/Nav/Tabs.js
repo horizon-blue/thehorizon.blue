@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Menu } from 'antd';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -6,7 +6,7 @@ import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
 import anime from 'animejs';
 
 @connect()
-class Tabs extends Component {
+class Tabs extends PureComponent {
     static propTypes = {
         dispatch: PropTypes.func.isRequired,
         history: PropTypes.object.isRequired,

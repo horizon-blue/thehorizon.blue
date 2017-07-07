@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import Login from './Login';
@@ -16,7 +16,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 @connect(mapStateToProps)
-class Nav extends Component {
+class Nav extends PureComponent {
     static propTypes = {
         showNav: PropTypes.bool,
         token: PropTypes.string,

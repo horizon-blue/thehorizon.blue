@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 import { Spin } from 'antd';
 import PropTypes from 'prop-types';
@@ -29,7 +29,7 @@ const getAllPosts = gql`
 `;
 
 @graphql(getAllPosts)
-class Blog extends Component {
+class Blog extends PureComponent {
   static propTypes = {
     data: PropTypes.shape({
       loading: PropTypes.bool.isRequired,
@@ -48,29 +48,32 @@ class Blog extends Component {
     ],
   };
 
-  renderPosts() {
+  renderPosts = () => {
     const { data: { posts, loading }, history, location } = this.props;
-    if (loading || !posts) return <div />;
     return (
-      <div>
-        {posts.map(post =>
-          <BlogPostCard
-            post={post}
-            key={post.link}
-            history={history}
-            location={location}
-          />
-        )}
-      </div>
+      <FadeView in={!loading && _.isArray(posts)} className="fade">
+        {loading || !posts
+          ? <div />
+          : <div>
+              {posts.map(post =>
+                <BlogPostCard
+                  post={post}
+                  key={post.link}
+                  history={history}
+                  location={location}
+                />
+              )}
+            </div>}
+      </FadeView>
     );
-  }
+  };
 
   renderFooter() {
     return <div style={{ height: '20vh' }} />;
   }
 
   render() {
-    const { className, data: { loading, posts } } = this.props;
+    const { className, data: { loading } } = this.props;
     return (
       <Content
         className={classnames('Blog', className)}
@@ -81,14 +84,7 @@ class Blog extends Component {
             <Spin tip="加载中..." size="large" />
           </div>}
         <Switch>
-          <Route
-            path="/blog"
-            exact
-            render={props =>
-              <FadeView in={!loading && _.isArray(posts)} className="fade">
-                {this.renderPosts()}
-              </FadeView>}
-          />
+          <Route path="/blog" exact render={this.renderPosts} />
           <Route path="/blog/:postLink" component={Post} />
         </Switch>
         <footer>
