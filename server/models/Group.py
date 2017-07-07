@@ -1,12 +1,6 @@
-from sqlalchemy import Column, Integer, Text, ForeignKey, Table, Boolean
+from sqlalchemy import Column, Integer, Text, Boolean
 from sqlalchemy.orm import relationship
 from database import Base
-
-# many to many relationship
-group_identifier = Table('group_identifier', Base.metadata,
-                         Column('user_id', Integer, ForeignKey('user.id')),
-                         Column('group_id', Integer, ForeignKey('group.id'))
-                         )
 
 
 class Group(Base):
@@ -16,8 +10,7 @@ class Group(Base):
     description = Column(Text)
 
     # relationships
-    members = relationship(
-        "User", secondary=group_identifier, back_populates="groups")
+    members = relationship("User", back_populates="group")
     deleted = Column(Boolean, default=False)
 
     def __repr__(self):

@@ -3,10 +3,10 @@ from sqlalchemy.orm import relationship
 from database import Base
 
 # many to many relationship
-tag_identifier = Table('tag_identifier', Base.metadata,
-                       Column('post_id', Integer, ForeignKey('post.id')),
-                       Column('tag_id', Integer, ForeignKey('tag.id'))
-                       )
+tagIdentifier = Table('tagIdentifier', Base.metadata,
+                      Column('postId', Integer, ForeignKey('post.id')),
+                      Column('tagId', Integer, ForeignKey('tag.id'))
+                      )
 
 
 class Tag(Base):
@@ -17,7 +17,7 @@ class Tag(Base):
 
     # relationships
     posts = relationship(
-        "Post", secondary=tag_identifier, back_populates="tags")
+        "Post", secondary=tagIdentifier, back_populates="tags")
 
     deleted = Column(Boolean, default=False)
 

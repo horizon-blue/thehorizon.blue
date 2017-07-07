@@ -35,7 +35,10 @@ export function applyAuthMiddleWare(store) {
             if (!req.options.headers) {
                 req.options.headers = {}; // Create the headers object if needed.
             }
-            req.options.headers['authorization'] = store.getState().token;
+            const { token } = store.getState();
+            if (token) {
+                req.options.headers['Authorization'] = 'Bearer ' + token;
+            }
             next();
         },
     };

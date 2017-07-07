@@ -1,16 +1,15 @@
 import datetime
-from sqlalchemy import Column, Integer, Text, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, Text, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.orm import relationship, validates
 from database import Base
 from .utils import HasPassword
-from .Group import group_identifier
 
 
 class User(HasPassword, Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    username = Column(Text, nullable=False, unique=True)
-    join_date = Column(DateTime, default=datetime.datetime.utcnow)
+    name = Column(Text, nullable=False, unique=True)
+    joinDate = Column(DateTime, default=datetime.datetime.utcnow)
 
     # other personal info
     email = Column(String)
@@ -20,8 +19,8 @@ class User(HasPassword, Base):
     # relationships
     posts = relationship("Post", back_populates="author")
     comments = relationship("Comment", back_populates="author")
-    groups = relationship(
-        "Group", secondary=group_identifier, back_populates="members")
+    groupId = Column(Integer, ForeignKey('group.id'))
+    group = relationship("Group", back_populates="members")
 
     # hopefully this will never beused
     deleted = Column(Boolean, default=False)

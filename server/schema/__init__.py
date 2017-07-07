@@ -14,31 +14,25 @@ class Query(graphene.ObjectType):
     # context = graphene.String()
 
     def resolve_users(self, args, context, info):
-        query = User.get_query(context)  # SQLAlchemy query
-        return query.all()
+        return User.get_all()
 
     def resolve_test(self, args, context, info):
         return 'HorizonBlue'
 
     def resolve_posts(self, args, context, info):
-        query = Post.get_query(context)
-        return query.all()
+        return Post.get_all()
 
     def resolve_tags(self, args, context, info):
-        query = Tag.get_query(context)
-        return query.all()
+        return Tag.get_all()
 
     def resolve_categories(self, args, context, info):
-        query = Category.get_query(context)
-        return query.all()
+        return Category.get_all()
 
     def resolve_comments(self, args, context, info):
-        query = Comment.get_query(context)
-        return query.all()
+        return Comment.get_all()
 
     def resolve_groups(self, args, context, info):
-        query = Group.get_query(context)
-        return query.all()
+        return Group.get_all()
 
     # def resolve_context(self, args, context, info):
     #     # for debug purpose only
