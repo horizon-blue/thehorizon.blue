@@ -9,41 +9,54 @@ import anime from 'animejs';
 class Tabs extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            current: null,
-        };
+        this.menuItems = [];
         this.handleClick = this.handleClick.bind(this);
     }
 
     handleClick(e) {
-        this.setState({
-            current: e.key,
-        });
-        e.key !== 'logout' && this.props.history.push('/' + e.key);
+        e.key !== '/logout' && this.props.history.push(e.key);
     }
 
-    componentWillMount() {}
+    componentDidMount() {
+        this.animation = anime({
+            targets: this.menuItems,
+            translateY: [-30, 0],
+            delay: function(el, i, l) {
+                return i * 100;
+            },
+        });
+    }
+
     render() {
         return (
             <Menu
                 mode="horizontal"
                 onClick={this.handleClick}
-                selectedKeys={[this.state.current]}
+                selectedKeys={[this.props.location.pathname]}
             >
-                <Menu.Item key="blog">
-                    文字
+                <Menu.Item key="/blog">
+                    <div ref={menuItem => this.menuItems.push(menuItem)}>
+                        文字
+                    </div>
                 </Menu.Item>
-                <Menu.Item key="albumn">
-                    涂鸦
+                <Menu.Item key="/albumn">
+                    <div ref={menuItem => this.menuItems.push(menuItem)}>
+                        相册
+                    </div>
                 </Menu.Item>
-                <Menu.Item key="lab">
-                    工坊
+                <Menu.Item key="/lab">
+                    <div ref={menuItem => this.menuItems.push(menuItem)}>
+                        工坊
+                    </div>
                 </Menu.Item>
-                <Menu.Item key="about">
-                    关于
+                <Menu.Item key="/about">
+                    <div ref={menuItem => this.menuItems.push(menuItem)}>
+                        关于
+                    </div>
                 </Menu.Item>
-                <Menu.Item key="logout">
+                <Menu.Item key="/logout">
                     <div
+                        ref={menuItem => this.menuItems.push(menuItem)}
                         onClick={() =>
                             this.props.dispatch({ type: LOGOUT_REQUEST })}
                     >
@@ -58,6 +71,7 @@ class Tabs extends Component {
         return {
             dispatch: PropTypes.func.isRequired,
             history: PropTypes.object.isRequired,
+            location: PropTypes.object.isRequired,
         };
     }
 }

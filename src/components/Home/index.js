@@ -184,6 +184,7 @@ class Home extends Component {
           key="NavPanel"
           cancelLogin={() => this.setState({ showNav: false })}
           history={this.props.history}
+          location={this.props.location}
         />
       </FadeView>
     );

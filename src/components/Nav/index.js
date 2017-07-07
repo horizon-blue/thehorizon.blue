@@ -24,7 +24,10 @@ class Nav extends Component {
                 in={!_.isNull(this.props.token)}
                 classNames="transitionFade"
             >
-                <Tabs history={this.props.history} />
+                <Tabs
+                    history={this.props.history}
+                    location={this.props.location}
+                />
             </FadeView>
         );
     }
@@ -58,6 +61,7 @@ class Nav extends Component {
             showNav: PropTypes.bool,
             token: PropTypes.string,
             history: PropTypes.object.isRequired,
+            location: PropTypes.object.isRequired,
         };
     }
 }
