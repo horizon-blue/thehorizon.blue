@@ -2,5 +2,6 @@
   "presets": ["env", "react"],
   "plugins": ["transform-object-rest-spread",
   	["import", { "libraryName": "antd", "style": true }],
-  	"transform-decorators-legacy"],
+  	"transform-decorators-legacy",
+  "transform-class-properties"],
 }

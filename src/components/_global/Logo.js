@@ -4,6 +4,12 @@ import MediaQuery from 'react-responsive';
 import PropTypes from 'prop-types';
 
 class Logo extends Component {
+    static propTypes = {
+        onHiddenButtonPress: PropTypes.func,
+        style: PropTypes.object,
+        className: PropTypes.string,
+    };
+
     renderTypingContent() {
         return (
             <MediaQuery minDeviceWidth={768}>
@@ -37,14 +43,6 @@ class Logo extends Component {
                 }}
 
             </MediaQuery>
-        );
-    }
-
-    renderSpecialButtons() {
-        return (
-            <div style={{ position: 'absolute' }}>
-                <div class="button">hi</div>
-            </div>
         );
     }
 
@@ -465,12 +463,6 @@ class Logo extends Component {
 
             </div>
         );
-    }
-
-    static get propTypes() {
-        return {
-            onHiddenButtonPress: PropTypes.func,
-        };
     }
 }
 

@@ -1,6 +1,16 @@
 import React, { Component } from 'react';
 import { CSSTransition } from 'react-transition-group';
+import PropTypes from 'prop-types';
+
 class FadeView extends Component {
+    static propTypes = {
+        children: PropTypes.oneOfType([
+            PropTypes.object,
+            PropTypes.func,
+            PropTypes.array,
+        ]),
+    };
+
     render() {
         return (
             <CSSTransition

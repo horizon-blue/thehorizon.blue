@@ -8,20 +8,23 @@ import 'moment/locale/zh-cn';
 import './style.css';
 
 class BlogPostCard extends Component {
-    constructor(props) {
-        super(props);
-        this.handleScroll = this.handleScroll.bind(this);
-        this.state = {
-            dimensions: { height: 0, top: 0 },
-            windowHeight: 0,
-        };
-    }
-    handleScroll(ev) {
+    static propTypes = {
+        history: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+        post: PropTypes.object.isRequired,
+    };
+
+    state = {
+        dimensions: { height: 0, top: 0 },
+        windowHeight: 0,
+    };
+
+    handleScroll = ev => {
         this.setState({
             dimensions: this.article.getBoundingClientRect(),
             windowHeight: window.innerHeight,
         });
-    }
+    };
 
     get_opacity() {
         const { dimensions: { height, top }, windowHeight } = this.state;
@@ -77,14 +80,6 @@ class BlogPostCard extends Component {
                 <hr />
             </div>
         );
-    }
-
-    static get propTypes() {
-        return {
-            history: PropTypes.object.isRequired,
-            location: PropTypes.object.isRequired,
-            post: PropTypes.object.isRequired,
-        };
     }
 }
 

@@ -5,6 +5,7 @@ import anime from 'animejs';
 import Typed from 'typed.js';
 import classNames from 'classnames';
 import MediaQuery from 'react-responsive';
+import PropTypes from 'prop-types';
 import { TransitionGroup } from 'react-transition-group';
 import FadeView from '../_global/FadeView';
 import { connect } from 'react-redux';
@@ -24,14 +25,35 @@ function mapStateToProps(state, ownProps) {
 @withRouter
 @connect(mapStateToProps)
 class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      buttonState: 0,
-      showNav: false,
-    };
-    this.handleHiddenButtonPress = this.handleHiddenButtonPress.bind(this);
-  }
+  static defaultProps = {
+    title: (
+      <span>
+        天际蓝
+        <MediaQuery minDeviceWidth={768}>
+          {match => (match ? <span> | </span> : <br />)}
+        </MediaQuery>
+        thehorizon.blue
+      </span>
+    ),
+    typingStrings: ['这里是', '欢迎来到天空的尽头。^1000<br />无畏的勇者啊^1000，祝你旅途愉快。'],
+  };
+
+  static propTypes = {
+    typingStrings: PropTypes.array,
+    className: PropTypes.string,
+    title: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+      PropTypes.func,
+    ]),
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+  };
+
+  state = {
+    buttonState: 0,
+    showNav: false,
+  };
 
   componentWillMount() {
     // The special hotkeys to enter the main website
@@ -115,7 +137,7 @@ class Home extends Component {
     }
   }
 
-  handleHiddenButtonPress(buttonIndex) {
+  handleHiddenButtonPress = buttonIndex => {
     const buttonState = this.findNextButtonState(
       this.state.buttonState,
       buttonIndex
@@ -123,7 +145,7 @@ class Home extends Component {
     if (buttonState === 5)
       this.setState({ showNav: !this.state.showNav, buttonState: 0 });
     else this.setState({ buttonState });
-  }
+  };
 
   findNextButtonState(state, buttonIndex) {
     switch (state) {
@@ -206,21 +228,6 @@ class Home extends Component {
         </main>
       </div>
     );
-  }
-
-  static get defaultProps() {
-    return {
-      title: (
-        <span>
-          天际蓝
-          <MediaQuery minDeviceWidth={768}>
-            {match => (match ? <span> | </span> : <br />)}
-          </MediaQuery>
-          thehorizon.blue
-        </span>
-      ),
-      typingStrings: ['这里是', '欢迎来到天空的尽头。^1000<br />无畏的勇者啊^1000，祝你旅途愉快。'],
-    };
   }
 }
 

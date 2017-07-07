@@ -11,20 +11,21 @@ function mapDispatchToProps(dispatch) {
 
 @connect(undefined, mapDispatchToProps)
 class RouteWithConfig extends Component {
+  static propTypes = {
+    component: PropTypes.func,
+    routeConfig: PropTypes.object,
+    actions: PropTypes.object.isRequired,
+  };
+
   componentWillMount() {
     const { component: Component, actions, routeConfig } = this.props;
     actions.updateConfig(
       (Component && Component.routeConfig) || routeConfig || {}
     );
   }
+
   render() {
     return <Route {...this.props} />;
-  }
-  static get propTypes() {
-    return {
-      component: PropTypes.func,
-      routeConfig: PropTypes.object,
-    };
   }
 }
 

@@ -4,6 +4,17 @@ import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 
 class Content extends Component {
+    static propTypes = {
+        title: PropTypes.string.isRequired,
+        description: PropTypes.string,
+        className: PropTypes.string,
+        children: PropTypes.oneOfType([
+            PropTypes.object,
+            PropTypes.func,
+            PropTypes.array,
+        ]),
+    };
+
     render() {
         return (
             <div>
@@ -26,13 +37,6 @@ class Content extends Component {
                 </Row>
             </div>
         );
-    }
-
-    static get propTypes() {
-        return {
-            title: PropTypes.string.isRequired,
-            description: PropTypes.string,
-        };
     }
 }
 

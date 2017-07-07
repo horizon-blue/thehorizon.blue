@@ -7,15 +7,17 @@ import anime from 'animejs';
 
 @connect()
 class Tabs extends Component {
-    constructor(props) {
-        super(props);
-        this.menuItems = [];
-        this.handleClick = this.handleClick.bind(this);
-    }
+    static propTypes = {
+        dispatch: PropTypes.func.isRequired,
+        history: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+    };
 
-    handleClick(e) {
+    menuItems = [];
+
+    handleClick = e => {
         e.key !== '/logout' && this.props.history.push(e.key);
-    }
+    };
 
     componentDidMount() {
         this.animation = anime({
@@ -65,14 +67,6 @@ class Tabs extends Component {
                 </Menu.Item>
             </Menu>
         );
-    }
-
-    static get propTypes() {
-        return {
-            dispatch: PropTypes.func.isRequired,
-            history: PropTypes.object.isRequired,
-            location: PropTypes.object.isRequired,
-        };
     }
 }
 

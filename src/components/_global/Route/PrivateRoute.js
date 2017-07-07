@@ -13,6 +13,14 @@ function mapStateToProps(state, ownProps) {
 
 @connect(mapStateToProps)
 class PrivateRoute extends Component {
+  static propTypes = {
+    component: PropTypes.func.isRequired,
+    path: PropTypes.string.isRequired,
+    location: PropTypes.object.isRequired,
+    rehydrated: PropTypes.bool,
+    token: PropTypes.string,
+  };
+
   render() {
     const { component: Component, token, rehydrated, ...rest } = this.props;
     return (
@@ -33,14 +41,6 @@ class PrivateRoute extends Component {
             : null}
       />
     );
-  }
-  static get propTypes() {
-    return {
-      component: PropTypes.func.isRequired,
-      path: PropTypes.string.isRequired,
-      location: PropTypes.object.isRequired,
-      rehydrated: PropTypes.bool,
-    };
   }
 }
 

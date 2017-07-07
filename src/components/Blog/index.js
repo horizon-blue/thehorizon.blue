@@ -30,6 +30,24 @@ const getAllPosts = gql`
 
 @graphql(getAllPosts)
 class Blog extends Component {
+  static propTypes = {
+    data: PropTypes.shape({
+      loading: PropTypes.bool.isRequired,
+      posts: PropTypes.array,
+    }).isRequired,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    className: PropTypes.string,
+  };
+
+  static routeConfig = {
+    title: '记忆碎片',
+    typingStrings: [
+      '这里存放的，^1000大概是一些没有什么逻辑关联的杂思乱想。^1000<br />随意看看便好，不必当真。',
+      ':)',
+    ],
+  };
+
   renderPosts() {
     const { data: { posts, loading }, history, location } = this.props;
     if (loading || !posts) return <div />;
@@ -78,27 +96,6 @@ class Blog extends Component {
         </footer>
       </Content>
     );
-  }
-
-  static get routeConfig() {
-    return {
-      title: '记忆碎片',
-      typingStrings: [
-        '这里存放的，^1000大概是一些没有什么逻辑关联的杂思乱想。^1000<br />随意看看便好，不必当真。',
-        ':)',
-      ],
-    };
-  }
-
-  static get propTypes() {
-    return {
-      data: PropTypes.shape({
-        loading: PropTypes.bool.isRequired,
-        posts: PropTypes.array,
-      }).isRequired,
-      history: PropTypes.object.isRequired,
-      location: PropTypes.object.isRequired,
-    };
   }
 }
 

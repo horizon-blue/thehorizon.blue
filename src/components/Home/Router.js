@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { PrivateRoute, RouteWithConfig } from '../_global/Route';
 import PlaceHolder from './PlaceHolder';
 import Blog from '../Blog';
@@ -9,6 +10,11 @@ import About from '../About';
 import NotFound from '../NotFound';
 
 class Router extends Component {
+    static propTypes = {
+        history: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+    };
+
     render() {
         return (
             <Switch key={this.props.location.key}>

@@ -9,13 +9,15 @@ import { LOGIN_REQUEST } from '../../store/reducer/actionTypes';
 @connect()
 @Form.create()
 class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.state = {};
-    }
+    static propTypes = {
+        dispatch: PropTypes.func.isRequired,
+        form: PropTypes.object.isRequired,
+        cancelLogin: PropTypes.func.isRequired,
+    };
 
-    handleSubmit(e) {
+    state = {};
+
+    handleSubmit = e => {
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
@@ -34,7 +36,7 @@ class Login extends Component {
                 });
             }
         });
-    }
+    };
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -98,14 +100,6 @@ class Login extends Component {
                     </Form>}
             </MediaQuery>
         );
-    }
-
-    static get propTypes() {
-        return {
-            dispatch: PropTypes.func.isRequired,
-            form: PropTypes.object.isRequired,
-            cancelLogin: PropTypes.func.isRequired,
-        };
     }
 }
 

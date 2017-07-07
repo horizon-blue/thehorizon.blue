@@ -17,6 +17,14 @@ function mapStateToProps(state, ownProps) {
 
 @connect(mapStateToProps)
 class Nav extends Component {
+    static propTypes = {
+        showNav: PropTypes.bool,
+        token: PropTypes.string,
+        cancelLogin: PropTypes.func.isRequired,
+        history: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
+    };
+
     renderNav() {
         return (
             <FadeView
@@ -54,15 +62,6 @@ class Nav extends Component {
                 </div>
             </Row>
         );
-    }
-
-    static get propTypes() {
-        return {
-            showNav: PropTypes.bool,
-            token: PropTypes.string,
-            history: PropTypes.object.isRequired,
-            location: PropTypes.object.isRequired,
-        };
     }
 }
 
