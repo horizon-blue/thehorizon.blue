@@ -174,13 +174,15 @@ class Home extends PureComponent {
             className="centered-horizontal"
             onHiddenButtonPress={this.handleHiddenButtonPress}
           />
-          <div className="centered-horizontal" style={{ position: 'relative' }}>
+          <div
+            className="centered-horizontal"
+            style={{ position: 'relative', letterSpacing: 9 }}
+            ref={title => (this.title = title)}
+          >
             <TransitionGroup>
               <FadeView key={this.props.location.key}>
                 <h1
-                  ref={title => (this.title = title)}
                   style={{
-                    letterSpacing: 9,
                     marginTop: '3vh',
                     marginBottom: '3vh',
                     fontFamily: 'consolas',
