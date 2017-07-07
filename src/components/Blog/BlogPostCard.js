@@ -38,41 +38,44 @@ class BlogPostCard extends Component {
     }
     render() {
         const {
-            post: { title, excerpt, publishDate, author, link },
+            post: { title, excerpt, publishDate, author, link, tags },
             history,
             location,
         } = this.props;
-        const tags = ['假装', '我有标', '签'];
         return (
-            <article
-                className="post-container"
-                ref={article => (this.article = article)}
-                style={{ opacity: this.get_opacity() }}
-                onClick={() => history.push(`${location.pathname}/${link}`)}
-            >
-                <Row type="flex" align="bottom" justify="space-between">
-                    <Col><h1>{title}</h1></Col>
-                    <Col>
-                        {tags.map((tag, index) =>
-                            <Tag
-                                key={index}
-                                color="rgba(14, 42, 118, 0.2)"
-                                className="post-tag"
-                            >
-                                {tag}
-                            </Tag>
-                        )}
-                    </Col>
-                </Row>
-                <Row>
-                    <Col className="post-excerpt">{excerpt.repeat(80)}</Col>
-                </Row>
-                <Row>
-                    <Col className="post-meta">
-                        {author.name} 发布于 {moment.utc(publishDate).fromNow()}
-                    </Col>
-                </Row>
-            </article>
+            <div>
+                <article
+                    className="post-container"
+                    ref={article => (this.article = article)}
+                    style={{ opacity: this.get_opacity() }}
+                    onClick={() => history.push(`${location.pathname}/${link}`)}
+                >
+                    <Row type="flex" align="bottom" justify="space-between">
+                        <Col><h1>{title}</h1></Col>
+                        <Col>
+                            {tags.map((tag, index) =>
+                                <Tag
+                                    key={index}
+                                    color="rgba(14, 42, 118, 0.2)"
+                                    className="post-tag"
+                                >
+                                    {tag.name}
+                                </Tag>
+                            )}
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col className="post-excerpt">{excerpt}</Col>
+                    </Row>
+                    <Row>
+                        <Col className="post-meta">
+                            {author.name} 发布于{' '}
+                            {moment.utc(publishDate).fromNow()}
+                        </Col>
+                    </Row>
+                </article>
+                <hr />
+            </div>
         );
     }
 

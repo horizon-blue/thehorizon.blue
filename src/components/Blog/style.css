@@ -1,7 +1,6 @@
 .post-container {
     padding: 3vh 1vw;
     color: rgba(200, 233, 255, 0.9);
-    border-radius: 10px;
     transition: background-color 500ms ease-in, color 500ms ease-in;
 }
 
@@ -35,4 +34,8 @@
     border-color: #3862a5;
     margin-bottom: 5px;
     color: #8cbae2;
+}
+
+hr {
+    border-color: rgba(125, 125, 255, 0.2);
 }

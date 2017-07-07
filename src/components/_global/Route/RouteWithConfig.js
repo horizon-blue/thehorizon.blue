@@ -13,8 +13,9 @@ function mapDispatchToProps(dispatch) {
 class RouteWithConfig extends Component {
   componentWillMount() {
     const { component: Component, actions, routeConfig } = this.props;
-    if ((Component && Component.routeConfig) || routeConfig)
-      actions.updateConfig((Component && Component.routeConfig) || routeConfig);
+    actions.updateConfig(
+      (Component && Component.routeConfig) || routeConfig || {}
+    );
   }
   render() {
     return <Route {...this.props} />;

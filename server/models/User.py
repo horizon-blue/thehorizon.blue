@@ -26,7 +26,7 @@ class User(HasPassword, Base):
     deleted = Column(Boolean, default=False)
 
     def __repr__(self):
-        return '<User %r>' % (self.username)
+        return '<User %r>' % (self.name)
 
     @validates('email')
     def validate_email(self, key, address):

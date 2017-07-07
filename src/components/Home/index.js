@@ -78,7 +78,7 @@ class Home extends Component {
       })
       .add({
         targets: this.title,
-        letterSpacing: 9,
+        letterSpacing: [1, 9],
         duration: 300,
         easing: 'easeInOutQuad',
         offset: '-=300',
@@ -158,7 +158,7 @@ class Home extends Component {
                 <h1
                   ref={title => (this.title = title)}
                   style={{
-                    letterSpacing: 1,
+                    letterSpacing: 9,
                     marginTop: '3vh',
                     marginBottom: '3vh',
                     fontFamily: 'consolas',

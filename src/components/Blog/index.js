@@ -3,9 +3,11 @@ import classnames from 'classnames';
 import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { Route, Switch } from 'react-router-dom';
 import { gql, graphql } from 'react-apollo';
 import Content from '../_global/Content';
 import BlogPostCard from './BlogPostCard';
+import Post from './Post';
 import FadeView from '../_global/FadeView';
 
 const getAllPosts = gql`
@@ -19,6 +21,9 @@ const getAllPosts = gql`
       author {
         name
       }
+      tags {
+        name
+      }
     }
   }
 `;
@@ -30,45 +35,16 @@ class Blog extends Component {
     if (loading || !posts) return <div />;
     return (
       <div>
-        <BlogPostCard
-          post={posts[0]}
-          key="a"
-          history={history}
-          location={location}
-        />
-        <BlogPostCard
-          post={posts[0]}
-          key="b"
-          history={history}
-          location={location}
-        />
-        <BlogPostCard
-          post={posts[0]}
-          key="c"
-          history={history}
-          location={location}
-        />
-        <BlogPostCard
-          post={posts[0]}
-          key="d"
-          history={history}
-          location={location}
-        />
-        <BlogPostCard
-          post={posts[0]}
-          key="e"
-          history={history}
-          location={location}
-        />
-        <BlogPostCard
-          post={posts[0]}
-          key="f"
-          history={history}
-          location={location}
-        />
+        {posts.map(post =>
+          <BlogPostCard
+            post={post}
+            key={post.link}
+            history={history}
+            location={location}
+          />
+        )}
       </div>
     );
-    // return posts.map(post => <BlogPostCard post={post} key={post.link} />);
   }
 
   render() {
@@ -82,9 +58,17 @@ class Blog extends Component {
           <div className="centered-horizontal">
             <Spin tip="加载中..." size="large" />
           </div>}
-        <FadeView in={!loading && _.isArray(posts)} className="fade">
-          {this.renderPosts()}
-        </FadeView>
+        <Switch>
+          <Route
+            path="/blog"
+            exact
+            render={props =>
+              <FadeView in={!loading && _.isArray(posts)} className="fade">
+                {this.renderPosts()}
+              </FadeView>}
+          />
+          <Route path="/blog/:postLink" component={Post} />
+        </Switch>
       </Content>
     );
   }
