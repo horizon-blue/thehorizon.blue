@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Layout } from 'antd';
-import classnames from 'classnames';
-import MediaQuery from 'react-responsive';
+import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 

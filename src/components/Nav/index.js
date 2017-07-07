@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import Login from './Login';
 import _ from 'lodash';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { Button, Row, Col } from 'antd';
+import { Button } from 'antd';
 import Content from '../_global/Content';
 
 class NotFound extends Component {

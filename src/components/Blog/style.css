@@ -1,3 +1,16 @@
 .post-container {
-    padding: 1vh;
+    padding: 3vh 1vw;
+    color: rgba(200, 233, 255, 0.9);
+    border-radius: 10px;
+    transition: background-color 500ms ease-in, color 500ms ease-in;
+}
+
+.post-container:hover {
+    background-color: rgba(12, 96, 170, 0.1);
+    color: rgba(255, 255, 255, 1);
+}
+
+.post-excerpt {
+    color: #7c8fad;
+    padding: 1vh 0;
 }

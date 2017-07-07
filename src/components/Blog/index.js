@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import classnames from 'classnames';
-import { Spin, Row, Col } from 'antd';
+import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
-import moment from 'moment';
-import 'moment/locale/zh-cn';
 import Content from '../_global/Content';
-
-import './style.css';
+import BlogPostCard from './BlogPostCard';
 
 const getAllPosts = gql`
   query getAllPosts {
     posts {
       title
+      link
       publishDate
       title
       excerpt
@@ -27,26 +25,17 @@ const getAllPosts = gql`
 class Blog extends Component {
   renderPosts() {
     const { data: { posts } } = this.props;
-    return posts.map((post, index) => this.renderPost(post, index));
+    return [
+      <BlogPostCard post={posts[0]} key="a" />,
+      <BlogPostCard post={posts[0]} key="b" />,
+      <BlogPostCard post={posts[0]} key="c" />,
+      <BlogPostCard post={posts[0]} key="d" />,
+      <BlogPostCard post={posts[0]} key="e" />,
+      <BlogPostCard post={posts[0]} key="f" />,
+    ];
+    // return posts.map(post => <BlogPostCard post={post} key={post.link} />);
   }
 
-  renderPost(post, index) {
-    const { title, excerpt, publishDate, author } = post;
-    return (
-      <div>
-        <article key={index} className="post-container">
-          <Row><h1>{title}</h1></Row>
-          <Row>{excerpt.repeat(80)}</Row>
-          <Row>{author.name} 发布于 {moment.utc(publishDate).fromNow()}</Row>
-        </article>
-        <article key={index + 1} className="post-container">
-          <Row><h1>{title}</h1></Row>
-          <Row>{excerpt.repeat(80)}</Row>
-          <Row>{author.name} 发布于 {moment.utc(publishDate).fromNow()}</Row>
-        </article>
-      </div>
-    );
-  }
   render() {
     const { className, data: { loading, posts } } = this.props;
     return (
