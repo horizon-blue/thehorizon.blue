@@ -8,9 +8,31 @@
 .post-container:hover {
     background-color: rgba(12, 96, 170, 0.1);
     color: rgba(255, 255, 255, 1);
+    cursor: pointer;
+    cursor: hand;
 }
 
 .post-excerpt {
     color: #7c8fad;
     padding: 1vh 0;
+    transition: color 500ms ease-in;
+}
+
+.post-container:hover .post-excerpt {
+    color: #9db5db;
+}
+
+.post-meta {
+    color: #6587bf;
+    transition: color 500ms ease-in;
+}
+
+.post-container:hover .post-meta {
+    color: #96bbf7;
+}
+
+.post-tag {
+    border-color: #3862a5;
+    margin-bottom: 5px;
+    color: #8cbae2;
 }

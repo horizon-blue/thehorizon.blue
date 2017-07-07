@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import classnames from 'classnames';
 import { Spin } from 'antd';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import { gql, graphql } from 'react-apollo';
 import Content from '../_global/Content';
 import BlogPostCard from './BlogPostCard';
+import FadeView from '../_global/FadeView';
 
 const getAllPosts = gql`
   query getAllPosts {
@@ -24,15 +26,48 @@ const getAllPosts = gql`
 @graphql(getAllPosts)
 class Blog extends Component {
   renderPosts() {
-    const { data: { posts } } = this.props;
-    return [
-      <BlogPostCard post={posts[0]} key="a" />,
-      <BlogPostCard post={posts[0]} key="b" />,
-      <BlogPostCard post={posts[0]} key="c" />,
-      <BlogPostCard post={posts[0]} key="d" />,
-      <BlogPostCard post={posts[0]} key="e" />,
-      <BlogPostCard post={posts[0]} key="f" />,
-    ];
+    const { data: { posts, loading }, history, location } = this.props;
+    if (loading || !posts) return <div />;
+    return (
+      <div>
+        <BlogPostCard
+          post={posts[0]}
+          key="a"
+          history={history}
+          location={location}
+        />
+        <BlogPostCard
+          post={posts[0]}
+          key="b"
+          history={history}
+          location={location}
+        />
+        <BlogPostCard
+          post={posts[0]}
+          key="c"
+          history={history}
+          location={location}
+        />
+        <BlogPostCard
+          post={posts[0]}
+          key="d"
+          history={history}
+          location={location}
+        />
+        <BlogPostCard
+          post={posts[0]}
+          key="e"
+          history={history}
+          location={location}
+        />
+        <BlogPostCard
+          post={posts[0]}
+          key="f"
+          history={history}
+          location={location}
+        />
+      </div>
+    );
     // return posts.map(post => <BlogPostCard post={post} key={post.link} />);
   }
 
@@ -43,10 +78,13 @@ class Blog extends Component {
         className={classnames('Blog', className)}
         title={Blog.routeConfig.title}
       >
-        <div className="centered-horizontal">
-          <Spin spinning={loading} tip="加载中..." size="large" />
-        </div>
-        {!loading && posts && this.renderPosts()}
+        {loading &&
+          <div className="centered-horizontal">
+            <Spin tip="加载中..." size="large" />
+          </div>}
+        <FadeView in={!loading && _.isArray(posts)} className="fade">
+          {this.renderPosts()}
+        </FadeView>
       </Content>
     );
   }
@@ -67,6 +105,8 @@ class Blog extends Component {
         loading: PropTypes.bool.isRequired,
         posts: PropTypes.array,
       }).isRequired,
+      history: PropTypes.object.isRequired,
+      location: PropTypes.object.isRequired,
     };
   }
 }

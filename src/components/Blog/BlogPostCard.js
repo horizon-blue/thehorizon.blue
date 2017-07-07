@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Tag } from 'antd';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
 import 'moment/locale/zh-cn';
@@ -36,21 +37,51 @@ class BlogPostCard extends Component {
         window.removeEventListener('scroll', this.handleScroll);
     }
     render() {
-        const { title, excerpt, publishDate, author } = this.props.post;
+        const {
+            post: { title, excerpt, publishDate, author, link },
+            history,
+            location,
+        } = this.props;
         const tags = ['假装', '我有标', '签'];
         return (
             <article
                 className="post-container"
                 ref={article => (this.article = article)}
                 style={{ opacity: this.get_opacity() }}
+                onClick={() => history.push(`${location.pathname}/${link}`)}
             >
-                <Row><h1>{title}</h1></Row>
+                <Row type="flex" align="bottom" justify="space-between">
+                    <Col><h1>{title}</h1></Col>
+                    <Col>
+                        {tags.map((tag, index) =>
+                            <Tag
+                                key={index}
+                                color="rgba(14, 42, 118, 0.2)"
+                                className="post-tag"
+                            >
+                                {tag}
+                            </Tag>
+                        )}
+                    </Col>
+                </Row>
                 <Row>
                     <Col className="post-excerpt">{excerpt.repeat(80)}</Col>
                 </Row>
-                <Row>{author.name} 发布于 {moment.utc(publishDate).fromNow()}</Row>
+                <Row>
+                    <Col className="post-meta">
+                        {author.name} 发布于 {moment.utc(publishDate).fromNow()}
+                    </Col>
+                </Row>
             </article>
         );
+    }
+
+    static get propTypes() {
+        return {
+            history: PropTypes.object.isRequired,
+            location: PropTypes.object.isRequired,
+            post: PropTypes.object.isRequired,
+        };
     }
 }
 

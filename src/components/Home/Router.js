@@ -10,9 +10,8 @@ import NotFound from '../NotFound';
 
 class Router extends Component {
     render() {
-        const { location } = this.props;
         return (
-            <Switch key={location.key} location={location}>
+            <Switch>
                 <RouteWithConfig path="/" exact component={PlaceHolder} />
                 <PrivateRoute path="/blog" component={Blog} />
                 <PrivateRoute path="/albumn" component={Albumn} />

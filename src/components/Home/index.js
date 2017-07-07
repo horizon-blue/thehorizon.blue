@@ -192,6 +192,7 @@ class Home extends Component {
 
   render() {
     const { className, ...rest } = this.props;
+
     return (
       <div className={classNames(className)}>
         <header>

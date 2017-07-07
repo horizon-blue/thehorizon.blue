@@ -22,7 +22,7 @@ class PrivateRoute extends Component {
         render={props =>
           rehydrated
             ? token
-              ? <Component {...this.props} />
+              ? <Component {...props} />
               : <Redirect
                   to={{
                     pathname: '/',
