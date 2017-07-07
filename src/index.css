@@ -39,11 +39,11 @@ body {
     transition: opacity 500ms ease-in;
 }
 
-.fadeInOut-leave {
+.fadeInOut-exit {
     opacity: 1;
 }
 
-.fadeInOut-leave.fadeInOut-leave-active {
+.fadeInOut-exit.fadeInOut-exit-active {
     opacity: 0.01;
     transition: opacity 500ms ease-in;
 }

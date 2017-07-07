@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Row, Col, Button } from 'antd';
 import PropTypes from 'prop-types';
 import Login from './Login';
+import _ from 'lodash';
 import { connect } from 'react-redux';
-import { CSSTransitionGroup } from 'react-transition-group';
+import FadeView from '../_global/FadeView';
 import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
 
 function mapStateToProps(state, ownProps) {
@@ -16,11 +17,14 @@ function mapStateToProps(state, ownProps) {
 class Nav extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            animating: false,
+        };
     }
 
     renderNav() {
         return (
-            <div key="nav" className="centered-horizontal">
+            <FadeView key="nav" in={!_.isNull(this.props.token)}>
                 <Button
                     ghost
                     onClick={() =>
@@ -28,27 +32,19 @@ class Nav extends Component {
                 >
                     登出
                 </Button>
-            </div>
+            </FadeView>
         );
     }
     render() {
         return (
             <Row type="flex" justify="center">
-                <CSSTransitionGroup
-                    transitionName="fadeInOut"
-                    transitionEnterTimeout={500}
-                    transitionLeaveTimeout={500}
-                >
+                <Col className="centered-horizontal">
+                    {this.renderNav()}
+                    <FadeView key="loginPanel" in={_.isNull(this.props.token)}>
+                        <Login cancelLogin={this.props.cancelLogin} />
+                    </FadeView>
+                </Col>
 
-                    {this.props.token
-                        ? this.renderNav()
-                        : <Col className="centered-horizontal">
-                              <Login
-                                  cancelLogin={this.props.cancelLogin}
-                                  key="loginPanel"
-                              />
-                          </Col>}
-                </CSSTransitionGroup>
             </Row>
         );
     }

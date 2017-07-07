@@ -5,7 +5,7 @@ import anime from 'animejs';
 import Typed from 'typed.js';
 import classNames from 'classnames';
 import MediaQuery from 'react-responsive';
-import { CSSTransitionGroup } from 'react-transition-group';
+import FadeView from '../_global/FadeView';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Router from './Router';
@@ -27,6 +27,7 @@ class Home extends Component {
     super(props);
     this.state = {
       buttonState: 0,
+      showNav: false,
     };
     this.handleHiddenButtonPress = this.handleHiddenButtonPress.bind(this);
   }
@@ -137,11 +138,7 @@ class Home extends Component {
             onHiddenButtonPress={this.handleHiddenButtonPress}
           />
           <div className="centered-horizontal">
-            <CSSTransitionGroup
-              transitionName="fadeInOut"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={500}
-            >
+            <FadeView in={true}>
               <h1
                 ref={title => (this.title = title)}
                 style={{
@@ -156,7 +153,7 @@ class Home extends Component {
               >
                 {this.props.title}
               </h1>
-            </CSSTransitionGroup>
+            </FadeView>
           </div>
         </Col>
       </Row>
@@ -165,17 +162,12 @@ class Home extends Component {
 
   renderNav() {
     return (
-      <CSSTransitionGroup
-        transitionName="fadeInOut"
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={500}
-      >
-        {this.state.showNav &&
-          <Nav
-            key="NavPanel"
-            cancelLogin={() => this.setState({ showNav: false })}
-          />}
-      </CSSTransitionGroup>
+      <FadeView in={this.state.showNav}>
+        <Nav
+          key="NavPanel"
+          cancelLogin={() => this.setState({ showNav: false })}
+        />
+      </FadeView>
     );
   }
 
