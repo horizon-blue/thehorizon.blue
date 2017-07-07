@@ -4,8 +4,8 @@ import * as types from '../reducer/actionTypes';
 import client from '../../apolloClient';
 
 const createToken = gql`
-    mutation createToken($username: String!, $password: String!) {
-        createToken(username: $username, password: $password) {
+    mutation createToken($name: String!, $password: String!) {
+        createToken(name: $name, password: $password) {
             token
             success
         }
@@ -14,11 +14,11 @@ const createToken = gql`
 
 // Log in Saga
 export function* resolveloginRequest(action) {
-    const { username, password, onLoginComplete } = action;
+    const { name, password, onLoginComplete } = action;
     try {
         const res = yield client.networkInterface.query({
             query: createToken,
-            variables: { username, password },
+            variables: { name, password },
         });
         const { success, token } = res.data.createToken;
         if (success) {

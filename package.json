@@ -8,6 +8,7 @@
     "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5",
     "express": "^4.15.3",
+    "fastclick": "^1.0.6",
     "lodash": "^4.17.4",
     "morgan": "^1.8.2",
     "mousetrap": "^1.6.1",

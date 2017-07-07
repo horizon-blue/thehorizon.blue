@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { ApolloProvider } from 'react-apollo';
+import FastClick from 'fastclick';
 
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
@@ -18,6 +19,10 @@ const DevTools = process.env.NODE_ENV === 'development'
 
 const store = configureStore();
 store.runSaga(rootSaga);
+
+window.addEventListener('load', () => {
+    FastClick.attach(document.body);
+});
 
 class App extends Component {
     render() {

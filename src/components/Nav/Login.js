@@ -22,7 +22,7 @@ class Login extends Component {
                 this.setState({ loading: true });
                 this.props.dispatch({
                     type: LOGIN_REQUEST,
-                    username: values.username,
+                    name: values.name,
                     password: values.password,
                     onLoginComplete: error => {
                         this.setState({ loading: false });
@@ -36,10 +36,6 @@ class Login extends Component {
         });
     }
 
-    componentDidMount() {
-        this.username.focus();
-    }
-
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
@@ -50,7 +46,7 @@ class Login extends Component {
                         layout={matched ? 'inline' : 'horizontal'}
                     >
                         <Form.Item>
-                            {getFieldDecorator('username', {
+                            {getFieldDecorator('name', {
                                 rules: [
                                     {
                                         required: true,
@@ -61,7 +57,6 @@ class Login extends Component {
                                 <Input
                                     prefix={<Icon type="user" />}
                                     placeholder="名字"
-                                    ref={username => (this.username = username)}
                                 />
                             )}
 

@@ -11,7 +11,7 @@ def get_tomorrow():
 
 class CreateToken(graphene.Mutation):
     class Input:
-        username = graphene.String()
+        name = graphene.String()
         password = graphene.String()
 
     success = graphene.Boolean()
@@ -19,9 +19,9 @@ class CreateToken(graphene.Mutation):
 
     @staticmethod
     def mutate(root, args, context, info):
-        username = args.get('username')
+        name = args.get('name')
         password = args.get('password')
-        user = User.get_query(context).filter_by(username=username).first()
+        user = User.get_query(context).filter_by(name=name).first()
         if(user and user.password == password):
             token = jwt.encode({
                 'sub': user.id,
