@@ -1,5 +1,4 @@
 import models
-import graphene
 from graphene_sqlalchemy import SQLAlchemyObjectType
 from .utils import Utils
 
@@ -42,10 +41,4 @@ class Category(Utils, SQLAlchemyObjectType):
 class Group(Utils, SQLAlchemyObjectType):
     class Meta:
         model = models.Group
-        exclude_fields = ['deleted']
-
-
-class Tab(Utils, SQLAlchemyObjectType):
-    class Meta:
-        model = models.Tab
         exclude_fields = ['deleted']
