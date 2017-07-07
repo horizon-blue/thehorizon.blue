@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { bind as Mousetrap } from 'mousetrap';
 import { Row, Col } from 'antd';
 import anime from 'animejs';
@@ -24,7 +24,7 @@ function mapStateToProps(state, ownProps) {
 
 @withRouter
 @connect(mapStateToProps)
-class Home extends Component {
+class Home extends PureComponent {
   static defaultProps = {
     title: (
       <span>
@@ -199,12 +199,16 @@ class Home extends Component {
     );
   }
 
+  hancleCancelLogin = () => {
+    this.setState({ showNav: false });
+  };
+
   renderNav() {
     return (
       <FadeView in={this.state.showNav}>
         <Nav
           key="NavPanel"
-          cancelLogin={() => this.setState({ showNav: false })}
+          cancelLogin={this.hancleCancelLogin}
           history={this.props.history}
           location={this.props.location}
         />

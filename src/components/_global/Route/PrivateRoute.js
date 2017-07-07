@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -12,7 +12,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 @connect(mapStateToProps)
-class PrivateRoute extends Component {
+class PrivateRoute extends PureComponent {
   static propTypes = {
     component: PropTypes.func.isRequired,
     path: PropTypes.string.isRequired,

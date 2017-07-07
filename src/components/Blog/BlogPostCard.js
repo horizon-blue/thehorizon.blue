@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Row, Col, Tag } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -7,7 +7,7 @@ import 'moment/locale/zh-cn';
 
 import './style.css';
 
-class BlogPostCard extends Component {
+class BlogPostCard extends PureComponent {
     static propTypes = {
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
@@ -37,7 +37,7 @@ class BlogPostCard extends Component {
     get_opacity() {
         const { dimensions: { height, top }, windowHeight } = this.state;
         const t = _.clamp(top / (height + windowHeight), 0, 1);
-        return 0.35 * Math.sin(2 * Math.PI * t) + 0.65 || 0.65;
+        return _.clamp(0.4 * Math.sin(2 * Math.PI * t) + 0.65, 0.65, 1) || 0.65;
     }
 
     render() {
