@@ -101,6 +101,20 @@ class Home extends Component {
       });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.typingStrings !== this.props.typingStrings && this.typing) {
+      this.typing.destroy();
+      this.typing = new Typed(this.logo.typed, {
+        strings: nextProps.typingStrings,
+        autoInsertCss: false,
+        typeSpeed: 80,
+        backSpeed: 50,
+        startDelay: 1000,
+        backDelay: 1000,
+      });
+    }
+  }
+
   handleHiddenButtonPress(buttonIndex) {
     const buttonState = this.findNextButtonState(
       this.state.buttonState,

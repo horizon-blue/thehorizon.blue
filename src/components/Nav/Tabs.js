@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Menu } from 'antd';
+import { Menu } from 'antd';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
@@ -19,7 +19,7 @@ class Tabs extends Component {
         this.setState({
             current: e.key,
         });
-        this.props.history.push('/' + e.key);
+        e.key !== 'logout' && this.props.history.push('/' + e.key);
     }
 
     componentWillMount() {}
@@ -43,13 +43,12 @@ class Tabs extends Component {
                     关于
                 </Menu.Item>
                 <Menu.Item key="logout">
-
-                    <Button
+                    <div
                         onClick={() =>
                             this.props.dispatch({ type: LOGOUT_REQUEST })}
                     >
                         登出
-                    </Button>
+                    </div>
                 </Menu.Item>
             </Menu>
         );
