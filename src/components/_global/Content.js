@@ -8,12 +8,7 @@ import Helmet from 'react-helmet';
 class Content extends Component {
     render() {
         return (
-            <div
-                className={classnames(
-                    'centered-horizontal',
-                    this.props.className
-                )}
-            >
+            <div>
                 <Helmet>
                     <title>{this.props.title} | 天际蓝 - thehorizon.blue</title>
                     <meta
@@ -21,7 +16,16 @@ class Content extends Component {
                         content={this.props.description || this.props.title}
                     />
                 </Helmet>
-                {this.props.children}
+                <Row justify="center" type="flex">
+                    <Col
+                        xs={22}
+                        sm={18}
+                        lg={14}
+                        className={this.props.className}
+                    >
+                        {this.props.children}
+                    </Col>
+                </Row>
             </div>
         );
     }
