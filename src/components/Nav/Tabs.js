@@ -13,12 +13,6 @@ class Tabs extends Component {
         location: PropTypes.object.isRequired,
     };
 
-    menuItems = [];
-
-    handleClick = e => {
-        e.key !== '/logout' && this.props.history.push(e.key);
-    };
-
     componentDidMount() {
         this.animation = anime({
             targets: this.menuItems,
@@ -28,6 +22,12 @@ class Tabs extends Component {
             },
         });
     }
+
+    menuItems = [];
+
+    handleClick = e => {
+        e.key !== '/logout' && this.props.history.push(e.key);
+    };
 
     render() {
         return (

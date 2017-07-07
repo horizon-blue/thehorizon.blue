@@ -19,6 +19,14 @@ class BlogPostCard extends Component {
         windowHeight: 0,
     };
 
+    componentDidMount() {
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
     handleScroll = ev => {
         this.setState({
             dimensions: this.article.getBoundingClientRect(),
@@ -32,13 +40,6 @@ class BlogPostCard extends Component {
         return 0.35 * Math.sin(2 * Math.PI * t) + 0.65 || 0.65;
     }
 
-    componentDidMount() {
-        window.addEventListener('scroll', this.handleScroll);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
-    }
     render() {
         const {
             post: { title, excerpt, publishDate, author, link, tags },
