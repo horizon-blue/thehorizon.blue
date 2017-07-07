@@ -1,0 +1,36 @@
+.nav {
+    position: relative;
+    margin: auto;
+    width: 100vw;
+    justify-content: center;
+}
+
+.transitionFade-enter {
+    opacity: 0;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.transitionFade-enter.transitionFade-enter-active {
+    opacity: 1;
+    position: relative;
+    transition: opacity 500ms ease-in;
+}
+
+.transitionFade-exit {
+    opacity: 1;
+    position: relative;
+}
+
+.transitionFade-exit.transitionFade-exit-active {
+    opacity: 0;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    top: 0;
+    transition: opacity 500ms ease-in;
+}

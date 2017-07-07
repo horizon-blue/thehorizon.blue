@@ -5,7 +5,9 @@ import Login from './Login';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import FadeView from '../_global/FadeView';
-import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
+import Tabs from './Tabs';
+
+import './style.css';
 
 function mapStateToProps(state, ownProps) {
     return {
@@ -15,36 +17,38 @@ function mapStateToProps(state, ownProps) {
 
 @connect(mapStateToProps)
 class Nav extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            animating: false,
-        };
-    }
-
     renderNav() {
         return (
-            <FadeView key="nav" in={!_.isNull(this.props.token)}>
-                <Button
-                    ghost
-                    onClick={() =>
-                        this.props.dispatch({ type: LOGOUT_REQUEST })}
-                >
-                    登出
-                </Button>
+            <FadeView
+                key="nav"
+                in={!_.isNull(this.props.token)}
+                classNames="transitionFade"
+            >
+                <Tabs history={this.props.history} />
+            </FadeView>
+        );
+    }
+
+    renderLogin() {
+        return (
+            <FadeView
+                key="loginPanel"
+                in={_.isNull(this.props.token)}
+                classNames="transitionFade"
+            >
+                <Login cancelLogin={this.props.cancelLogin} />
             </FadeView>
         );
     }
     render() {
         return (
-            <Row type="flex" justify="center">
-                <Col className="centered-horizontal">
-                    {this.renderNav()}
-                    <FadeView key="loginPanel" in={_.isNull(this.props.token)}>
-                        <Login cancelLogin={this.props.cancelLogin} />
-                    </FadeView>
-                </Col>
-
+            <Row justify="center" type="flex">
+                <div className="nav">
+                    <Col className="centered-horizontal">
+                        {this.renderNav()}
+                        {this.renderLogin()}
+                    </Col>
+                </div>
             </Row>
         );
     }
@@ -53,6 +57,7 @@ class Nav extends Component {
         return {
             showNav: PropTypes.bool,
             token: PropTypes.string,
+            history: PropTypes.object.isRequired,
         };
     }
 }

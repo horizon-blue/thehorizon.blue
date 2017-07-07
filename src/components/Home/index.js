@@ -5,6 +5,7 @@ import anime from 'animejs';
 import Typed from 'typed.js';
 import classNames from 'classnames';
 import MediaQuery from 'react-responsive';
+import { TransitionGroup } from 'react-transition-group';
 import FadeView from '../_global/FadeView';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -137,23 +138,25 @@ class Home extends Component {
             className="centered-horizontal"
             onHiddenButtonPress={this.handleHiddenButtonPress}
           />
-          <div className="centered-horizontal">
-            <FadeView in={true}>
-              <h1
-                ref={title => (this.title = title)}
-                style={{
-                  letterSpacing: 1,
-                  marginTop: '3vh',
-                  marginBottom: '3vh',
-                  fontFamily: 'consolas',
-                  wordBreak: 'break-all',
-                  color: '#4b84f4',
-                  textAlign: 'center',
-                }}
-              >
-                {this.props.title}
-              </h1>
-            </FadeView>
+          <div className="centered-horizontal" style={{ position: 'relative' }}>
+            <TransitionGroup>
+              <FadeView key={this.props.location.key}>
+                <h1
+                  ref={title => (this.title = title)}
+                  style={{
+                    letterSpacing: 1,
+                    marginTop: '3vh',
+                    marginBottom: '3vh',
+                    fontFamily: 'consolas',
+                    wordBreak: 'break-all',
+                    color: '#4b84f4',
+                    textAlign: 'center',
+                  }}
+                >
+                  {this.props.title}
+                </h1>
+              </FadeView>
+            </TransitionGroup>
           </div>
         </Col>
       </Row>
@@ -166,6 +169,7 @@ class Home extends Component {
         <Nav
           key="NavPanel"
           cancelLogin={() => this.setState({ showNav: false })}
+          history={this.props.history}
         />
       </FadeView>
     );
@@ -178,7 +182,7 @@ class Home extends Component {
         <header>
           {this.renderHeader()}
         </header>
-        <nav>
+        <nav style={{ position: 'relative' }}>
           {this.renderNav()}
         </nav>
         <main>

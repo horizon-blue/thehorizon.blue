@@ -31,19 +31,33 @@ body {
 }
 
 .fadeInOut-enter {
-    opacity: 0.01;
+    opacity: 0;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    top: 0;
 }
 
 .fadeInOut-enter.fadeInOut-enter-active {
     opacity: 1;
+    position: relative;
     transition: opacity 500ms ease-in;
 }
 
 .fadeInOut-exit {
     opacity: 1;
+    position: relative;
 }
 
 .fadeInOut-exit.fadeInOut-exit-active {
-    opacity: 0.01;
+    opacity: 0;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    top: 0;
+    right: 0;
     transition: opacity 500ms ease-in;
 }
