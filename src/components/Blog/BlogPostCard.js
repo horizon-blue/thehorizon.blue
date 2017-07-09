@@ -36,8 +36,8 @@ class BlogPostCard extends PureComponent {
 
     get_opacity() {
         const { dimensions: { height, top }, windowHeight } = this.state;
-        const t = _.clamp(top / (height + windowHeight), 0, 1);
-        return _.clamp(0.4 * Math.sin(2 * Math.PI * t) + 0.65, 0.65, 1) || 0.65;
+        const t = _.clamp(top / (windowHeight - height), 0, 1);
+        return _.clamp(Math.sin(Math.PI * t) * 1.2, 0.2, 1) || 0.5;
     }
 
     handleClick = () => {

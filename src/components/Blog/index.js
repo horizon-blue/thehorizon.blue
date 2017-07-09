@@ -68,6 +68,28 @@ class Blog extends PureComponent {
     );
   };
 
+  // for testing purpose
+  // renderPosts = () => {
+  //   const { data: { posts, loading }, history, location } = this.props;
+  //   const foo = posts ? _.fill(Array(30), posts[0]) : null;
+  //   return (
+  //     <FadeView in={!loading && _.isArray(posts)} className="fade">
+  //       {loading || !foo
+  //         ? <div />
+  //         : <div>
+  //             {foo.map((post, index) =>
+  //               <BlogPostCard
+  //                 post={post}
+  //                 key={post.link + index}
+  //                 history={history}
+  //                 location={location}
+  //               />
+  //             )}
+  //           </div>}
+  //     </FadeView>
+  //   );
+  // };
+
   render = () => {
     const { className, data: { loading } } = this.props;
     return (

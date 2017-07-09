@@ -57,3 +57,27 @@
   transform: translate(0, 3vh);
   transition: opacity 350ms ease-in, transform 350ms ease-in-out;
 }
+
+.footer {
+  color: rgba(72, 107, 175, 0.8);
+  height: 20vh;
+  padding-right: 1vw;
+  padding-bottom: 1vh;
+}
+
+.footer.fixed {
+  position: fixed;
+  color: rgba(72, 107, 175, 0.8);
+  bottom: 0;
+  right: 0;
+  transition: all 350ms ease-in;
+}
+
+a {
+  color: rgba(72, 107, 175, 0.8);
+}
+
+.separator {
+  margin: 0 5px;
+  color: rgba(72, 107, 175, 0.6);
+}

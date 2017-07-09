@@ -61,6 +61,7 @@ class Home extends PureComponent {
     Mousetrap('left right right left', () =>
       this.setState({ showNav: !this.state.showNav })
     );
+    document.body.style.overflow = 'hidden';
   };
 
   componentDidMount = () => {
@@ -107,10 +108,30 @@ class Home extends PureComponent {
         offset: '-=300',
       })
       .add({
+        targets: this.content,
+        opacity: [0, 1],
+        easing: 'easeInOutQuad',
+        duration: 500,
+        offset: '-=200',
+        begin: () => {
+          (document.body.style.overflow = 'initial'), this.setState({
+            relativeFooter: true,
+          });
+        },
+      })
+      .add({
+        targets: this.footer,
+        opacity: [0, 1],
+        easing: 'easeInOutQuad',
+        duration: 500,
+        offset: '-=300',
+      })
+      .add({
         targets: this.logo.typed,
         opacity: [0, 1],
         easing: 'easeInOutQuad',
         duration: 500,
+        offset: '-=500',
         begin: () => {
           this.typing = new Typed(this.logo.typed, {
             strings: this.props.typingStrings,
@@ -230,11 +251,18 @@ class Home extends PureComponent {
         <nav style={{ position: 'relative' }}>
           {this.renderNav()}
         </nav>
-        <main style={{ position: 'relative' }}>
+        <main
+          style={{ position: 'relative', opacity: 0 }}
+          ref={content => (this.content = content)}
+        >
           <Router {...rest} />
         </main>
-        <footer>
-          <Footer />
+        <footer style={{ opacity: 0 }} ref={footer => (this.footer = footer)}>
+          <Footer
+            relativeFooter={
+              this.state.relativeFooter && this.props.location.pathname !== '/'
+            }
+          />
         </footer>
       </div>
     );
