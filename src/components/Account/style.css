@@ -1,0 +1,82 @@
+.account-card {
+    background-color: transparent;
+    transition: all 500ms ease-in;
+    padding: 3vh 1vw;
+    opacity: 0.8;
+    color: #7c8fad;
+}
+
+.account-card:hover {
+    background-color: rgba(12, 96, 170, 0.05);
+    opacity: 1;
+}
+
+hr {
+    border-color: rgba(125, 125, 255, 0.2);
+}
+
+.account-avatar {
+    background-color: rgba(12, 14, 94, 0.4);
+    height: 100px;
+    width: 100px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-size: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 500ms ease-in;
+}
+
+.account-avatar:hover {
+    box-shadow: 0 0 10px rgba(75, 132, 244, 0.3);
+    cursor: pointer;
+    cursor: hand;
+}
+
+.account-margin-top {
+    margin-top: 10px;
+}
+
+h2 {
+    color: rgba(200, 233, 255, 0.9);
+}
+
+.action-button {
+    color: rgba(200, 233, 255, 0.7);
+    font-size: 25px;
+    transition: all 500ms ease-in;
+    border-bottom: 2px solid rgba(125, 125, 255, 0.2);
+}
+
+.action-button p {
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+.account-card:hover.action-button {
+    color: rgba(200, 233, 255, 0.9);
+    cursor: pointer;
+    cursor: hand;
+}
+
+.action-button:nth-child(odd) {
+    border-right: 2px solid rgba(125, 125, 255, 0.2);
+}
+
+.rightBorder {
+    border-right: 2px solid rgba(125, 125, 255, 0.2);
+}
+
+.account-card:hover.account-logout {
+    background-color: transparent;
+}
+
+.account-logout {
+    opacity: 0.5;
+    transition: all 500ms ease-in;
+}
+
+.account-logout:hover {
+    opacity: 0.7;
+}

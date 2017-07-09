@@ -6,7 +6,7 @@ secret = '***REMOVED***'
 class Utils:
     @classmethod
     def get_all(cls):
-        return cls._meta.model.query.filter(cls._meta.model.deleted != True).all()
+        return cls._meta.model.query.filter_by(deleted=False).all()
 
 
 def decode(token):
@@ -18,3 +18,7 @@ def decode(token):
         return None, 'expired'
     except:
         return None, 'fail'
+
+
+def is_admin(decoded):
+    return decoded is not None and decoded["groupId"] == 1

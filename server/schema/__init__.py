@@ -1,23 +1,26 @@
 import graphene
 from .objectTypes import *
 from .CreateToken import CreateToken
-from .utils import decode
+from .utils import decode, is_admin
 
 
 class Query(graphene.ObjectType):
     users = graphene.List(User)
-    test = graphene.String()
     posts = graphene.List(Post)
     tags = graphene.List(Tag)
     categories = graphene.List(Category)
-    comments = graphene.List(Comment)
     groups = graphene.List(Group)
 
-    def resolve_users(self, args, context, info):
-        return User.get_all()
+    # get info by argument
+    user = graphene.Field(User, id=graphene.Argument(
+        graphene.Int), name=graphene.Argument(graphene.String))
 
-    def resolve_test(self, args, context, info):
-        return 'HorizonBlue'
+    def resolve_users(self, args, context, info):
+        # must have admin privilege to view all users
+        token = context.headers.get('Authorization')
+        if is_admin(decode(token)[0]):
+            return User.get_all()
+        return None
 
     def resolve_posts(self, args, context, info):
         return Post.get_all()
@@ -28,11 +31,26 @@ class Query(graphene.ObjectType):
     def resolve_categories(self, args, context, info):
         return Category.get_all()
 
-    def resolve_comments(self, args, context, info):
-        return Comment.get_all()
-
     def resolve_groups(self, args, context, info):
-        return Group.get_all()
+        # must have admin privilege to view all groups
+        token = context.headers.get('Authorization')
+        if is_admin(decode(token)[0]):
+            return Group.get_all()
+        return None
+
+    def resolve_user(self, args, context, info):
+        userId = args['id'] if 'id' in args else None
+        name = args['name'] if 'name' in args else None
+        if name is None:
+            if userId is None:
+                decoded = decode(context.headers.get('Authorization'))[0]
+                if decoded is None:
+                    return None
+                userId = decoded['sub']
+            user = User.get_query(context).get(userId)
+            return user if not user.deleted else None  # don't send deleted user info
+        else:
+            return User.get_query(context).filter_by(**args, deleted=False).first()
 
 
 class Mutation(graphene.ObjectType):
