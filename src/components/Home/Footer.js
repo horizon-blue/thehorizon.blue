@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Row, Col } from 'antd';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import className from 'classnames';
 
@@ -20,7 +21,9 @@ class Footer extends PureComponent {
                 className={className('footer', { fixed: !relativeFooter })}
             >
                 <Col>
-                    © HorizonBlue {new Date().getFullYear()}<Separator />
+                    <Link to="/time-machine">V0.0.1</Link> © HorizonBlue{' '}
+                    {new Date().getFullYear()}
+                    <Separator />
                     <a href="https://github.com/Horizon-Blue">GitHub</a>
                     <Separator />
                     <a href="http://www.forestofhorizon.com/">天际林</a>

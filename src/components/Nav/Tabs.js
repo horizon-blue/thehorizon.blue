@@ -22,7 +22,7 @@ class Tabs extends PureComponent {
     menuItems = [];
 
     handleClick = e => {
-        this.props.history.push(e.key);
+        this.props.history.push('/' + e.key);
     };
 
     render = () => {
@@ -30,29 +30,29 @@ class Tabs extends PureComponent {
             <Menu
                 mode="horizontal"
                 onClick={this.handleClick}
-                selectedKeys={[this.props.location.pathname]}
+                selectedKeys={[this.props.location.pathname.split('/')[1]]}
             >
-                <Menu.Item key="/blog">
+                <Menu.Item key="blog">
                     <div ref={menuItem => this.menuItems.push(menuItem)}>
                         文字
                     </div>
                 </Menu.Item>
-                <Menu.Item key="/albumn">
+                <Menu.Item key="albumn">
                     <div ref={menuItem => this.menuItems.push(menuItem)}>
                         相册
                     </div>
                 </Menu.Item>
-                <Menu.Item key="/lab">
+                <Menu.Item key="lab">
                     <div ref={menuItem => this.menuItems.push(menuItem)}>
                         工坊
                     </div>
                 </Menu.Item>
-                <Menu.Item key="/about">
+                <Menu.Item key="about">
                     <div ref={menuItem => this.menuItems.push(menuItem)}>
                         关于
                     </div>
                 </Menu.Item>
-                <Menu.Item key="/account">
+                <Menu.Item key="account">
                     <div ref={menuItem => this.menuItems.push(menuItem)}>
                         账号
                     </div>

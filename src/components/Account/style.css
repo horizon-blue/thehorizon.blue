@@ -38,7 +38,7 @@ hr {
     margin-top: 10px;
 }
 
-h2 {
+.account-card h2 {
     color: rgba(200, 233, 255, 0.9);
 }
 
@@ -79,4 +79,29 @@ h2 {
 
 .account-logout:hover {
     opacity: 0.7;
+}
+
+.editor-field {
+    transition: all 500ms ease-in;
+    background-color: transparent;
+    opacity: 0.6;
+}
+
+.editor-field:focus, .hasFocus {
+    background-color: rgba(12, 96, 170, 0.05);
+    opacity: 1;
+}
+
+.post-editor input {
+    border-width: 0;
+    background-color: transparent;
+    width: 100%;
+    padding: 2vh 1vw;
+    font-size: x-large;
+    color: rgba(200, 233, 255, 0.9);
+    text-align: center;
+}
+
+.post-editor input:focus {
+    outline: none;
 }

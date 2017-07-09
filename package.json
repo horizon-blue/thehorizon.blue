@@ -7,7 +7,6 @@
     "antd": "^2.11.1",
     "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5",
-    "draft-js": "^0.10.1",
     "express": "^4.15.3",
     "fastclick": "^1.0.6",
     "lodash": "^4.17.4",

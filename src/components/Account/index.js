@@ -5,11 +5,13 @@ import Content from '../_global/Content';
 import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
 import classNames from 'classnames';
+import { Route, Switch } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
 import FadeView from '../_global/FadeView';
+import PostEditor from './PostEditor';
 import './style.css';
 
 const ADMIN_GROUP_ID = '1';
@@ -24,16 +26,6 @@ const getSelfInfo = gql`
       group {
         id
         name
-        description
-      }
-      posts {
-        title
-        excerpt
-        createDate
-      }
-      comments {
-        content
-        createDate
       }
     }
   }
@@ -48,6 +40,7 @@ class Account extends PureComponent {
       loading: PropTypes.bool.isRequired,
       user: PropTypes.object,
     }).isRequired,
+    history: PropTypes.object.isRequired,
   };
 
   static routeConfig = {
@@ -98,6 +91,26 @@ class Account extends PureComponent {
     );
   };
 
+  createPost = e => {
+    const { history } = this.props;
+    history.push('/account/new-post');
+  };
+
+  uploadImage = e => {
+    const { history } = this.props;
+    history.push('/account/upload-image');
+  };
+
+  addProject = e => {
+    const { history } = this.props;
+    history.push('/account/add-project');
+  };
+
+  manageSite = e => {
+    const { history } = this.props;
+    history.push('/account/admin');
+  };
+
   renderAdminButtons = match => {
     const { data: { user } } = this.props;
     const isAdmin = user.group && user.group.id === ADMIN_GROUP_ID;
@@ -106,7 +119,7 @@ class Account extends PureComponent {
     return (
       <Row type="flex" justify="center">
         <Col sm={6} xs={12} className="account-card action-button">
-          <div className="centered-horizontal">
+          <div className="centered-horizontal" onClick={this.createPost}>
             <Icon type="edit" />
             <p>博文</p>
           </div>
@@ -118,19 +131,19 @@ class Account extends PureComponent {
             rightBorder: match,
           })}
         >
-          <div className="centered-horizontal">
+          <div className="centered-horizontal" onClick={this.uploadImage}>
             <Icon type="picture" />
             <p>涂鸦</p>
           </div>
         </Col>
         <Col sm={6} xs={12} className="account-card action-button">
-          <div className="centered-horizontal">
+          <div className="centered-horizontal" onClick={this.addProject}>
             <Icon type="rocket" />
             <p>项目</p>
           </div>
         </Col>
         <Col sm={6} xs={12} className="account-card action-button">
-          <div className="centered-horizontal">
+          <div className="centered-horizontal" onClick={this.manageSite}>
             <Icon type="setting" />
             <p>管理</p>
           </div>
@@ -140,30 +153,31 @@ class Account extends PureComponent {
   };
 
   renderPersonalInfo = () => {
-    const { data: { user } } = this.props;
+    const { data: { user, loading } } = this.props;
     if (!user) return <div />;
     return (
-      <div>
-        {this.renderTopRow()}
-        <hr />
-        <MediaQuery minDeviceWidth={768}>
-          {this.renderAdminButtons}
-        </MediaQuery>
-        <Row
-          type="flex"
-          justify="space-between"
-          className="account-card account-logout"
-        >
-          <Col span={24}>
-            <div className="centered-horizontal">
-              <Button ghost onClick={this.handleLogout}>
-                登出
-              </Button>
-            </div>
-          </Col>
-        </Row>
-
-      </div>
+      <FadeView in={!loading}>
+        <div>
+          {this.renderTopRow()}
+          <hr />
+          <MediaQuery minDeviceWidth={768}>
+            {this.renderAdminButtons}
+          </MediaQuery>
+          <Row
+            type="flex"
+            justify="space-between"
+            className="account-card account-logout"
+          >
+            <Col span={24}>
+              <div className="centered-horizontal">
+                <Button ghost onClick={this.handleLogout}>
+                  登出
+                </Button>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </FadeView>
     );
   };
 
@@ -177,9 +191,10 @@ class Account extends PureComponent {
               <Spin tip="加载中..." size="large" />
             </Col>
           </Row>}
-        <FadeView in={!loading}>
-          {this.renderPersonalInfo()}
-        </FadeView>
+        <Switch>
+          <Route path="/account" exact render={this.renderPersonalInfo} />
+          <Route path="/account/new-post" exact component={PostEditor} />
+        </Switch>
       </Content>
     );
   };
