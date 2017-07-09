@@ -1,6 +1,7 @@
 import graphene
 from .objectTypes import *
 from .CreateToken import CreateToken
+from .utils import decode
 
 
 class Query(graphene.ObjectType):
@@ -11,7 +12,6 @@ class Query(graphene.ObjectType):
     categories = graphene.List(Category)
     comments = graphene.List(Comment)
     groups = graphene.List(Group)
-    # context = graphene.String()
 
     def resolve_users(self, args, context, info):
         return User.get_all()
@@ -34,13 +34,18 @@ class Query(graphene.ObjectType):
     def resolve_groups(self, args, context, info):
         return Group.get_all()
 
-    # def resolve_context(self, args, context, info):
-    #     # for debug purpose only
-    #     return str(context.headers.get('authorization'))
-
 
 class Mutation(graphene.ObjectType):
     create_token = CreateToken.Field()
+    sessionIsValid = graphene.Boolean()
+
+    def resolve_sessionIsValid(self, args, context, info):
+        # for debug purpose only
+        token = context.headers.get('Authorization')
+        if decode(token)[0] is not None:
+            return True
+        else:
+            return False
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
