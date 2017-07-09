@@ -3,12 +3,11 @@ import { Spin, Row, Col } from 'antd';
 import Content from '../_global/Content';
 
 class About extends Component {
-  static get routeConfig() {
-    return {
-      title: '关于',
-    };
-  }
-  render() {
+  static routeConfig = {
+    title: '关于',
+  };
+
+  render = () => {
     return (
       <Content title={About.routeConfig.title}>
         <Row type="flex" justify="center">
@@ -18,6 +17,6 @@ class About extends Component {
         </Row>
       </Content>
     );
-  }
+  };
 }
 export default About;

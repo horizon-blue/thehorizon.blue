@@ -44,8 +44,7 @@ class Mutation(graphene.ObjectType):
         token = context.headers.get('Authorization')
         if decode(token)[0] is not None:
             return True
-        else:
-            return False
+        return False
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

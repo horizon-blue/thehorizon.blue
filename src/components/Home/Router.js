@@ -29,10 +29,7 @@ class Router extends PureComponent {
                         exit: 350,
                     }}
                 >
-                    <Switch
-                        key={this.props.location.pathname}
-                        location={this.props.location}
-                    >
+                    <Switch location={this.props.location}>
                         <RouteWithConfig
                             path="/"
                             exact

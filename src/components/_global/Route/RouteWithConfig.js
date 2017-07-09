@@ -20,7 +20,7 @@ class RouteWithConfig extends PureComponent {
   componentWillMount = () => {
     const { component: Component, actions, routeConfig } = this.props;
     actions.updateConfig(
-      (Component && Component.routeConfig) || routeConfig || {}
+      routeConfig || (Component && Component.routeConfig) || {}
     );
   };
 
