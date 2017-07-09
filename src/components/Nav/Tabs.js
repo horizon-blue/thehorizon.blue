@@ -1,14 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Menu } from 'antd';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
 import anime from 'animejs';
 
-@connect()
 class Tabs extends PureComponent {
     static propTypes = {
-        dispatch: PropTypes.func.isRequired,
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
     };
@@ -26,7 +22,7 @@ class Tabs extends PureComponent {
     menuItems = [];
 
     handleClick = e => {
-        e.key !== '/logout' && this.props.history.push(e.key);
+        this.props.history.push(e.key);
     };
 
     render = () => {
@@ -56,13 +52,9 @@ class Tabs extends PureComponent {
                         关于
                     </div>
                 </Menu.Item>
-                <Menu.Item key="/logout">
-                    <div
-                        ref={menuItem => this.menuItems.push(menuItem)}
-                        onClick={() =>
-                            this.props.dispatch({ type: LOGOUT_REQUEST })}
-                    >
-                        登出
+                <Menu.Item key="/account">
+                    <div ref={menuItem => this.menuItems.push(menuItem)}>
+                        账号
                     </div>
                 </Menu.Item>
             </Menu>

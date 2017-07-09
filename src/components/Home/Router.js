@@ -9,6 +9,7 @@ import Blog from '../Blog';
 import Albumn from '../Albumn';
 import Lab from '../Lab';
 import About from '../About';
+import Account from '../Account';
 import NotFound from '../NotFound';
 
 class Router extends PureComponent {
@@ -41,6 +42,7 @@ class Router extends PureComponent {
                         <PrivateRoute path="/albumn" component={Albumn} />
                         <PrivateRoute path="/lab" component={Lab} />
                         <PrivateRoute path="/about" component={About} />
+                        <PrivateRoute path="/account" component={Account} />
                         <RouteWithConfig component={NotFound} />
                     </Switch>
                 </FadeView>

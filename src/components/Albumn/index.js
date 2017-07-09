@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Spin, Row, Col } from 'antd';
 import Content from '../_global/Content';
 
 class Albumn extends Component {
@@ -8,9 +9,11 @@ class Albumn extends Component {
   render() {
     return (
       <Content title={Albumn.routeConfig.title}>
-        <h1>
-          Albumn
-        </h1>
+        <Row type="flex" justify="center">
+          <Col>
+            <Spin tip="施工中..." size="large" />
+          </Col>
+        </Row>
       </Content>
     );
   }

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Spin, Row, Col } from 'antd';
 import Content from '../_global/Content';
 
 class Lab extends PureComponent {
@@ -9,9 +10,11 @@ class Lab extends PureComponent {
   render = () => {
     return (
       <Content title={Lab.routeConfig.title}>
-        <h1>
-          Lab
-        </h1>
+        <Row type="flex" justify="center">
+          <Col>
+            <Spin tip="施工中..." size="large" />
+          </Col>
+        </Row>
       </Content>
     );
   };
