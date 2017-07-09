@@ -105,3 +105,12 @@ hr {
 .post-editor input:focus {
     outline: none;
 }
+
+.word-count-footer {
+    position: fixed;
+    color: rgba(72, 107, 175, 0.8);
+    bottom: 1vh;
+    left: 1vw;
+    letter-spacing: 1px;
+    transition: all 350ms ease-in;
+}

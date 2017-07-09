@@ -2,115 +2,174 @@ import React, { PureComponent } from 'react';
 import { Row, Col } from 'antd';
 import classNames from 'classnames';
 
-// draft js plugins and styles
-import { EditorState, RichUtils } from 'draft-js';
+// for draft.js
+import { convertFromRaw, EditorState } from 'draft-js';
 import Editor, { composeDecorators } from 'draft-js-plugins-editor';
-
-import 'draft-js/dist/Draft.css';
-import 'draft-js-image-plugin/lib/plugin.css';
-import 'draft-js-alignment-plugin/lib/plugin.css';
-import 'draft-js-focus-plugin/lib/plugin.css';
-
-import createMarkdownShortcutsPlugin from 'draft-js-markdown-shortcuts-plugin';
+import createFocusPlugin from 'draft-js-focus-plugin';
 import createImagePlugin from 'draft-js-image-plugin';
 import createAlignmentPlugin from 'draft-js-alignment-plugin';
-import createFocusPlugin from 'draft-js-focus-plugin';
 import createResizeablePlugin from 'draft-js-resizeable-plugin';
 import createBlockDndPlugin from 'draft-js-drag-n-drop-plugin';
-import createUndoPlugin from 'draft-js-undo-plugin';
-// import createDragNDropUploadPlugin from 'draft-js-drag-n-drop-upload-plugin';
+import createCounterPlugin from 'draft-js-counter-plugin';
+import createMarkdownShortcutsPlugin from 'draft-js-markdown-shortcuts-plugin';
+import createRichButtonsPlugin from 'draft-js-richbuttons-plugin';
+import 'draft-js-focus-plugin/lib/plugin.css';
+import 'draft-js-alignment-plugin/lib/plugin.css';
+import 'draft-js-image-plugin/lib/plugin.css';
+import 'draft-js-counter-plugin/lib/plugin.css';
 
 const focusPlugin = createFocusPlugin();
+const richButtonsPlugin = createRichButtonsPlugin();
 const resizeablePlugin = createResizeablePlugin();
-const blockDndPlugin = createBlockDndPlugin();
 const alignmentPlugin = createAlignmentPlugin();
+const blockDndPlugin = createBlockDndPlugin();
+const counterPlugin = createCounterPlugin();
+
 const { AlignmentTool } = alignmentPlugin;
-const undoPlugin = createUndoPlugin();
-const { UndoButton, RedoButton } = undoPlugin;
+const { CharCounter, WordCounter, LineCounter } = counterPlugin;
 
 const decorator = composeDecorators(
-    resizeablePlugin.decorator,
     alignmentPlugin.decorator,
     focusPlugin.decorator,
+    resizeablePlugin.decorator,
     blockDndPlugin.decorator
 );
+
 const imagePlugin = createImagePlugin({ decorator });
-
-// const dragNDropFileUploadPlugin = createDragNDropUploadPlugin({
-//     handleUpload: mockUpload,
-//     addImage: imagePlugin.addImage,
-// });
-
 const plugins = [
-    // dragNDropFileUploadPlugin,
-    blockDndPlugin,
     focusPlugin,
     alignmentPlugin,
-    resizeablePlugin,
     imagePlugin,
-    createMarkdownShortcutsPlugin(),
-    undoPlugin,
+    resizeablePlugin,
+    blockDndPlugin,
+    counterPlugin,
+    createMarkdownShortcutsPlugin({ decorator }),
 ];
 
-class PostEditor extends PureComponent {
-    state = { editorState: EditorState.createEmpty(), title: undefined };
+const Separator = props => <span className="separator">|</span>;
 
-    handleKeyCommand = command => {
-        const newState = RichUtils.handleKeyCommand(
-            this.state.editorState,
-            command
-        );
-        if (newState) {
-            this.onChange(newState);
-            return 'handled';
-        }
-        return 'not-handled';
+const initialState = {
+    entityMap: {
+        '0': {
+            type: 'image',
+            mutability: 'IMMUTABLE',
+            data: {
+                src: 'http://localhost:3000/favicon.ico',
+            },
+        },
+    },
+    blocks: [
+        {
+            key: '9gm3s',
+            text:
+                'You can have images in your text field. This is a very rudimentary example, but you can enhance the image plugin with resizing, focus or alignment plugins.',
+            type: 'unstyled',
+            depth: 0,
+            inlineStyleRanges: [],
+            entityRanges: [],
+            data: {},
+        },
+        {
+            key: 'ov7r',
+            text: ' ',
+            type: 'atomic',
+            depth: 0,
+            inlineStyleRanges: [],
+            entityRanges: [
+                {
+                    offset: 0,
+                    length: 1,
+                    key: 0,
+                },
+            ],
+            data: {},
+        },
+        {
+            key: 'e23a8',
+            text: 'See advanced examples further down …',
+            type: 'unstyled',
+            depth: 0,
+            inlineStyleRanges: [],
+            entityRanges: [],
+            data: {},
+        },
+    ],
+};
+
+class PostEditor extends PureComponent {
+    state = {
+        editorState: EditorState.createWithContent(
+            convertFromRaw(initialState)
+        ),
+    };
+    onTitleChange = evt => this.setState({ title: evt.target.value });
+    onChange = editorState => {
+        this.setState({
+            editorState,
+        });
     };
 
-    onChange = editorState => this.setState({ editorState });
-    onTitleChange = evt => this.setState({ title: evt.target.value });
-
     focus = () => {
+        this.setState({ hasFocus: true });
         this.editor.focus();
     };
 
-    render() {
+    renderWordCountFooter = () => {
         return (
-            <Row type="flex" justify="center" className="post-editor">
-                <Col sm={22} xs={24}>
-                    <input
-                        type="text"
-                        className="editor-field"
-                        value={this.state.title}
-                        onChange={this.onTitleChange}
-                        placeholder="标题"
-                    />
-                    <hr />
-                    <div
-                        className={classNames('editor-field', {
-                            hasFocus: this.state.hasFocus,
-                        })}
-                    >
-                        <UndoButton />
-                        <RedoButton />
-                        <Editor
-                            onFocus={() => this.setState({ hasFocus: true })}
-                            onBlur={() => this.setState({ hasFocus: false })}
-                            className="editor-field"
-                            ref={element => {
-                                this.editor = element;
-                            }}
-                            editorState={this.state.editorState}
-                            onChange={this.onChange}
-                            plugins={plugins}
-                            handleKeyCommand={this.handleKeyCommand}
-                        />
-                        <AlignmentTool />
-                    </div>
-                </Col>
-            </Row>
+            <footer className="word-count-footer">
+                <CharCounter />字符<Separator />
+                <WordCounter />词<Separator />
+                <LineCounter />行
+            </footer>
         );
-    }
+    };
+
+    setFocus = () => {
+        this.setState({ hasFocus: true });
+    };
+
+    setBlur = () => {
+        this.setState({ hasFocus: false });
+    };
+
+    render = () => {
+        console.log(alignmentPlugin);
+        return (
+            <div>
+                <Row type="flex" justify="center" className="post-editor">
+                    <Col sm={22} xs={24}>
+                        <input
+                            type="text"
+                            className="editor-field"
+                            value={this.state.title}
+                            onChange={this.onTitleChange}
+                            placeholder="标题"
+                        />
+                        <hr />
+                        <div
+                            className={classNames('editor-field', {
+                                hasFocus: this.state.hasFocus,
+                            })}
+                            onClick={this.focus}
+                        >
+                            <Editor
+                                editorState={this.state.editorState}
+                                onChange={this.onChange}
+                                plugins={plugins}
+                                onFocus={this.setFocus}
+                                onBlur={this.setBlur}
+                                ref={element => {
+                                    this.editor = element;
+                                }}
+                            />
+                            <AlignmentTool />
+                        </div>
+                    </Col>
+                </Row>
+                {this.renderWordCountFooter()}
+            </div>
+        );
+    };
 }
 
 export default PostEditor;
