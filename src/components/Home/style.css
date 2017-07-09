@@ -20,3 +20,40 @@
     opacity: 1;
   }
 }
+
+.fadeTranslate-enter {
+  opacity: 0;
+  margin-left: auto;
+  margin-right: auto;
+  transform: translate(0, -3vh);
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.fadeTranslate-enter.fadeTranslate-enter-active {
+  opacity: 1;
+  position: relative;
+  transform: translate(0, 0);
+  transition: opacity 350ms ease-in, transform 350ms ease-in-out;
+  transition-delay: 350ms;
+}
+
+.fadeTranslate-exit {
+  opacity: 1;
+  position: relative;
+  transform: translate(0, 0);
+}
+
+.fadeTranslate-exit.fadeTranslate-exit-active {
+  opacity: 0;
+  position: absolute;
+  margin-left: auto;
+  transition-delay: 350ms;
+  margin-right: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  transform: translate(0, 3vh);
+  transition: opacity 350ms ease-in, transform 350ms ease-in-out;
+}

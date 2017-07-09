@@ -6,7 +6,7 @@ class Lab extends PureComponent {
     title: '工坊',
   };
 
-  render() {
+  render = () => {
     return (
       <Content title={Lab.routeConfig.title}>
         <h1>
@@ -14,7 +14,7 @@ class Lab extends PureComponent {
         </h1>
       </Content>
     );
-  }
+  };
 }
 
 export default Lab;

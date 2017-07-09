@@ -68,11 +68,7 @@ class Blog extends PureComponent {
     );
   };
 
-  renderFooter() {
-    return <div style={{ height: '20vh' }} />;
-  }
-
-  render() {
+  render = () => {
     const { className, data: { loading } } = this.props;
     return (
       <Content
@@ -87,12 +83,9 @@ class Blog extends PureComponent {
           <Route path="/blog" exact render={this.renderPosts} />
           <Route path="/blog/:postLink" component={Post} />
         </Switch>
-        <footer>
-          {this.renderFooter()}
-        </footer>
       </Content>
     );
-  }
+  };
 }
 
 export default Blog;

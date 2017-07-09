@@ -14,7 +14,7 @@ class NotFound extends PureComponent {
     location: PropTypes.object.isRequired,
   };
 
-  render() {
+  render = () => {
     return (
       <Content title={NotFound.routeConfig.title}>
         <article
@@ -29,7 +29,7 @@ class NotFound extends PureComponent {
         </div>
       </Content>
     );
-  }
+  };
 }
 
 export default NotFound;

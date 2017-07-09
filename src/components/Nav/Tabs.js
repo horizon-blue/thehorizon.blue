@@ -13,7 +13,7 @@ class Tabs extends PureComponent {
         location: PropTypes.object.isRequired,
     };
 
-    componentDidMount() {
+    componentDidMount = () => {
         this.animation = anime({
             targets: this.menuItems,
             translateY: [-30, 0],
@@ -21,7 +21,7 @@ class Tabs extends PureComponent {
                 return i * 100;
             },
         });
-    }
+    };
 
     menuItems = [];
 
@@ -29,7 +29,7 @@ class Tabs extends PureComponent {
         e.key !== '/logout' && this.props.history.push(e.key);
     };
 
-    render() {
+    render = () => {
         return (
             <Menu
                 mode="horizontal"
@@ -67,7 +67,7 @@ class Tabs extends PureComponent {
                 </Menu.Item>
             </Menu>
         );
-    }
+    };
 }
 
 export default Tabs;

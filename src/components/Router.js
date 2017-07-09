@@ -3,13 +3,13 @@ import { Switch, Route } from 'react-router-dom';
 import Home from './Home';
 
 class Router extends Component {
-    render() {
+    render = () => {
         return (
             <Switch>
                 <Route path="/" component={Home} />
             </Switch>
         );
-    }
+    };
 }
 
 export default Router;

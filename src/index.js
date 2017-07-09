@@ -25,7 +25,7 @@ window.addEventListener('load', () => {
 });
 
 class App extends PureComponent {
-    render() {
+    render = () => {
         return (
             <ApolloProvider client={client} store={store}>
                 <BrowserRouter>
@@ -36,7 +36,7 @@ class App extends PureComponent {
                 </BrowserRouter>
             </ApolloProvider>
         );
-    }
+    };
 }
 
 ReactDOM.render(<App />, document.getElementById('root'));

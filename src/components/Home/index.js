@@ -13,6 +13,7 @@ import { withRouter } from 'react-router-dom';
 import Router from './Router';
 import Nav from '../Nav';
 import Logo from '../_global/Logo';
+import Footer from './Footer';
 import './style.css';
 
 function mapStateToProps(state, ownProps) {
@@ -55,14 +56,14 @@ class Home extends PureComponent {
     showNav: false,
   };
 
-  componentWillMount() {
+  componentWillMount = () => {
     // The special hotkeys to enter the main website
     Mousetrap('left right right left', () =>
       this.setState({ showNav: !this.state.showNav })
     );
-  }
+  };
 
-  componentDidMount() {
+  componentDidMount = () => {
     this.timeline = anime.timeline();
     this.timeline
       .add({
@@ -121,9 +122,9 @@ class Home extends PureComponent {
           });
         },
       });
-  }
+  };
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps = nextProps => {
     if (nextProps.typingStrings !== this.props.typingStrings && this.typing) {
       this.typing.destroy();
       this.typing = new Typed(this.logo.typed, {
@@ -135,7 +136,7 @@ class Home extends PureComponent {
         backDelay: 1000,
       });
     }
-  }
+  };
 
   handleHiddenButtonPress = buttonIndex => {
     const buttonState = this.findNextButtonState(
@@ -147,7 +148,7 @@ class Home extends PureComponent {
     else this.setState({ buttonState });
   };
 
-  findNextButtonState(state, buttonIndex) {
+  findNextButtonState = (state, buttonIndex) => {
     switch (state) {
       case 0:
       case 2:
@@ -163,9 +164,9 @@ class Home extends PureComponent {
       default:
         return state;
     }
-  }
+  };
 
-  renderHeader() {
+  renderHeader = () => {
     return (
       <Row type="flex" className={classNames(this.props.className)}>
         <Col span={24}>
@@ -199,13 +200,13 @@ class Home extends PureComponent {
         </Col>
       </Row>
     );
-  }
+  };
 
   hancleCancelLogin = () => {
     this.setState({ showNav: false });
   };
 
-  renderNav() {
+  renderNav = () => {
     return (
       <FadeView in={this.state.showNav}>
         <Nav
@@ -216,9 +217,9 @@ class Home extends PureComponent {
         />
       </FadeView>
     );
-  }
+  };
 
-  render() {
+  render = () => {
     const { className, ...rest } = this.props;
 
     return (
@@ -229,12 +230,15 @@ class Home extends PureComponent {
         <nav style={{ position: 'relative' }}>
           {this.renderNav()}
         </nav>
-        <main>
+        <main style={{ position: 'relative' }}>
           <Router {...rest} />
         </main>
+        <footer>
+          <Footer />
+        </footer>
       </div>
     );
-  }
+  };
 }
 
 export default Home;

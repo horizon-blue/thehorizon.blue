@@ -21,7 +21,7 @@ class PrivateRoute extends PureComponent {
     token: PropTypes.string,
   };
 
-  render() {
+  render = () => {
     const { component: Component, token, rehydrated, ...rest } = this.props;
     return (
       <RouteWithConfig
@@ -41,7 +41,7 @@ class PrivateRoute extends PureComponent {
             : null}
       />
     );
-  }
+  };
 }
 
 export default PrivateRoute;

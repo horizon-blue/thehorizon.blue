@@ -17,16 +17,16 @@ class RouteWithConfig extends PureComponent {
     actions: PropTypes.object.isRequired,
   };
 
-  componentWillMount() {
+  componentWillMount = () => {
     const { component: Component, actions, routeConfig } = this.props;
     actions.updateConfig(
       (Component && Component.routeConfig) || routeConfig || {}
     );
-  }
+  };
 
-  render() {
+  render = () => {
     return <Route {...this.props} />;
-  }
+  };
 }
 
 export default RouteWithConfig;

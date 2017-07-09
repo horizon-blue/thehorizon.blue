@@ -10,7 +10,7 @@ class Logo extends Component {
         className: PropTypes.string,
     };
 
-    renderTypingContent() {
+    renderTypingContent = () => {
         return (
             <MediaQuery minDeviceWidth={768}>
                 {match => {
@@ -44,9 +44,9 @@ class Logo extends Component {
 
             </MediaQuery>
         );
-    }
+    };
 
-    renderSVG() {
+    renderSVG = () => {
         return (
             <svg
                 version="1.1"
@@ -450,8 +450,8 @@ class Logo extends Component {
 
             </svg>
         );
-    }
-    render() {
+    };
+    render = () => {
         return (
             <div
                 className={this.props.className}
@@ -463,7 +463,7 @@ class Logo extends Component {
 
             </div>
         );
-    }
+    };
 }
 
 export default Logo;

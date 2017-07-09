@@ -38,7 +38,7 @@ class Login extends PureComponent {
         });
     };
 
-    render() {
+    render = () => {
         const { getFieldDecorator } = this.props.form;
         return (
             <MediaQuery minDeviceWidth={768}>
@@ -100,7 +100,7 @@ class Login extends PureComponent {
                     </Form>}
             </MediaQuery>
         );
-    }
+    };
 }
 
 export default Login;

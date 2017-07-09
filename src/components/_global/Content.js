@@ -15,7 +15,7 @@ class Content extends Component {
         ]),
     };
 
-    render() {
+    render = () => {
         return (
             <div>
                 <Helmet>
@@ -37,7 +37,7 @@ class Content extends Component {
                 </Row>
             </div>
         );
-    }
+    };
 }
 
 export default Content;

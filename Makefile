@@ -45,6 +45,11 @@ client: backup/index.html
 	@echo "${CYAN}Starting the client...${NC}"
 	@npm run start
 
+# connects to dev-server
+client-test: backup/index.html
+	@echo "${CYAN}Starting the client...${NC}"
+	@npm run start test
+
 # a meaningless file to track the update of package.json
 backup/index.html: package.json
 	@echo "${CYAN}Installing dependencies...${NC}"

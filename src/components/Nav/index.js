@@ -25,7 +25,7 @@ class Nav extends PureComponent {
         location: PropTypes.object.isRequired,
     };
 
-    renderNav() {
+    renderNav = () => {
         return (
             <FadeView
                 key="nav"
@@ -38,9 +38,9 @@ class Nav extends PureComponent {
                 />
             </FadeView>
         );
-    }
+    };
 
-    renderLogin() {
+    renderLogin = () => {
         return (
             <FadeView
                 key="loginPanel"
@@ -50,8 +50,9 @@ class Nav extends PureComponent {
                 <Login cancelLogin={this.props.cancelLogin} />
             </FadeView>
         );
-    }
-    render() {
+    };
+
+    render = () => {
         return (
             <Row justify="center" type="flex">
                 <div className="nav">
@@ -62,7 +63,7 @@ class Nav extends PureComponent {
                 </div>
             </Row>
         );
-    }
+    };
 }
 
 export default Nav;

@@ -22,9 +22,9 @@ class PlaceHolder extends PureComponent {
         ],
     };
 
-    render() {
+    render = () => {
         return <div />;
-    }
+    };
 }
 
 export default PlaceHolder;

@@ -11,7 +11,7 @@ class FadeView extends PureComponent {
         ]),
     };
 
-    render() {
+    render = () => {
         return (
             <CSSTransition
                 timeout={500}
@@ -23,7 +23,7 @@ class FadeView extends PureComponent {
                 {this.props.children}
             </CSSTransition>
         );
-    }
+    };
 }
 
 export default FadeView;

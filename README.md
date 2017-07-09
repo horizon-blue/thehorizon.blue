@@ -3,7 +3,16 @@
 
 Yet another personal blog.
 
-The Makefile has already taken care of everything, to run the dev server && client, simply run `make server` and `make client`, it will automatically setup && install dependencies when necessary.
+The Makefile has already taken care of everything, to run the dev server && client, simply run the following scripts... They will automatically setup && install dependencies when necessary.
+
+```bash
+make server
+
+make client  # this will connect client to https://api.thehorizon.blue
+
+# to test client on dev-server, run the following
+make client-test # this will connect client to http://localhost:2333
+```
 
 The dev client will be hosted on [http://localhost:3000/](http://localhost:3000/), and the dev server will be hosted on [http://localhost:2333/](http://localhost:2333/).
 
