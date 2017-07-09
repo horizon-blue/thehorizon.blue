@@ -24,24 +24,23 @@ class Router extends PureComponent {
                 <FadeView
                     key={this.props.location.pathname}
                     classNames="fadeTranslate"
-                    timeout={{
-                        enter: 700,
-                        exit: 350,
-                    }}
+                    timeout={350}
                 >
-                    <Switch location={this.props.location}>
-                        <RouteWithConfig
-                            path="/"
-                            exact
-                            component={PlaceHolder}
-                        />
-                        <PrivateRoute path="/blog" component={Blog} />
-                        <PrivateRoute path="/albumn" component={Albumn} />
-                        <PrivateRoute path="/lab" component={Lab} />
-                        <PrivateRoute path="/about" component={About} />
-                        <PrivateRoute path="/account" component={Account} />
-                        <RouteWithConfig component={NotFound} />
-                    </Switch>
+                    <div>
+                        <Switch location={this.props.location}>
+                            <RouteWithConfig
+                                path="/"
+                                exact
+                                component={PlaceHolder}
+                            />
+                            <PrivateRoute path="/blog" component={Blog} />
+                            <PrivateRoute path="/albumn" component={Albumn} />
+                            <PrivateRoute path="/lab" component={Lab} />
+                            <PrivateRoute path="/about" component={About} />
+                            <PrivateRoute path="/account" component={Account} />
+                            <RouteWithConfig component={NotFound} />
+                        </Switch>
+                    </div>
                 </FadeView>
             </TransitionGroup>
         );

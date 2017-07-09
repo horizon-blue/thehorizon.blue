@@ -83,13 +83,13 @@ class Account extends PureComponent {
               >
                 <h2>{user.name}</h2>
                 <p>
-                  加入日期：{moment.utc(user.joinDate).format('L')} ({moment.utc(user.joinDate).fromNow()})
+                  加入日期：{moment.utc(user.joinDate).format('L')}（{moment.utc(user.joinDate).fromNow()}）
                 </p>
                 <p>
                   用户组：{user.group ? user.group.name : '无'}
                 </p>
                 <p>
-                  简介: {user.biography || '--'}
+                  简介：{user.biography || '--'}
                 </p>
               </div>}
           </MediaQuery>
