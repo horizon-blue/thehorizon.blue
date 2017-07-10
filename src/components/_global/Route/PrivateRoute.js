@@ -45,9 +45,10 @@ class TempPage extends PureComponent {
       this.setState({ validating: true });
       this.props
         .mutate()
-        .then(({ data: sessionIsValid }) => {
-          if (!sessionIsValid) this.props.dispatch({ type: LOGOUT_REQUEST });
-          this.setState({ sessionIsValid });
+        .then(({ data }) => {
+          if (!data.sessionIsValid)
+            this.props.dispatch({ type: LOGOUT_REQUEST });
+          this.setState({ sessionIsValid: data.sessionIsValid });
         })
         .catch(error => {
           console.log('validation error', error);
