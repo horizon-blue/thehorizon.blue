@@ -148,6 +148,8 @@
 .toolbar-button:hover {
     background-color: rgba(12, 96, 170, 0.25);
     color: rgba(172, 172, 174, 1);
+    cursor: pointer;
+    cursor: hand;
 }
 
 .toolbar-button:not(:last-child) {

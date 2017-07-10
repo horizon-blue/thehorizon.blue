@@ -6,3 +6,6 @@ export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
 
 // route config
 export const UPDATE_ROUTE_CONFIG = 'UPDATE_ROUTE_CONFIG';
+
+// draft
+export const SAVE_DRAFT = 'SAVE_DRAFT';

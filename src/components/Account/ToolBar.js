@@ -12,27 +12,6 @@ class ToolBar extends PureComponent {
         toggleInlineStyle: PropTypes.func.isRequired,
     };
 
-    renderBlockIcon = (type, blockType) => {
-        const { toggleBlockType } = this.props;
-        const onToggle = e => {
-            e.preventDefault();
-            toggleBlockType(type.style);
-        };
-        return (
-            <Tooltip title={type.description} mouseEnterDelay={1}>
-                <div
-                    className={classNames('toolbar-button', {
-                        active: type.style === blockType,
-                    })}
-                    key={type.label}
-                    onClick={onToggle}
-                >
-                    <FontAwesome name={type.label} />
-                </div>
-            </Tooltip>
-        );
-    };
-
     BLOCK_TYPES = [
         { label: 'quote-left', style: 'blockquote' },
         { label: 'list-ul', style: 'unordered-list-item' },
@@ -41,7 +20,7 @@ class ToolBar extends PureComponent {
     ];
 
     renderBlockTypesIcons = () => {
-        const { editorState } = this.props;
+        const { editorState, toggleBlockType } = this.props;
         const selection = editorState.getSelection();
         const blockType = editorState
             .getCurrentContent()
@@ -49,27 +28,12 @@ class ToolBar extends PureComponent {
             .getType();
 
         return this.BLOCK_TYPES.map(type =>
-            this.renderBlockIcon(type, blockType)
-        );
-    };
-
-    renderBlockIcon = (type, blockType) => {
-        const { toggleBlockType } = this.props;
-        const onToggle = e => {
-            e.preventDefault();
-            toggleBlockType(type.style);
-        };
-        return (
-            <Tooltip title={type.style} mouseEnterDelay={1} key={type.label}>
-                <div
-                    className={classNames('toolbar-button', {
-                        active: type.style === blockType,
-                    })}
-                    onClick={onToggle}
-                >
-                    <FontAwesome name={type.label} />
-                </div>
-            </Tooltip>
+            <BlockIcon
+                key={type.label}
+                type={type}
+                blockType={blockType}
+                toggleBlockType={toggleBlockType}
+            />
         );
     };
 
@@ -81,12 +45,92 @@ class ToolBar extends PureComponent {
         { label: 'strikethrough', style: 'STRIKETHROUGH' },
     ];
 
-    renderInlineIcon = (type, currentStyle) => {
-        const { toggleInlineStyle } = this.props;
-        const onToggle = e => {
-            e.preventDefault();
-            toggleInlineStyle(type.style);
-        };
+    renderHeaderIcon = () => {
+        const { editorState, toggleBlockType } = this.props;
+        const selection = editorState.getSelection();
+        const blockType = editorState
+            .getCurrentContent()
+            .getBlockForKey(selection.getStartKey())
+            .getType();
+
+        return (
+            <HeaderIcon
+                blockType={blockType}
+                toggleBlockType={toggleBlockType}
+            />
+        );
+    };
+
+    renderInlineStypeIcons = () => {
+        const currentStyle = this.props.editorState.getCurrentInlineStyle();
+        return this.INLINE_STYLES.map(type =>
+            <InlineIcon
+                type={type}
+                currentStyle={currentStyle}
+                key={type.label}
+                toggleInlineStyle={this.props.toggleInlineStyle}
+            />
+        );
+    };
+
+    render = () => {
+        return (
+            <div className="toolbar-container">
+                {this.renderHeaderIcon()}
+                {this.renderInlineStypeIcons()}
+                {this.renderBlockTypesIcons()}
+            </div>
+        );
+    };
+}
+
+class BlockIcon extends PureComponent {
+    static propTypes = {
+        type: PropTypes.object.isRequired,
+        toggleBlockType: PropTypes.func.isRequired,
+        blockType: PropTypes.string.isRequired,
+    };
+
+    onToggle = e => {
+        const { toggleBlockType, type } = this.props;
+
+        e.preventDefault();
+        toggleBlockType(type.style);
+    };
+
+    render = () => {
+        const { type, blockType } = this.props;
+        return (
+            <Tooltip title={type.style} mouseEnterDelay={1} key={type.label}>
+                <div
+                    className={classNames('toolbar-button', {
+                        active: type.style === blockType,
+                    })}
+                    onClick={this.onToggle}
+                >
+                    <FontAwesome name={type.label} />
+                </div>
+            </Tooltip>
+        );
+    };
+}
+
+class InlineIcon extends PureComponent {
+    static propTypes = {
+        type: PropTypes.object.isRequired,
+        toggleInlineStyle: PropTypes.func.isRequired,
+        currentStyle: PropTypes.object.isRequired,
+    };
+
+    onToggle = e => {
+        const { toggleInlineStyle, type } = this.props;
+        e.preventDefault();
+        toggleInlineStyle(type.style);
+    };
+
+    render = () => {
+        const { type, currentStyle } = this.props;
+
         return (
             <Tooltip title={type.style} mouseEnterDelay={1} key={type.label}>
                 <div
@@ -94,12 +138,19 @@ class ToolBar extends PureComponent {
                         active: currentStyle.has(type.style),
                     })}
                     key={type.label}
-                    onClick={onToggle}
+                    onClick={this.onToggle}
                 >
                     <FontAwesome name={type.label} />
                 </div>
             </Tooltip>
         );
+    };
+}
+
+class HeaderIcon extends PureComponent {
+    static propTypes = {
+        toggleBlockType: PropTypes.func.isRequired,
+        blockType: PropTypes.string.isRequired,
     };
 
     HEADER_TYPES = [
@@ -112,20 +163,18 @@ class ToolBar extends PureComponent {
         'unstyled',
     ];
 
-    renderHeaderIcon = () => {
-        const { editorState } = this.props;
-        const selection = editorState.getSelection();
-        const blockType = editorState
-            .getCurrentContent()
-            .getBlockForKey(selection.getStartKey())
-            .getType();
+    onToggle = e => {
+        const { blockType, toggleBlockType } = this.props;
         const thisHeader = _.indexOf(this.HEADER_TYPES, blockType);
         const nextHeader = (thisHeader + 1) % this.HEADER_TYPES.length;
-        const { toggleBlockType } = this.props;
-        const onToggle = e => {
-            e.preventDefault();
-            toggleBlockType(this.HEADER_TYPES[nextHeader]);
-        };
+        e.preventDefault();
+        toggleBlockType(this.HEADER_TYPES[nextHeader]);
+    };
+
+    render = () => {
+        const { blockType } = this.props;
+        const thisHeader = _.indexOf(this.HEADER_TYPES, blockType);
+        const nextHeader = (thisHeader + 1) % this.HEADER_TYPES.length;
         return (
             <Tooltip
                 title={this.HEADER_TYPES[nextHeader]}
@@ -138,28 +187,11 @@ class ToolBar extends PureComponent {
                             thisHeader !== -1 &&
                                 thisHeader !== this.HEADER_TYPES.length - 1,
                     })}
-                    onClick={onToggle}
+                    onClick={this.onToggle}
                 >
                     <FontAwesome name="header" />
                 </div>
             </Tooltip>
-        );
-    };
-
-    renderInlineStypeIcons = () => {
-        const currentStyle = this.props.editorState.getCurrentInlineStyle();
-        return this.INLINE_STYLES.map(type =>
-            this.renderInlineIcon(type, currentStyle)
-        );
-    };
-
-    render = () => {
-        return (
-            <div className="toolbar-container">
-                {this.renderInlineStypeIcons()}
-                {this.renderHeaderIcon()}
-                {this.renderBlockTypesIcons()}
-            </div>
         );
     };
 }
