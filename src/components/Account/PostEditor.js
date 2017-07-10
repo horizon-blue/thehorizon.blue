@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Affix } from 'antd';
 import classNames from 'classnames';
 import { Editor, EditorState, RichUtils } from 'draft-js';
-import decorator from './decorator';
 import 'draft-js/dist/Draft.css';
 import ToolBar from './ToolBar';
 
@@ -10,7 +9,7 @@ import ToolBar from './ToolBar';
 
 class PostEditor extends PureComponent {
     state = {
-        editorState: EditorState.createEmpty(decorator),
+        editorState: EditorState.createEmpty(),
     };
 
     setFocus = () => {
@@ -39,34 +38,60 @@ class PostEditor extends PureComponent {
         return 'not-handled';
     };
 
+    _toggleBlockType = blockType => {
+        this.onChange(
+            RichUtils.toggleBlockType(this.state.editorState, blockType)
+        );
+    };
+
+    _toggleInlineStyle = inlineStyle => {
+        this.onChange(
+            RichUtils.toggleInlineStyle(this.state.editorState, inlineStyle)
+        );
+    };
+
+    focus = e => this.editor.focus();
+
     render = () => {
         return (
             <div>
                 <Row type="flex" justify="center" className="post-editor">
                     <Col sm={22} xs={24}>
-                        <input
-                            type="text"
-                            className="editor-field"
-                            value={this.state.title}
-                            onChange={this.onTitleChange}
-                            placeholder="标题"
-                        />
-                        <hr />
+                        <div className="affix-container">
+                            <Affix>
+                                <input
+                                    type="text"
+                                    className="editor-field"
+                                    value={this.state.title}
+                                    onChange={this.onTitleChange}
+                                    placeholder="无题 | Untitled"
+                                />
+                                <hr />
+                                <div className="editor-field">
+                                    <ToolBar
+                                        toggleBlockType={this._toggleBlockType}
+                                        toggleInlineStyle={
+                                            this._toggleInlineStyle
+                                        }
+                                        editorState={this.state.editorState}
+                                    />
+                                </div>
+                            </Affix>
+                        </div>
                         <div
                             className={classNames('editor-field', {
                                 hasFocus: this.state.hasFocus,
                             })}
+                            onClick={this.focus}
                         >
-                            <ToolBar />
-
                             <Editor
                                 editorState={this.state.editorState}
                                 onChange={this.onChange}
                                 onFocus={this.setFocus}
                                 onBlur={this.setBlur}
                                 handleKeyCommand={this.handleKeyCommand}
+                                ref={editor => (this.editor = editor)}
                             />
-
                         </div>
                     </Col>
                 </Row>
