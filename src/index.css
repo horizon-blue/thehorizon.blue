@@ -78,3 +78,8 @@ body {
     opacity: 0;
     transition: opacity 500ms ease-in;
 }
+
+hr {
+    border-color: #272745;
+}
+

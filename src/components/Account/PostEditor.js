@@ -5,6 +5,7 @@ import Editor from 'draft-js-plugins-editor';
 import { EditorState, RichUtils } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import ToolBar from './ToolBar';
+import styleMap from './styleMap';
 import './prism.css';
 
 // draftjs plugins
@@ -110,6 +111,7 @@ class PostEditor extends PureComponent {
                                 onChange={this.onChange}
                                 onFocus={this.setFocus}
                                 onBlur={this.setBlur}
+                                customStyleMap={styleMap}
                                 handleKeyCommand={this.handleKeyCommand}
                                 plugins={plugins}
                                 ref={editor => (this.editor = editor)}
