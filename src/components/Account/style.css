@@ -87,7 +87,7 @@ hr {
     opacity: 0.6;
 }
 
-.editor-field:focus, .hasFocus {
+.editor-field:focus, .hasFocus, .editor-field:hover {
     background-color: rgba(12, 96, 170, 0.05);
     opacity: 1;
 }
@@ -102,6 +102,11 @@ hr {
     text-align: center;
 }
 
+.post-editor input::placeholder {
+    color: rgba(200, 233, 255, 0.7);
+    letter-spacing: 10px;
+}
+
 .post-editor input:focus {
     outline: none;
 }
@@ -114,3 +119,4 @@ hr {
     letter-spacing: 1px;
     transition: all 350ms ease-in;
 }
+
