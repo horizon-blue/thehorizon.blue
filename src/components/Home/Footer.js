@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Row, Col } from 'antd';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import className from 'classnames';
 
 const Separator = props => <span className="separator">|</span>;
 
@@ -12,14 +11,8 @@ class Footer extends PureComponent {
     };
 
     render = () => {
-        const { relativeFooter } = this.props;
         return (
-            <Row
-                type="flex"
-                justify="end"
-                align="bottom"
-                className={className('footer', { fixed: !relativeFooter })}
-            >
+            <Row type="flex" justify="end" align="bottom" className="footer">
                 <Col>
                     <Link to="/time-machine">V0.0.1</Link> © HorizonBlue{' '}
                     {new Date().getFullYear()}

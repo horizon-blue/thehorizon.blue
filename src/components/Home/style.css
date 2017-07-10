@@ -62,14 +62,6 @@
   letter-spacing: 1px;
 }
 
-.footer.fixed {
-  position: fixed;
-  color: rgba(72, 107, 175, 0.8);
-  bottom: 0;
-  right: 0;
-  transition: all 350ms ease-in;
-}
-
 a {
   color: rgba(72, 107, 175, 0.8);
 }
@@ -77,4 +69,9 @@ a {
 .separator {
   margin: 0 5px;
   color: rgba(72, 107, 175, 0.6);
+}
+
+.stop-scrolling {
+  height: 100%;
+  overflow: hidden;
 }

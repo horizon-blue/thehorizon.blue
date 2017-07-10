@@ -61,7 +61,6 @@ class Home extends PureComponent {
     Mousetrap('left right right left', () =>
       this.setState({ showNav: !this.state.showNav })
     );
-    document.body.style.overflow = 'hidden';
   };
 
   componentDidMount = () => {
@@ -113,11 +112,6 @@ class Home extends PureComponent {
         easing: 'easeInOutQuad',
         duration: 500,
         offset: '-=200',
-        begin: () => {
-          (document.body.style.overflow = 'initial'), this.setState({
-            relativeFooter: true,
-          });
-        },
       })
       .add({
         targets: this.footer,
@@ -258,11 +252,7 @@ class Home extends PureComponent {
           <Router {...rest} />
         </main>
         <footer style={{ opacity: 0 }} ref={footer => (this.footer = footer)}>
-          <Footer
-            relativeFooter={
-              this.state.relativeFooter && this.props.location.pathname !== '/'
-            }
-          />
+          <Footer />
         </footer>
       </div>
     );

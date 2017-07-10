@@ -12,7 +12,7 @@
 }
 
 hr {
-    border-color: rgba(125, 125, 255, 0.2);
+    border-color: #272745;
 }
 
 .account-avatar {
@@ -108,7 +108,7 @@ hr {
 }
 
 .post-editor input::placeholder {
-    color: rgba(200, 233, 255, 0.5);
+    color: rgba(200, 233, 255, 0.1);
     letter-spacing: 10px;
 }
 

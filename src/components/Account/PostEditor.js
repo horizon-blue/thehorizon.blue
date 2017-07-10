@@ -1,11 +1,22 @@
 import React, { PureComponent } from 'react';
 import { Row, Col, Affix } from 'antd';
 import classNames from 'classnames';
-import { Editor, EditorState, RichUtils } from 'draft-js';
+import Editor from 'draft-js-plugins-editor';
+import { EditorState, RichUtils } from 'draft-js';
 import 'draft-js/dist/Draft.css';
 import ToolBar from './ToolBar';
+import './prism.css';
 
-// const Separator = props => <span className="separator">|</span>;
+// draftjs plugins
+import createCounterPlugin from 'draft-js-counter-plugin';
+import createMarkdownShortcutsPlugin from 'draft-js-markdown-shortcuts-plugin';
+import prismPlugin from './prismPlugin';
+const counterPlugin = createCounterPlugin();
+const { CharCounter, WordCounter, LineCounter } = counterPlugin;
+
+const plugins = [prismPlugin, createMarkdownShortcutsPlugin(), counterPlugin];
+
+const Separator = props => <span className="separator">|</span>;
 
 class PostEditor extends PureComponent {
     state = {
@@ -50,6 +61,16 @@ class PostEditor extends PureComponent {
         );
     };
 
+    renderWordCountFooter = () => {
+        return (
+            <footer className="word-count-footer">
+                <CharCounter />字符<Separator />
+                <WordCounter />词<Separator />
+                <LineCounter />行
+            </footer>
+        );
+    };
+
     focus = e => this.editor.focus();
 
     render = () => {
@@ -90,6 +111,7 @@ class PostEditor extends PureComponent {
                                 onFocus={this.setFocus}
                                 onBlur={this.setBlur}
                                 handleKeyCommand={this.handleKeyCommand}
+                                plugins={plugins}
                                 ref={editor => (this.editor = editor)}
                             />
                         </div>
