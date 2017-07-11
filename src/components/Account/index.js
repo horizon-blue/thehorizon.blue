@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Spin, Row, Col, Button, Avatar, Icon } from 'antd';
+import { Spin, Row, Col, Button, Icon } from 'antd';
 import { connect } from 'react-redux';
 import Content from '../_global/Content';
 import PropTypes from 'prop-types';
@@ -14,6 +14,7 @@ import 'moment/locale/zh-cn';
 import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
 import FadeView from '../_global/FadeView';
 import UploadAvatarModal from './UploadAvatarModal';
+import { IMG_ROOT } from '../../constants/api';
 import './style.css';
 
 const LoadableEditor = Loadable({
@@ -64,15 +65,26 @@ class Account extends PureComponent {
     this.props.dispatch({ type: LOGOUT_REQUEST });
   };
 
+  haneldInfoUpdate = () => {
+    this.props.data.refetch();
+  };
+
   renderTopRow = () => {
     const { data: { user } } = this.props;
     return (
       <Row type="flex" className="account-card" justify="center">
         <Col xs={24} sm={6}>
           <div className="centered-horizontal" onClick={this.openAvatarModal}>
-            <Avatar className="account-avatar" src={user.avatar}>
-              <Icon type="user-add" />
-            </Avatar>
+            <div className="account-avatar">
+              {user.avatar
+                ? <img
+                    src={IMG_ROOT + user.avatar}
+                    alt="avatar"
+                    className="avatar-img-in-setting-page"
+                  />
+                : <Icon type="user-add" />}
+
+            </div>
           </div>
         </Col>
         <Col xs={24} sm={14}>
@@ -98,6 +110,7 @@ class Account extends PureComponent {
           <UploadAvatarModal
             visible={this.state.avatarVModalVisible}
             closeModal={this.closeAvatarModal}
+            onSubmit={this.haneldInfoUpdate}
           />
         </Col>
       </Row>

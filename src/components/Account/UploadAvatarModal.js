@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import { Modal, message, Upload, Icon, Button } from 'antd';
 import PropTypes from 'prop-types';
-import { UPLOAD_PHOTO } from '../../constants/api';
+import { gql, graphql } from 'react-apollo';
+import { UPLOAD_PHOTO, IMG_ROOT } from '../../constants/api';
 import _ from 'lodash';
 
 const Dragger = Upload.Dragger;
@@ -20,10 +21,21 @@ const beforeUpload = file => {
     return isSupported && isLt2M;
 };
 
+const updateAvatar = gql`
+    mutation updateAvatar($avatar: String!) {
+        updateUserInfo(avatar: $avatar) {
+            success
+        }
+    }
+`;
+
+@graphql(updateAvatar)
 class UploadAvatarModal extends PureComponent {
     static propTypes = {
         visible: PropTypes.bool.isRequired,
         closeModal: PropTypes.func.isRequired,
+        mutate: PropTypes.func.isRequired,
+        onSubmit: PropTypes.func.isRequired,
     };
 
     state = {};
@@ -40,21 +52,46 @@ class UploadAvatarModal extends PureComponent {
     };
 
     handleSubmit = () => {
+        this.setState({ settingInfo: true });
+        const { closeModal, onSubmit } = this.props;
+        this.props
+            .mutate({
+                variables: { avatar: this.state.url },
+            })
+            .then(({ data }) => {
+                data.updateUserInfo.success
+                    ? message.success('设置成功', 5)
+                    : message.error('设置失败', 5);
+                this.setState({ settingInfo: false });
+                onSubmit();
+                closeModal();
+            })
+            .catch(error => {
+                console.log('setting info', error);
+                this.setState({ settingInfo: false });
+                message.error(error.message);
+            });
+    };
+
+    handleCancel = () => {
         const { closeModal } = this.props;
+        // clear current state
+        this.setState({});
         closeModal();
     };
 
     render = () => {
-        const { visible, closeModal } = this.props;
-        const { uploading } = this.state;
+        const { visible } = this.props;
+        const { uploading, url } = this.state;
         return (
             <Modal
                 wrapClassName="vertical-center-modal"
                 visible={visible}
-                onOk={closeModal}
-                onCancel={closeModal}
+                onOk={this.handleSubmit}
+                onCancel={this.handleCancel}
                 footer={[
                     <Button
+                        loading={this.state.settingInfo}
                         key="submit"
                         ghost
                         type="primary"
@@ -75,13 +112,21 @@ class UploadAvatarModal extends PureComponent {
                         beforeUpload={beforeUpload}
                         onChange={this.handleChange}
                     >
-                        <Icon
-                            type={uploading ? 'loading' : 'upload'}
-                            className="upload-icon"
-                        />
-                        <div className="upload-icon-text">
-                            {uploading ? '上传中...' : '上传头像'}
-                        </div>
+                        {url
+                            ? <img
+                                  src={IMG_ROOT + url}
+                                  alt="avatar"
+                                  className="avatar-img"
+                              />
+                            : <div>
+                                  <Icon
+                                      type={uploading ? 'loading' : 'upload'}
+                                      className="upload-icon"
+                                  />
+                                  <div className="upload-icon-text">
+                                      {uploading ? '上传中...' : '上传头像'}
+                                  </div>
+                              </div>}
                     </Dragger>
                     <div>类型：jpg, jpeg, gif, png, bmp 大小：{'<'}2MB</div>
                 </div>
