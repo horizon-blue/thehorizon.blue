@@ -13,6 +13,7 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
 import FadeView from '../_global/FadeView';
+import UploadAvatarModal from './UploadAvatarModal';
 import './style.css';
 
 const LoadableEditor = Loadable({
@@ -57,6 +58,8 @@ class Account extends PureComponent {
     ],
   };
 
+  state = { avatarVModalVisible: false };
+
   handleLogout = () => {
     this.props.dispatch({ type: LOGOUT_REQUEST });
   };
@@ -66,7 +69,7 @@ class Account extends PureComponent {
     return (
       <Row type="flex" className="account-card" justify="center">
         <Col xs={24} sm={6}>
-          <div className="centered-horizontal">
+          <div className="centered-horizontal" onClick={this.openAvatarModal}>
             <Avatar className="account-avatar" src={user.avatar}>
               <Icon type="user-add" />
             </Avatar>
@@ -92,6 +95,10 @@ class Account extends PureComponent {
                 </p>
               </div>}
           </MediaQuery>
+          <UploadAvatarModal
+            visible={this.state.avatarVModalVisible}
+            closeModal={this.closeAvatarModal}
+          />
         </Col>
       </Row>
     );
@@ -115,6 +122,13 @@ class Account extends PureComponent {
   manageSite = e => {
     const { history } = this.props;
     history.push('/account/admin');
+  };
+
+  closeAvatarModal = () => {
+    this.setState({ avatarVModalVisible: false });
+  };
+  openAvatarModal = () => {
+    this.setState({ avatarVModalVisible: true });
   };
 
   renderAdminButtons = match => {

@@ -183,3 +183,53 @@ pre {
     border: 1px solid rgba(12, 96, 170, 0.25);
     padding: 5px 10px;
 }
+
+.vertical-center-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.vertical-center-modal .ant-modal-footer {
+    border-color: transparent;
+}
+
+.ant-modal-content {
+    opacity: 0.9;
+    background-color: rgba(19, 40, 79, 0.9);
+}
+
+.ant-modal-mask {
+    background-color: rgba(17, 17, 22, 0.65);
+}
+
+.avatar-dragger {
+    width: 150px;
+    height: 150px;
+    display: block;
+    transition: all 300ms ease-in;
+    margin-bottom: 10px;
+}
+
+.avatar-dragger:hover {
+    cursor: pointer;
+    cursor: hand;
+    background-color: rgba(12, 96, 170, 0.25);
+}
+
+.avatar-dragger-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.upload-icon {
+    font-size: 50px;
+    color: #4192cc;
+}
+
+.upload-icon-text {
+    margin-top: 15px;
+    font-size: 18px;
+}
