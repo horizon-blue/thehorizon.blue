@@ -41,21 +41,29 @@ class PostEditor extends PureComponent {
 
     state = {};
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.rehydrated && !this.state.editorState) {
+    componentDidMount = () => {
+        this.loadDraft(this.props);
+    };
+
+    componentWillReceiveProps = nextProps => {
+        this.loadDraft(nextProps);
+    };
+
+    loadDraft = props => {
+        if (props.rehydrated && !this.state.editorState) {
             this.setState(
-                nextProps.draft
+                props.draft
                     ? {
-                          title: nextProps.draft.title,
+                          title: props.draft.title,
                           editorState: EditorState.createWithContent(
-                              convertFromRaw(nextProps.draft.content)
+                              convertFromRaw(props.draft.content)
                           ),
                       }
                     : { title: '', editorState: EditorState.createEmpty() }
             );
             this.autosave();
         }
-    }
+    };
 
     autosave = () => {
         setTimeout(() => {
@@ -140,7 +148,7 @@ class PostEditor extends PureComponent {
     };
 
     render = () => {
-        if (!this.state.editorState) return <LoadingPage />;
+        if (!this.state.editorState) return <LoadingPage message="载入中..." />;
         return (
             <div>
                 <Row type="flex" justify="center" className="post-editor">

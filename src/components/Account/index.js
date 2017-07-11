@@ -145,10 +145,13 @@ class Account extends PureComponent {
     this.setState({ avatarVModalVisible: true });
   };
 
-  renderAdminButtons = match => {
+  isAdmin = () => {
     const { data: { user } } = this.props;
-    const isAdmin = user.group && user.group.id === ADMIN_GROUP_ID;
-    if (!isAdmin) return null;
+    return user && user.group && user.group.id === ADMIN_GROUP_ID;
+  };
+
+  renderAdminButtons = match => {
+    if (!this.isAdmin()) return null;
 
     return (
       <Row type="flex" justify="center">
@@ -227,7 +230,8 @@ class Account extends PureComponent {
           </Row>}
         <Switch>
           <Route path="/account" exact render={this.renderPersonalInfo} />
-          <Route path="/account/new-post" exact component={LoadableEditor} />
+          {this.isAdmin() &&
+            <Route path="/account/new-post" exact component={LoadableEditor} />}
         </Switch>
       </Content>
     );
