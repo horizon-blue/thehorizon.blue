@@ -1,6 +1,7 @@
 import graphene
 from .objectTypes import *
 from .CreateToken import CreateToken
+from .updateUserInfo import updateUserInfo
 from .utils import decode, is_admin
 
 
@@ -56,6 +57,7 @@ class Query(graphene.ObjectType):
 class Mutation(graphene.ObjectType):
     create_token = CreateToken.Field()
     sessionIsValid = graphene.Boolean()
+    updateUserInfo = updateUserInfo.Field()
 
     def resolve_sessionIsValid(self, args, context, info):
         # for debug purpose only
