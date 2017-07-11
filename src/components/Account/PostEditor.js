@@ -43,14 +43,16 @@ class PostEditor extends PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.rehydrated && !this.state.editorState) {
-            this.setState({ title: nextProps.draft.title || '' });
-            this.setState({
-                editorState: nextProps.draft.content
-                    ? EditorState.createWithContent(
-                          convertFromRaw(nextProps.draft.content)
-                      )
-                    : EditorState.createEmpty(),
-            });
+            this.setState(
+                nextProps.draft
+                    ? {
+                          title: nextProps.draft.title,
+                          editorState: EditorState.createWithContent(
+                              convertFromRaw(nextProps.draft.content)
+                          ),
+                      }
+                    : { title: '', editorState: EditorState.createEmpty() }
+            );
             this.autosave();
         }
     }

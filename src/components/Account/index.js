@@ -6,13 +6,19 @@ import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
 import classNames from 'classnames';
 import { Route, Switch } from 'react-router-dom';
+import Loading from '../_global/Loading';
 import MediaQuery from 'react-responsive';
+import Loadable from 'react-loadable';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
 import FadeView from '../_global/FadeView';
-import PostEditor from './PostEditor';
 import './style.css';
+
+const LoadableEditor = Loadable({
+  loader: () => import(/* webpackChunkName: "PostEditor" */ `./PostEditor`),
+  loading: Loading,
+});
 
 const ADMIN_GROUP_ID = '1';
 
@@ -193,7 +199,7 @@ class Account extends PureComponent {
           </Row>}
         <Switch>
           <Route path="/account" exact render={this.renderPersonalInfo} />
-          <Route path="/account/new-post" exact component={PostEditor} />
+          <Route path="/account/new-post" exact component={LoadableEditor} />
         </Switch>
       </Content>
     );

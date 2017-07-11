@@ -1,8 +1,13 @@
 'use strict';
-import app from './app';
 
-const PORT = process.env.PORT || 12345;
+var _app = require('./app');
 
-app.listen(PORT, () => {
-    console.log(`App listening on port ${PORT}!`);
+var _app2 = _interopRequireDefault(_app);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var PORT = process.env.PORT || 12345;
+
+_app2.default.listen(PORT, function () {
+    console.log('App listening on port ' + PORT + '!');
 });

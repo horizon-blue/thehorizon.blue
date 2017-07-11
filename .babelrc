@@ -5,6 +5,7 @@
 	    ["import", [{ "libraryName": "antd", "style": true }]],
         "transform-decorators-legacy",
         "transform-class-properties",
-        "lodash"
+        "lodash",
+        "syntax-dynamic-import"
     ],
 }
