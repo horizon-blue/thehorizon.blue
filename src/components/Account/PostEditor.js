@@ -49,6 +49,10 @@ class PostEditor extends PureComponent {
         this.loadDraft(nextProps);
     };
 
+    componentWillUnmount = () => {
+        clearInterval(this.autosave);
+    };
+
     loadDraft = props => {
         if (props.rehydrated && !this.state.editorState) {
             this.setState(
@@ -61,15 +65,8 @@ class PostEditor extends PureComponent {
                       }
                     : { title: '', editorState: EditorState.createEmpty() }
             );
-            this.autosave();
+            this.autosave = setInterval(this.handleSave, 300000);
         }
-    };
-
-    autosave = () => {
-        setTimeout(() => {
-            this.handleSave();
-            this.autosave();
-        }, 300000);
     };
 
     setFocus = () => {
