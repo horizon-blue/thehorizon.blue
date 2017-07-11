@@ -46,6 +46,7 @@ class Account extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     data: PropTypes.shape({
       loading: PropTypes.bool.isRequired,
+      refetch: PropTypes.func.isRequired,
       user: PropTypes.object,
     }).isRequired,
     history: PropTypes.object.isRequired,
