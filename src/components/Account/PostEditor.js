@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Affix } from 'antd';
+import { Row, Col, Affix, message } from 'antd';
 import classNames from 'classnames';
 import Editor from 'draft-js-plugins-editor';
 import PropTypes from 'prop-types';
@@ -51,8 +51,16 @@ class PostEditor extends PureComponent {
                       )
                     : EditorState.createEmpty(),
             });
+            this.autosave();
         }
     }
+
+    autosave = () => {
+        setTimeout(() => {
+            this.handleSave();
+            this.autosave();
+        }, 300000);
+    };
 
     setFocus = () => {
         this.setState({ hasFocus: true });
@@ -70,15 +78,7 @@ class PostEditor extends PureComponent {
 
     handleKeyCommand = command => {
         if (command === 'myeditor-save') {
-            this.props.dispatch({
-                type: SAVE_DRAFT,
-                draft: {
-                    title: this.state.title,
-                    content: convertToRaw(
-                        this.state.editorState.getCurrentContent()
-                    ),
-                },
-            });
+            this.handleSave();
             return 'handled';
         }
         const newState = RichUtils.handleKeyCommand(
@@ -120,6 +120,23 @@ class PostEditor extends PureComponent {
 
     focus = e => this.editor.focus();
 
+    handleReset = () => {
+        this.setState({ title: '', editorState: EditorState.createEmpty() });
+    };
+
+    handleSave = () => {
+        message.loading('保存草稿中...', 3);
+        this.props.dispatch({
+            type: SAVE_DRAFT,
+            draft: {
+                title: this.state.title,
+                content: convertToRaw(
+                    this.state.editorState.getCurrentContent()
+                ),
+            },
+        });
+    };
+
     render = () => {
         if (!this.state.editorState) return <LoadingPage />;
         return (
@@ -143,6 +160,12 @@ class PostEditor extends PureComponent {
                                             this._toggleInlineStyle
                                         }
                                         editorState={this.state.editorState}
+                                        additionalIcons={[
+                                            {
+                                                icon: 'trash',
+                                                onToggle: this.handleReset,
+                                            },
+                                        ]}
                                     />
                                 </div>
                             </Affix>

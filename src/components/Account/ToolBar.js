@@ -10,6 +10,7 @@ class ToolBar extends PureComponent {
         editorState: PropTypes.object.isRequired,
         toggleBlockType: PropTypes.func.isRequired,
         toggleInlineStyle: PropTypes.func.isRequired,
+        additionalIcons: PropTypes.array,
     };
 
     BLOCK_TYPES = [
@@ -41,7 +42,6 @@ class ToolBar extends PureComponent {
         { label: 'bold', style: 'BOLD' },
         { label: 'italic', style: 'ITALIC' },
         { label: 'underline', style: 'UNDERLINE' },
-        { label: 'terminal', style: 'CODE' },
         { label: 'strikethrough', style: 'STRIKETHROUGH' },
     ];
 
@@ -73,12 +73,20 @@ class ToolBar extends PureComponent {
         );
     };
 
+    renderAddtionalIcons = () => {
+        const { additionalIcons } = this.props;
+        return additionalIcons.map((icon, index) =>
+            <OtherIcon {...icon} key={index} />
+        );
+    };
+
     render = () => {
         return (
             <div className="toolbar-container">
                 {this.renderHeaderIcon()}
                 {this.renderInlineStypeIcons()}
                 {this.renderBlockTypesIcons()}
+                {this.renderAddtionalIcons()}
             </div>
         );
     };
@@ -141,6 +149,32 @@ class InlineIcon extends PureComponent {
                     onClick={this.onToggle}
                 >
                     <FontAwesome name={type.label} />
+                </div>
+            </Tooltip>
+        );
+    };
+}
+
+class OtherIcon extends PureComponent {
+    static propTypes = {
+        onToggle: PropTypes.func,
+        icon: PropTypes.string.isRequired,
+        active: PropTypes.bool,
+    };
+
+    render = () => {
+        const { onToggle, icon, active } = this.props;
+
+        return (
+            <Tooltip title={icon} mouseEnterDelay={1} key={icon}>
+                <div
+                    className={classNames('toolbar-button', {
+                        active,
+                    })}
+                    key={icon}
+                    onClick={onToggle}
+                >
+                    <FontAwesome name={icon} />
                 </div>
             </Tooltip>
         );

@@ -8,26 +8,21 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-batch';
 import 'prismjs/components/prism-c';
 import 'prismjs/components/prism-cpp';
-import 'prismjs/components/prism-coffeescript';
 import 'prismjs/components/prism-git';
 import 'prismjs/components/prism-graphql';
 import 'prismjs/components/prism-haskell';
 import 'prismjs/components/prism-http';
-import 'prismjs/components/prism-jade';
 import 'prismjs/components/prism-json';
 import 'prismjs/components/prism-latex';
 import 'prismjs/components/prism-less';
 import 'prismjs/components/prism-makefile';
 import 'prismjs/components/prism-markdown';
 import 'prismjs/components/prism-matlab';
-import 'prismjs/components/prism-objectivec';
 import 'prismjs/components/prism-python';
-import 'prismjs/components/prism-r';
 import 'prismjs/components/prism-jsx';
 import 'prismjs/components/prism-sass';
 import 'prismjs/components/prism-scss';
 import 'prismjs/components/prism-sql';
-import 'prismjs/components/prism-swift';
 import 'prismjs/components/prism-yaml';
 
 /* eslint react/prop-types: 0 */ const prismPlugin = {
