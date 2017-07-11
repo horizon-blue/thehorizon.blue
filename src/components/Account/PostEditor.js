@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Affix, message } from 'antd';
+import { Row, Col, Affix, message, Button, Radio } from 'antd';
+import FontAwesome from '../_global/FontAwesome';
 import classNames from 'classnames';
 import Editor from 'draft-js-plugins-editor';
 import PropTypes from 'prop-types';
 import { RichUtils, EditorState, convertFromRaw, convertToRaw } from 'draft-js';
+import moment from 'moment';
 import 'draft-js/dist/Draft.css';
 import ToolBar from './ToolBar';
 import styleMap from './styleMap';
@@ -12,6 +14,7 @@ import LoadingPage from '../_global/LoadingPage';
 import { connect } from 'react-redux';
 import './prism.css';
 import { SAVE_DRAFT } from '../../store/reducer/actionTypes';
+import { POST_ROOT } from '../../constants/api';
 
 // draftjs plugins
 import createCounterPlugin from 'draft-js-counter-plugin';
@@ -19,6 +22,7 @@ import createMarkdownShortcutsPlugin from 'draft-js-markdown-shortcuts-plugin';
 import prismPlugin from './prismPlugin';
 const counterPlugin = createCounterPlugin();
 const { CharCounter, WordCounter, LineCounter } = counterPlugin;
+const RadioGroup = Radio.Group;
 
 const plugins = [prismPlugin, createMarkdownShortcutsPlugin(), counterPlugin];
 
@@ -59,11 +63,17 @@ class PostEditor extends PureComponent {
                 props.draft
                     ? {
                           title: props.draft.title,
+                          link: props.draft.link,
+                          visibility: props.draft.visibility,
                           editorState: EditorState.createWithContent(
                               convertFromRaw(props.draft.content)
                           ),
                       }
-                    : { title: '', editorState: EditorState.createEmpty() }
+                    : {
+                          title: '',
+                          editorState: EditorState.createEmpty(),
+                          visibility: 1,
+                      }
             );
             this.autosave = setInterval(this.handleSave, 300000);
         }
@@ -115,6 +125,10 @@ class PostEditor extends PureComponent {
         this.setState({ title: e.target.value });
     };
 
+    onLinkChange = e => {
+        this.setState({ link: e.target.value });
+    };
+
     renderWordCountFooter = () => {
         return (
             <footer className="word-count-footer">
@@ -137,10 +151,18 @@ class PostEditor extends PureComponent {
             type: SAVE_DRAFT,
             draft: {
                 title: this.state.title,
+                link: this.state.link,
+                visibility: this.state.visibility,
                 content: convertToRaw(
                     this.state.editorState.getCurrentContent()
                 ),
             },
+        });
+    };
+
+    onChangeVisibility = e => {
+        this.setState({
+            visibility: e.target.value,
         });
     };
 
@@ -154,13 +176,13 @@ class PostEditor extends PureComponent {
                             <Affix>
                                 <input
                                     type="text"
-                                    className="editor-field"
+                                    className="editor-field editor-title"
                                     value={this.state.title}
                                     onChange={this.onTitleChange}
                                     placeholder="无题 | Untitled"
                                 />
                                 <hr />
-                                <div className="editor-field">
+                                <div className="toolbar-wrapper">
                                     <ToolBar
                                         toggleBlockType={this._toggleBlockType}
                                         toggleInlineStyle={
@@ -195,6 +217,81 @@ class PostEditor extends PureComponent {
                                 ref={editor => (this.editor = editor)}
                             />
                         </div>
+                        <div className="advanced-settings">
+                            <Row className="advanced-settings-entry">
+                                <Col>
+                                    <label>
+                                        <FontAwesome name="link" /> 链接：{'  '}
+                                        <span className="post-link">
+                                            {POST_ROOT +
+                                                moment(new Date()).format(
+                                                    'YYYY-MM-DD'
+                                                )}/
+                                            <input
+                                                type="text"
+                                                className="editor-field"
+                                                value={this.state.link}
+                                                onChange={this.onLinkChange}
+                                                placeholder={this.state.title}
+                                            />
+                                        </span>
+                                    </label>
+                                </Col>
+                            </Row>
+                            <Row className="advanced-settings-entry">
+                                <Col>
+                                    <label>
+                                        <FontAwesome name="tags" /> 标签：{'  '}
+                                        <input
+                                            type="text"
+                                            className="editor-field"
+                                            value={this.state.link}
+                                            onChange={this.onLinkChange}
+                                            placeholder={this.state.title}
+                                        />
+                                    </label>
+                                </Col>
+                            </Row>
+                            <Row className="advanced-settings-entry">
+                                <Col>
+                                    <label>
+                                        <FontAwesome name="puzzle-piece" /> 分类：{'  '}
+                                        <input
+                                            type="text"
+                                            className="editor-field"
+                                            value={this.state.link}
+                                            onChange={this.onLinkChange}
+                                            placeholder={this.state.title}
+                                        />
+                                    </label>
+                                </Col>
+                            </Row>
+                            <Row className="advanced-settings-entry">
+                                <Col>
+                                    <label>
+                                        <FontAwesome name="eye" /> 权限：{'  '}
+                                        <RadioGroup
+                                            onChange={this.onChangeVisibility}
+                                            value={this.state.visibility}
+                                        >
+                                            <Radio value={1}>公开</Radio>
+                                            <Radio value={2}>半公开</Radio>
+                                            <Radio value={3}>仅自己可见</Radio>
+                                        </RadioGroup>
+                                    </label>
+                                </Col>
+                            </Row>
+                        </div>
+                        <Row type="flex" justify="center">
+                            <Col>
+                                <Button ghost type="primary">
+                                    发布
+                                </Button>
+                                <a className="save-as-draft">
+                                    保存为草稿
+                                </a>
+                            </Col>
+                        </Row>
                     </Col>
                 </Row>
                 {this.renderWordCountFooter()}

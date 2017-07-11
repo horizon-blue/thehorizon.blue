@@ -98,12 +98,14 @@
 
 .post-editor input {
     border-width: 0;
-    background-color: #111116;
-    width: 100%;
-    padding: 2vh 1vw;
-    height: 8vh;
-    font-size: x-large;
     color: rgba(200, 233, 255, 0.6);
+}
+
+.editor-field.editor-title {
+    font-size: x-large;
+    padding: 2vh 1vw;
+    width: 100%;
+    height: 8vh;
     text-align: center;
     letter-spacing: 5px;
 }
@@ -113,6 +115,9 @@
 }
 
 .post-editor input::placeholder {
+}
+
+.editor-field.editor-title::placeholder {
     color: rgba(200, 233, 255, 0.1);
     letter-spacing: 10px;
 }
@@ -148,7 +153,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 500ms ease-in;
+    transition: all 300ms ease-in;
     font-size: 4vh;
     width: 6vh;
     height: 6vh;
@@ -172,7 +177,7 @@
 
 .DraftEditor-editorContainer {
     padding: 3vh 2vw;
-    min-height: 50vh;
+    min-height: 70vh;
     font-size: larger;
 }
 
@@ -253,4 +258,29 @@ pre {
 
 .avatar-img:hover {
     opacity: 1;
+}
+
+.toolbar-wrapper {
+    background-color: #111116;
+}
+
+.save-as-draft {
+    margin-left: 10px;
+}
+
+.advanced-settings {
+    margin: 5vh 0;
+    opacity: 0.8;
+}
+
+.advanced-settings-entry {
+    margin-bottom: 1vh;
+}
+
+.post-link {
+    color: #729fc9;
+}
+
+.post-link .editor-field {
+    color: rgb(124, 190, 255);
 }
