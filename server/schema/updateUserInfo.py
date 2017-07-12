@@ -6,8 +6,8 @@ from .utils import decode
 
 class updateUserInfo(graphene.Mutation):
     class Input:
-        name = graphene.String()
-        password = graphene.String()
+        name = graphene.NonNull(graphene.String)
+        password = graphene.NonNull(graphene.String)
         avatar = graphene.String()
         biography = graphene.String()
 

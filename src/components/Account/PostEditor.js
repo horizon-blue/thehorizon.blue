@@ -8,7 +8,6 @@ import { RichUtils, EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import moment from 'moment';
 import { gql, graphql } from 'react-apollo';
 import 'draft-js/dist/Draft.css';
-import transit from 'transit-immutable-js';
 import ToolBar from './ToolBar';
 import styleMap from './styleMap';
 import keyboardBindingFn from './keyboardBindingFn';
@@ -94,11 +93,11 @@ class PostEditor extends PureComponent {
                     ? {
                           ...initialState,
                           ...props.draft,
-                          editorState: EditorState.createWithContent(
-                              convertFromRaw(
-                                  transit.fromJSON(props.draft.content)
-                              )
-                          ),
+                          editorState: props.draft.content
+                              ? EditorState.createWithContent(
+                                    convertFromRaw(props.draft.content)
+                                )
+                              : initialState.editorState,
                       }
                     : initialState
             );
@@ -186,8 +185,8 @@ class PostEditor extends PureComponent {
             type: SAVE_DRAFT,
             draft: {
                 title: this.state.title,
-                content: transit.toJSON(
-                    convertToRaw(this.state.editorState.getCurrentContent())
+                content: convertToRaw(
+                    this.state.editorState.getCurrentContent()
                 ),
                 link: this.state.link,
                 tags: this.state.tags,

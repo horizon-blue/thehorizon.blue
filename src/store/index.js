@@ -4,6 +4,7 @@ import createSagaMiddleware from 'redux-saga';
 import rootReducer from './reducer';
 import initialState from './reducer/initialState';
 import client, { applyAuthMiddleWare } from '../apolloClient';
+import immutableTransform from 'redux-persist-transform-immutable';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -29,6 +30,7 @@ function configureStore() {
     const store = createStore(rootReducer, initialState, compose(...enhancer));
     persistStore(store, {
         whitelist: ['token', 'draft'],
+        transforms: [immutableTransform()],
     });
     applyAuthMiddleWare(store);
 

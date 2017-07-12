@@ -30,6 +30,8 @@ class Post(Base):
         "Tag", secondary=tagIdentifier, back_populates="posts")
     categoryId = Column(Integer, ForeignKey('category.id'))
     category = relationship("Category", back_populates="posts")
+    visibilityId = Column(Integer, ForeignKey('visibility.id'))
+    visibility = relationship("Visibility", back_populates="posts")
 
     deleted = Column(Boolean, default=False)
 
