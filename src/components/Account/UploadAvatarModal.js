@@ -59,7 +59,7 @@ class UploadAvatarModal extends PureComponent {
                 variables: { avatar: this.state.url },
             })
             .then(({ data }) => {
-                data.updateUserInfo.success
+                data.UpdateUserInfo.success
                     ? message.success('设置成功', 5)
                     : message.error('设置失败', 5);
                 this.setState({ settingInfo: false });

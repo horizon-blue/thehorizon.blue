@@ -6,8 +6,8 @@ from .utils import decode
 
 class UpdateUserInfo(graphene.Mutation):
     class Input:
-        name = graphene.NonNull(graphene.String)
-        password = graphene.NonNull(graphene.String)
+        name = graphene.String()
+        password = graphene.String()
         avatar = graphene.String()
         biography = graphene.String()
 
@@ -23,6 +23,9 @@ class UpdateUserInfo(graphene.Mutation):
 
         try:
             for key, value in args.items():
+                if key == 'name' or key == 'password':
+                    if value == '' or value is None:
+                        UpdateUserInfo(success=False)
                 setattr(user, key, value)
             db_session.commit()
             return UpdateUserInfo(success=True)
