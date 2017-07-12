@@ -47,6 +47,26 @@ const initialState = {
     excerpt: '',
 };
 
+const exportHTMLOptions = {
+    entityStyleFn: entity => {
+        const entityType = entity.get('type').toLowerCase();
+
+        if (entityType === 'img') {
+            const data = entity.getData();
+
+            return {
+                element: 'img',
+                attributes: {
+                    src: data.src,
+                },
+                style: {
+                    // put styles here...
+                },
+            };
+        }
+    },
+};
+
 const getTagsAndCateegories = gql`
   query getTagsAndCateegories {
     tags {
@@ -247,7 +267,8 @@ class PostEditor extends PureComponent {
     handleSubmit = () => {
         // finally!! upload the post
         const parsedContent = stateToHTML(
-            this.state.editorState.getCurrentContent()
+            this.state.editorState.getCurrentContent(),
+            exportHTMLOptions
         );
 
         if (!this.state.title || !parsedContent || !this.state.category) {
