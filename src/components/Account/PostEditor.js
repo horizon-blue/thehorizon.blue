@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
-import { Row, Col, Affix, message, Button, Radio } from 'antd';
+import { Row, Col, Affix, message, Button, Radio, Select, Spin } from 'antd';
 import FontAwesome from '../_global/FontAwesome';
 import classNames from 'classnames';
 import Editor from 'draft-js-plugins-editor';
 import PropTypes from 'prop-types';
 import { RichUtils, EditorState, convertFromRaw, convertToRaw } from 'draft-js';
 import moment from 'moment';
+import { gql, graphql } from 'react-apollo';
 import 'draft-js/dist/Draft.css';
+import transit from 'transit-immutable-js';
 import ToolBar from './ToolBar';
 import styleMap from './styleMap';
 import keyboardBindingFn from './keyboardBindingFn';
@@ -23,6 +25,7 @@ import prismPlugin from './prismPlugin';
 const counterPlugin = createCounterPlugin();
 const { CharCounter, WordCounter, LineCounter } = counterPlugin;
 const RadioGroup = Radio.Group;
+const Option = Select.Option;
 
 const plugins = [prismPlugin, createMarkdownShortcutsPlugin(), counterPlugin];
 
@@ -35,12 +38,39 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
+const getTagsAndCateegories = gql`
+  query getTagsAndCateegories {
+    tags {
+        name
+    }
+    categories {
+        name
+    }
+  }
+`;
+
+const initialState = {
+    title: '',
+    editorState: EditorState.createEmpty(),
+    link: '',
+    visibility: '',
+    tags: [],
+    category: '',
+    excerpt: '',
+};
+
 @connect(mapStateToProps)
+@graphql(getTagsAndCateegories)
 class PostEditor extends PureComponent {
     static propTypes = {
         draft: PropTypes.any,
         rehydrated: PropTypes.bool,
         dispatch: PropTypes.func.isRequired,
+        data: PropTypes.shape({
+            loading: PropTypes.bool.isRequired,
+            tags: PropTypes.array,
+            categories: PropTypes.array,
+        }).isRequired,
     };
 
     state = {};
@@ -62,18 +92,15 @@ class PostEditor extends PureComponent {
             this.setState(
                 props.draft
                     ? {
-                          title: props.draft.title,
-                          link: props.draft.link,
-                          visibility: props.draft.visibility,
+                          ...initialState,
+                          ...props.draft,
                           editorState: EditorState.createWithContent(
-                              convertFromRaw(props.draft.content)
+                              convertFromRaw(
+                                  transit.fromJSON(props.draft.content)
+                              )
                           ),
                       }
-                    : {
-                          title: '',
-                          editorState: EditorState.createEmpty(),
-                          visibility: 1,
-                      }
+                    : initialState
             );
             this.autosave = setInterval(this.handleSave, 300000);
         }
@@ -91,6 +118,14 @@ class PostEditor extends PureComponent {
 
     renderWordCountFooter = () => {
         return <div />;
+    };
+
+    onTagChange = tags => {
+        this.setState({ tags });
+    };
+
+    onExcerptChange = excerpt => {
+        this.setState({ excerpt });
     };
 
     handleKeyCommand = command => {
@@ -142,7 +177,7 @@ class PostEditor extends PureComponent {
     focus = e => this.editor.focus();
 
     handleReset = () => {
-        this.setState({ title: '', editorState: EditorState.createEmpty() });
+        this.setState(initialState);
     };
 
     handleSave = () => {
@@ -151,11 +186,13 @@ class PostEditor extends PureComponent {
             type: SAVE_DRAFT,
             draft: {
                 title: this.state.title,
-                link: this.state.link,
-                visibility: this.state.visibility,
-                content: convertToRaw(
-                    this.state.editorState.getCurrentContent()
+                content: transit.toJSON(
+                    convertToRaw(this.state.editorState.getCurrentContent())
                 ),
+                link: this.state.link,
+                tags: this.state.tags,
+                category: this.state.category,
+                visibility: this.state.visibility,
             },
         });
     };
@@ -164,6 +201,18 @@ class PostEditor extends PureComponent {
         this.setState({
             visibility: e.target.value,
         });
+    };
+
+    onCategoryChange = value => {
+        this.setState({ category: value });
+    };
+
+    renderTags = () => {
+        const { data: { tags, loading } } = this.props;
+        if (loading) return null;
+        return tags.map(tag =>
+            <Option key={tag.name} value={tag.name}>{tag.name}</Option>
+        );
     };
 
     render = () => {
@@ -242,13 +291,18 @@ class PostEditor extends PureComponent {
                                 <Col>
                                     <label>
                                         <FontAwesome name="tags" /> 标签：{'  '}
-                                        <input
-                                            type="text"
-                                            className="editor-field"
-                                            value={this.state.link}
-                                            onChange={this.onLinkChange}
-                                            placeholder={this.state.title}
-                                        />
+                                        {!this.props.data.loading &&
+                                            <Select
+                                                mode="tags"
+                                                tokenSeparators={[',']}
+                                                className="editor-field editor-tags"
+                                                value={this.state.tags}
+                                                size="small"
+                                                onChange={this.onTagChange}
+                                                filterOption={false}
+                                            >
+                                                {this.renderTags()}
+                                            </Select>}
                                     </label>
                                 </Col>
                             </Row>
@@ -256,13 +310,21 @@ class PostEditor extends PureComponent {
                                 <Col>
                                     <label>
                                         <FontAwesome name="puzzle-piece" /> 分类：{'  '}
-                                        <input
-                                            type="text"
-                                            className="editor-field"
-                                            value={this.state.link}
-                                            onChange={this.onLinkChange}
-                                            placeholder={this.state.title}
-                                        />
+                                        {!this.props.data.loading &&
+                                            <Select
+                                                className="editor-field editor-tags editor-category"
+                                                value={this.state.category}
+                                                size="small"
+                                                onChange={this.onCategoryChange}
+                                                notFoundContent={
+                                                    this.props.data.loading
+                                                        ? <Spin size="small" />
+                                                        : null
+                                                }
+                                                filterOption={false}
+                                            >
+                                                {this.renderTags()}
+                                            </Select>}
                                     </label>
                                 </Col>
                             </Row>
@@ -278,6 +340,20 @@ class PostEditor extends PureComponent {
                                             <Radio value={2}>半公开</Radio>
                                             <Radio value={3}>仅自己可见</Radio>
                                         </RadioGroup>
+                                    </label>
+                                </Col>
+                            </Row>
+                            <Row className="advanced-settings-entry">
+                                <Col>
+                                    <label>
+                                        <FontAwesome name="bars" /> 简介：{'  '}
+                                        <input
+                                            type="text"
+                                            className="editor-field editor-excerpt"
+                                            value={this.state.excerpt}
+                                            onChange={this.onExcerptChange}
+                                            placeholder="---"
+                                        />
                                     </label>
                                 </Col>
                             </Row>

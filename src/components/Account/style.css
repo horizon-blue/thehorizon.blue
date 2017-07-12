@@ -284,3 +284,42 @@ pre {
 .post-link .editor-field {
     color: rgb(124, 190, 255);
 }
+
+.ant-select-dropdown-menu-item.ant-select-dropdown-menu-item-active {
+    background-color: rgba(12, 96, 170, 0.25);
+}
+
+.ant-select-dropdown-menu-item.ant-select-dropdown-menu-item-active:hover {
+    background-color: rgba(12, 96, 170, 0.25);
+}
+
+.ant-select-dropdown-menu-item-selected.ant-select-dropdown-menu-item {
+    background-color: rgba(12, 96, 170, 0.35);
+}
+
+.ant-select-selection--multiple .ant-select-selection__rendered .ant-select-selection__choice {
+    border-color: #3862a5;
+    background-color: rgba(12, 96, 170, 0.35);
+    color: #8cbae2;
+}
+
+.editor-field.editor-tags {
+    width: 80%;
+}
+
+.editor-field.editor-tags.editor-category {
+    width: 150px;
+}
+
+.editor-field.editor-tags .ant-select-selection {
+    transition: background-color 300ms ease-in;
+    border-width: 0px;
+}
+
+.editor-field.editor-tags .ant-select-selection:hover {
+    background-color: #10151E;
+}
+
+.editor-field.editor-excerpt {
+    width: 80%;
+}
