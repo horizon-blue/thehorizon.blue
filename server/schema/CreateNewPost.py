@@ -21,12 +21,13 @@ class CreateNewPost(graphene.Mutation):
         visibilityId = graphene.Int()
 
     success = graphene.Boolean()
+    link = graphene.String()
 
     @staticmethod
     def mutate(root, args, context, info):
         decoded = decode(context.headers.get('Authorization'))[0]
         if decoded is None:
-            return CreateNewPost(success=False)
+            return CreateNewPost(success=False, link=None)
         userId = decoded['sub']
         user = User.get_query(context).get(userId)
 
@@ -35,9 +36,9 @@ class CreateNewPost(graphene.Mutation):
             new_post = Post(title=args['title'], content=args[
                             'content'], author=user)
 
-            if 'excerpt' in args:
+            if 'excerpt' in args and args['excerpt'] is not None and args['excerpt'] != '':
                 new_post.excerpt = args['excerpt']
-            if 'link' in args:
+            if 'link' in args and args['link'] is not None and args['link'] != '':
                 new_post.link = args['link']
             # resolve visibility. default public
             new_post.visibilityId = args[
@@ -63,7 +64,7 @@ class CreateNewPost(graphene.Mutation):
             # save the post to database
             db_session.add(new_post)
             db_session.commit()
-            return CreateNewPost(success=True)
+            return CreateNewPost(success=True, link=new_post.link)
 
         except:
-            return CreateNewPost(success=False)
+            return CreateNewPost(success=False, link=None)

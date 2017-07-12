@@ -5,11 +5,11 @@ import classNames from 'classnames';
 import Editor from 'draft-js-plugins-editor';
 import PropTypes from 'prop-types';
 import { RichUtils, EditorState, convertFromRaw, convertToRaw } from 'draft-js';
-import moment from 'moment';
 import { gql, graphql } from 'react-apollo';
 import 'draft-js/dist/Draft.css';
 import ToolBar from './ToolBar';
 import styleMap from './styleMap';
+import { stateToHTML } from 'draft-js-export-html';
 import keyboardBindingFn from './keyboardBindingFn';
 import LoadingPage from '../_global/LoadingPage';
 import { connect } from 'react-redux';
@@ -37,6 +37,16 @@ function mapStateToProps(state, ownProps) {
     };
 }
 
+const initialState = {
+    title: '',
+    editorState: EditorState.createEmpty(),
+    link: '',
+    visibility: 1,
+    tags: [],
+    category: 'trifles',
+    excerpt: '',
+};
+
 const getTagsAndCateegories = gql`
   query getTagsAndCateegories {
     tags {
@@ -48,16 +58,16 @@ const getTagsAndCateegories = gql`
   }
 `;
 
-const initialState = {
-    title: '',
-    editorState: EditorState.createEmpty(),
-    link: '',
-    visibility: '',
-    tags: [],
-    category: '',
-    excerpt: '',
-};
+const CreateNewPost = gql`
+    mutation CreateNewPost($title: String!, $content: String!, $link: String, $tags: [String], $category: String!, $visibilityId: Int!, $excerpt: String) {
+        CreateNewPost(title: $title, content: $content, link: $link, tags: $tags, category: $category, visibilityId: $visibilityId, excerpt: $excerpt) {
+            success
+            link
+        }
+    }
+`;
 
+@graphql(CreateNewPost)
 @connect(mapStateToProps)
 @graphql(getTagsAndCateegories)
 class PostEditor extends PureComponent {
@@ -65,6 +75,8 @@ class PostEditor extends PureComponent {
         draft: PropTypes.any,
         rehydrated: PropTypes.bool,
         dispatch: PropTypes.func.isRequired,
+        history: PropTypes.object.isRequired,
+        mutate: PropTypes.func.isRequired,
         data: PropTypes.shape({
             loading: PropTypes.bool.isRequired,
             tags: PropTypes.array,
@@ -124,7 +136,7 @@ class PostEditor extends PureComponent {
     };
 
     onExcerptChange = excerpt => {
-        this.setState({ excerpt });
+        this.setState({ excerpt: excerpt.target.value });
     };
 
     handleKeyCommand = command => {
@@ -192,7 +204,15 @@ class PostEditor extends PureComponent {
                 tags: this.state.tags,
                 category: this.state.category,
                 visibility: this.state.visibility,
+                excerpt: this.state.excerpt,
             },
+        });
+    };
+
+    removeDraft = () => {
+        this.props.dispatch({
+            type: SAVE_DRAFT,
+            draft: null,
         });
     };
 
@@ -212,6 +232,59 @@ class PostEditor extends PureComponent {
         return tags.map(tag =>
             <Option key={tag.name} value={tag.name}>{tag.name}</Option>
         );
+    };
+
+    renderCategories = () => {
+        const { data: { categories, loading } } = this.props;
+        if (loading) return null;
+        return categories.map(category =>
+            <Option key={category.name} value={category.name}>
+                {category.name}
+            </Option>
+        );
+    };
+
+    handleSubmit = () => {
+        // finally!! upload the post
+        const parsedContent = stateToHTML(
+            this.state.editorState.getCurrentContent()
+        );
+
+        if (!this.state.title || !parsedContent || !this.state.category) {
+            message.error('标题，内容，分类不能为空', 5);
+            return;
+        }
+
+        this.setState({ uploading: true });
+
+        const { mutate, history } = this.props;
+        mutate({
+            variables: {
+                title: this.state.title,
+                content: parsedContent,
+                link: this.state.link,
+                visibilityId: this.state.visibility,
+                category: this.state.category,
+                tags: this.state.tags,
+                excerpt: this.state.excerpt,
+            },
+        })
+            .then(({ data }) => {
+                data.CreateNewPost.success
+                    ? message.success('发布成功', 5)
+                    : message.error('发布失败', 5);
+                this.setState({ uploading: false });
+                // clear the draft
+                this.removeDraft();
+                history.push(
+                    `/blog/${this.state.category}/${data.CreateNewPost.link}`
+                );
+            })
+            .catch(error => {
+                console.log('upload post', error);
+                this.setState({ uploading: false });
+                message.error(error.message);
+            });
     };
 
     render = () => {
@@ -271,10 +344,7 @@ class PostEditor extends PureComponent {
                                     <label>
                                         <FontAwesome name="link" /> 链接：{'  '}
                                         <span className="post-link">
-                                            {POST_ROOT +
-                                                moment(new Date()).format(
-                                                    'YYYY-MM-DD'
-                                                )}/
+                                            {POST_ROOT + this.state.category + '/'}
                                             <input
                                                 type="text"
                                                 className="editor-field"
@@ -315,6 +385,7 @@ class PostEditor extends PureComponent {
                                                 value={this.state.category}
                                                 size="small"
                                                 onChange={this.onCategoryChange}
+                                                defaultValue="1"
                                                 notFoundContent={
                                                     this.props.data.loading
                                                         ? <Spin size="small" />
@@ -322,7 +393,7 @@ class PostEditor extends PureComponent {
                                                 }
                                                 filterOption={false}
                                             >
-                                                {this.renderTags()}
+                                                {this.renderCategories()}
                                             </Select>}
                                     </label>
                                 </Col>
@@ -359,7 +430,12 @@ class PostEditor extends PureComponent {
                         </div>
                         <Row type="flex" justify="center">
                             <Col>
-                                <Button ghost type="primary">
+                                <Button
+                                    ghost
+                                    type="primary"
+                                    onClick={this.handleSubmit}
+                                    loading={this.state.uploading}
+                                >
                                     发布
                                 </Button>
                                 <a className="save-as-draft">

@@ -58,7 +58,7 @@ class Blog extends PureComponent {
               {posts.map(post =>
                 <BlogPostCard
                   post={post}
-                  key={post.link}
+                  key={post.publishDate + post.link}
                   history={history}
                   location={location}
                 />

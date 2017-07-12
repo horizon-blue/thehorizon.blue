@@ -1,6 +1,6 @@
 import models
 from graphene_sqlalchemy import SQLAlchemyObjectType
-from .utils import Utils
+from .utils import Utils, cleanhtml
 
 
 class User(Utils, SQLAlchemyObjectType):
@@ -17,7 +17,11 @@ class Post(Utils, SQLAlchemyObjectType):
     def resolve_excerpt(self, args, context, info):
         # return first 160 of content in case excerpt is empty
         if self.excerpt is None or self.excerpt == '':
-            return self.content[:160]
+            return cleanhtml(self.content)[:160]
+
+    @classmethod
+    def get_all(cls):
+        return cls._meta.model.query.filter_by(deleted=False).order_by(cls._meta.model.publishDate.desc()).all()
 
 
 class Comment(Utils, SQLAlchemyObjectType):

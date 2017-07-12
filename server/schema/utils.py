@@ -1,4 +1,6 @@
 import jwt
+import re
+
 
 secret = '***REMOVED***'
 
@@ -22,3 +24,11 @@ def decode(token):
 
 def is_admin(decoded):
     return decoded is not None and decoded["groupId"] == 1
+
+
+cleanr = re.compile('<.*?>')
+
+
+def cleanhtml(raw_html):
+    cleantext = re.sub(cleanr, '', raw_html)
+    return cleantext
