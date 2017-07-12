@@ -23,7 +23,7 @@ const beforeUpload = file => {
 
 const updateAvatar = gql`
     mutation updateAvatar($avatar: String!) {
-        updateUserInfo(avatar: $avatar) {
+        UpdateUserInfo(avatar: $avatar) {
             success
         }
     }
