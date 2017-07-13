@@ -6,6 +6,7 @@ import FastClick from 'fastclick';
 
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
+import './prism.css';
 
 import Router from './components/Router';
 import configureStore from './store';

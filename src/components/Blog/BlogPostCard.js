@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import { Row, Col, Tag } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import Prism from '../_global/Prism';
 import _ from 'lodash';
 import 'moment/locale/zh-cn';
-
 import './style.css';
 
 class BlogPostCard extends PureComponent {
@@ -19,13 +19,31 @@ class BlogPostCard extends PureComponent {
         windowHeight: 0,
     };
 
-    componentDidMount() {
+    componentDidMount = () => {
         window.addEventListener('scroll', this.handleScroll);
-    }
+        this.highlight();
+    };
 
-    componentWillUnmount() {
+    componentDidUpdate = (prevProps, prevState) => {
+        if (this.props.post === prevProps.post) return;
+        this.highlight();
+    };
+
+    componentWillUnmount = () => {
         window.removeEventListener('scroll', this.handleScroll);
-    }
+    };
+
+    highlight = () => {
+        if (!this.excerpt) return;
+        let code = this.excerpt.getElementsByTagName('code');
+        for (let c of code) {
+            Prism.highlightElement(c);
+        }
+    };
+
+    createExceprt = excerpt => {
+        return { __html: excerpt };
+    };
 
     handleScroll = ev => {
         this.setState({
@@ -41,8 +59,8 @@ class BlogPostCard extends PureComponent {
     }
 
     handleClick = () => {
-        const { post: { link }, history, location } = this.props;
-        history.push(`${location.pathname}/${link}`);
+        const { post: { link, category }, history, location } = this.props;
+        history.push(`${location.pathname}/${category.name}/${link}`);
     };
 
     render() {
@@ -72,7 +90,14 @@ class BlogPostCard extends PureComponent {
                         </Col>
                     </Row>
                     <Row>
-                        <Col className="post-excerpt">{excerpt}</Col>
+                        <Col className="post-excerpt">
+                            <div
+                                ref={excerpt => (this.excerpt = excerpt)}
+                                dangerouslySetInnerHTML={this.createExceprt(
+                                    excerpt
+                                )}
+                            />
+                        </Col>
                     </Row>
                     <Row>
                         <Col className="post-meta">

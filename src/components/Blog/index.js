@@ -24,6 +24,9 @@ const getAllPosts = gql`
       tags {
         name
       }
+      category {
+        name
+      }
     }
   }
 `;
@@ -103,7 +106,7 @@ class Blog extends PureComponent {
           </div>}
         <Switch>
           <Route path="/blog" exact render={this.renderPosts} />
-          <Route path="/blog/:postLink" component={Post} />
+          <Route path="/blog/:category/:link" component={Post} />
         </Switch>
       </Content>
     );
