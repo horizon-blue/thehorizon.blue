@@ -1,7 +1,8 @@
 import models
 from graphene_sqlalchemy import SQLAlchemyObjectType
+from sqlalchemy import and_, or_
 from bs4 import BeautifulSoup
-from .utils import Utils
+from .utils import Utils, decode
 
 
 class User(Utils, SQLAlchemyObjectType):
@@ -23,8 +24,14 @@ class Post(Utils, SQLAlchemyObjectType):
         return self.excerpt
 
     @classmethod
-    def get_all(cls):
-        return cls._meta.model.query.filter_by(deleted=False).order_by(cls._meta.model.publishDate.desc()).all()
+    def get_all(cls, context):
+        token = context.headers.get('Authorization')
+        decoded = decode(token)[0]
+        model = cls._meta.model
+        if decoded is None:
+            return model.query.filter(model.deleted == False, model.visibilityId != 4).order_by(model.publishDate.desc()).all()
+        userId = decoded.get('sub')
+        return model.query.filter(and_(model.deleted == False, or_(model.visibilityId != 4, model.authorId == userId))).order_by(model.publishDate.desc()).all()
 
 
 class Comment(Utils, SQLAlchemyObjectType):

@@ -14,15 +14,13 @@ import 'moment/locale/zh-cn';
 import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
 import FadeView from '../_global/FadeView';
 import UploadAvatarModal from './UploadAvatarModal';
-import { IMG_ROOT } from '../../constants/api';
+import { IMG_ROOT, ADMIN_GROUP_ID } from '../../constants/api';
 import './style.css';
 
 const LoadableEditor = Loadable({
   loader: () => import(/* webpackChunkName: "PostEditor" */ `./PostEditor`),
   loading: Loading,
 });
-
-const ADMIN_GROUP_ID = '1';
 
 const getSelfInfo = gql`
   query getSelfInfo {

@@ -27,7 +27,7 @@ class Query(graphene.ObjectType):
         return None
 
     def resolve_posts(self, args, context, info):
-        return Post.get_all()
+        return Post.get_all(context)
 
     def resolve_tags(self, args, context, info):
         return Tag.get_all()

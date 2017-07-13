@@ -14,7 +14,7 @@ import keyboardBindingFn from './keyboardBindingFn';
 import LoadingPage from '../_global/LoadingPage';
 import { connect } from 'react-redux';
 import { SAVE_DRAFT, UPDATE_POST } from '../../store/reducer/actionTypes';
-import { POST_ROOT } from '../../constants/api';
+import { POST_ROOT, DRAFT_VISIBILITY_ID } from '../../constants/api';
 
 // draftjs plugins
 import createCounterPlugin from 'draft-js-counter-plugin';
@@ -272,7 +272,7 @@ class PostEditor extends PureComponent {
         );
     };
 
-    handleSubmit = () => {
+    handleUpload = (draft = false) => {
         // finally!! upload the post
         const parsedContent = stateToHTML(
             this.state.editorState.getCurrentContent(),
@@ -292,7 +292,9 @@ class PostEditor extends PureComponent {
                 title: this.state.title,
                 content: parsedContent,
                 link: this.state.link,
-                visibilityId: this.state.visibility,
+                visibilityId: draft
+                    ? DRAFT_VISIBILITY_ID
+                    : this.state.visibility,
                 category: this.state.category,
                 tags: this.state.tags,
                 excerpt: this.state.excerpt,
@@ -317,6 +319,15 @@ class PostEditor extends PureComponent {
                 this.setState({ uploading: false });
                 message.error(error.message);
             });
+    };
+
+    handleDraft = e => {
+        e.preventDefault();
+        this.handleUpload(true);
+    };
+
+    handleSubmit = () => {
+        this.handleUpload();
     };
 
     render = () => {
@@ -473,7 +484,11 @@ class PostEditor extends PureComponent {
                                 >
                                     发布
                                 </Button>
-                                <a className="save-as-draft">
+                                <a
+                                    href="#"
+                                    className="save-as-draft"
+                                    onClick={this.handleDraft}
+                                >
                                     保存为草稿
                                 </a>
                             </Col>

@@ -3,6 +3,7 @@ import { Row, Col, Tag } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import Prism from '../_global/Prism';
+import { DRAFT_VISIBILITY_ID } from '../../constants/api';
 import _ from 'lodash';
 import 'moment/locale/zh-cn';
 import './style.css';
@@ -65,7 +66,7 @@ class BlogPostCard extends PureComponent {
 
     render() {
         const {
-            post: { title, excerpt, publishDate, author, tags },
+            post: { title, excerpt, publishDate, author, tags, visibilityId },
         } = this.props;
         return (
             <div>
@@ -87,6 +88,14 @@ class BlogPostCard extends PureComponent {
                                     {tag.name}
                                 </Tag>
                             )}
+                            {visibilityId === DRAFT_VISIBILITY_ID &&
+                                <Tag
+                                    key="draft-tag"
+                                    color="rgba(14, 100, 118, 0.2)"
+                                    className="post-tag"
+                                >
+                                    草稿
+                                </Tag>}
                         </Col>
                     </Row>
                     <Row>

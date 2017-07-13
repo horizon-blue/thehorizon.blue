@@ -19,6 +19,7 @@ const getAllPosts = gql`
       publishDate
       title
       excerpt
+      visibilityId
       author {
         name
       }
