@@ -3,6 +3,7 @@ from database import db_session
 from models import Post, Tag, Category
 from .objectTypes import User
 from .utils import decode
+from shortuuid import uuid
 
 # for visibility
 # 1 = public
@@ -67,8 +68,8 @@ class CreateNewPost(graphene.Mutation):
             # check if there exist other post with given name
             pre_post_num = Post.query.filter_by(
                 link=new_post.link, category=new_post.category).count()
-            if(pre_post_num > 0):
-                new_post.link += '-{}'.format(pre_post_num)
+            if(pre_post_num):
+                new_post.link += '-{}'.format(uuid())
 
             # save the post to database
             db_session.add(new_post)

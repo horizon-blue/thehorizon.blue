@@ -9,3 +9,8 @@ export const UPDATE_ROUTE_CONFIG = 'UPDATE_ROUTE_CONFIG';
 
 // draft
 export const SAVE_DRAFT = 'SAVE_DRAFT';
+export const UPDATE_POST = 'UPDATE_POST';
+
+// Action subscription
+export const SUBSCRIBE_ACTION = 'SUBSCRIBE_ACTION';
+export const ACTION_RESOLVE = 'ACTION_RESOLVE';

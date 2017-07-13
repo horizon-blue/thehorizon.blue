@@ -13,7 +13,7 @@ import { stateToHTML } from 'draft-js-export-html';
 import keyboardBindingFn from './keyboardBindingFn';
 import LoadingPage from '../_global/LoadingPage';
 import { connect } from 'react-redux';
-import { SAVE_DRAFT } from '../../store/reducer/actionTypes';
+import { SAVE_DRAFT, UPDATE_POST } from '../../store/reducer/actionTypes';
 import { POST_ROOT } from '../../constants/api';
 
 // draftjs plugins
@@ -305,6 +305,9 @@ class PostEditor extends PureComponent {
                 this.setState({ uploading: false });
                 // clear the draft
                 this.removeDraft();
+                this.props.dispatch({
+                    type: UPDATE_POST,
+                });
                 history.push(
                     `/blog/${this.state.category}/${data.CreateNewPost.link}`
                 );

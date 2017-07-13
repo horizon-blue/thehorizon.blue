@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { Spin } from 'antd';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { gql, graphql } from 'react-apollo';
 import Content from '../_global/Content';
@@ -31,28 +32,33 @@ const getAllPosts = gql`
   }
 `;
 
+@connect()
 @graphql(getAllPosts)
-class Blog extends PureComponent {
+class BlogHome extends PureComponent {
   static propTypes = {
     data: PropTypes.shape({
       loading: PropTypes.bool.isRequired,
       posts: PropTypes.array,
+      refetch: PropTypes.func.isRequired,
     }).isRequired,
+    className: PropTypes.string,
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
-    className: PropTypes.string,
+    dispatch: PropTypes.func.isRequired,
   };
 
-  static routeConfig = {
-    title: '记忆碎片',
-    typingStrings: [
-      '这里存放的，^1000大概是一些没有什么逻辑关联的杂思乱想。^1000<br />随意看看便好，不必当真。',
-      ':)',
-    ],
+  updatePost = () => {
+    this.props.data.refetch();
   };
 
-  renderPosts = () => {
+  render = () => {
     const { data: { posts, loading }, history, location } = this.props;
+    if (loading)
+      return (
+        <div className="centered-horizontal">
+          <Spin tip="加载中..." size="large" />
+        </div>
+      );
     return (
       <FadeView in={!loading && _.isArray(posts)} className="fade">
         {loading || !posts
@@ -71,41 +77,35 @@ class Blog extends PureComponent {
     );
   };
 
-  // for testing purpose
-  // renderPosts = () => {
-  //   const { data: { posts, loading }, history, location } = this.props;
-  //   const foo = posts ? _.fill(Array(30), posts[0]) : null;
-  //   return (
-  //     <FadeView in={!loading && _.isArray(posts)} className="fade">
-  //       {loading || !foo
-  //         ? <div />
-  //         : <div>
-  //             {foo.map((post, index) =>
-  //               <BlogPostCard
-  //                 post={post}
-  //                 key={post.link + index}
-  //                 history={history}
-  //                 location={location}
-  //               />
-  //             )}
-  //           </div>}
-  //     </FadeView>
-  //   );
+  // blogInfoUpdate = () => {
+  //   this.props.data.refetch();
   // };
+}
+
+class Blog extends PureComponent {
+  static propTypes = {
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+    className: PropTypes.string,
+  };
+
+  static routeConfig = {
+    title: '记忆碎片',
+    typingStrings: [
+      '这里存放的，^1000大概是一些没有什么逻辑关联的杂思乱想。^1000<br />随意看看便好，不必当真。',
+      ':)',
+    ],
+  };
 
   render = () => {
-    const { className, data: { loading } } = this.props;
+    const { className } = this.props;
     return (
       <Content
         className={classnames('Blog', className)}
         title={Blog.routeConfig.title}
       >
-        {loading &&
-          <div className="centered-horizontal">
-            <Spin tip="加载中..." size="large" />
-          </div>}
         <Switch>
-          <Route path="/blog" exact render={this.renderPosts} />
+          <Route path="/blog" exact component={BlogHome} />
           <Route path="/blog/:category/:link" component={Post} />
         </Switch>
       </Content>
