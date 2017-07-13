@@ -41,6 +41,17 @@ def get_now():
     return datetime.datetime.utcnow()
 
 
+def extract_link_info(token):
+    # return email and group id
+    if(token is None or type(token) != str):
+        return None, None
+    try:
+        decoded = jwt.decode(token, invitation_secret, algorithms=['HS256'])
+        return decoded.get('email'), decoded.get('groupId')
+    except:
+        return None, None
+
+
 cleanr = re.compile('<.*?>')
 
 

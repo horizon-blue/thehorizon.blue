@@ -4,6 +4,17 @@ from .objectTypes import User
 from .utils import secret, get_tomorrow, get_now
 
 
+def generate_token(user):
+    return jwt.encode({
+        'sub': user.id,
+        'exp': get_tomorrow(),
+        'iat': get_now(),
+        'name': user.name,
+        'groupId': user.groupId
+    },
+        secret, algorithm='HS256').decode()
+
+
 class CreateToken(graphene.Mutation):
     class Input:
         name = graphene.NonNull(graphene.String)
@@ -18,13 +29,6 @@ class CreateToken(graphene.Mutation):
         password = args.get('password')
         user = User.get_query(context).filter_by(name=name).first()
         if(user and user.password == password):
-            token = jwt.encode({
-                'sub': user.id,
-                'exp': get_tomorrow(),
-                'iat': get_now(),
-                'name': user.name,
-                'groupId': user.groupId
-            },
-                secret, algorithm='HS256').decode()
+            token = generate_token(user)
             return CreateToken(token=token, success=True)
         return CreateToken(token=None, success=False)
