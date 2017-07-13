@@ -10,6 +10,7 @@ import Albumn from '../Albumn';
 import Lab from '../Lab';
 import About from '../About';
 import Account from '../Account';
+import Registration from '../Registration';
 import NotFound from '../NotFound';
 
 class Router extends PureComponent {
@@ -38,6 +39,11 @@ class Router extends PureComponent {
                             <PrivateRoute path="/lab" component={Lab} />
                             <PrivateRoute path="/about" component={About} />
                             <PrivateRoute path="/account" component={Account} />
+                            <RouteWithConfig
+                                path="/a/super/secrete/path/that/nobody/can/find/:link"
+                                component={Registration}
+                            />
+                            <RouteWithConfig path="/404" component={NotFound} />
                             <RouteWithConfig component={NotFound} />
                         </Switch>
                     </div>

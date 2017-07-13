@@ -5,7 +5,7 @@ import Content from '../_global/Content';
 import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
 import classNames from 'classnames';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Loading from '../_global/Loading';
 import MediaQuery from 'react-responsive';
 import Loadable from 'react-loadable';
@@ -230,6 +230,7 @@ class Account extends PureComponent {
           <Route path="/account" exact render={this.renderPersonalInfo} />
           {this.isAdmin() &&
             <Route path="/account/new-post" exact component={LoadableEditor} />}
+          <Redirect to="/404" />
         </Switch>
       </Content>
     );

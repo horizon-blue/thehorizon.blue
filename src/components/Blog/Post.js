@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
+import { Redirect } from 'react-router-dom';
 import LoadingPage from '../_global/LoadingPage';
 import Prism from '../_global/Prism';
 import { stateToHTML } from 'draft-js-export-html';
@@ -95,6 +96,7 @@ class Post extends PureComponent {
   render() {
     const { data: { loading, post } } = this.props;
     if (loading) return <LoadingPage />;
+    if (!loading && !post) return <Redirect to="/404" />; // post does not exist
     return (
       <div>
         <div

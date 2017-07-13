@@ -5,7 +5,7 @@ from .UpdateUserInfo import UpdateUserInfo
 from .CreateNewPost import CreateNewPost
 from .CreateInvitation import CreateInvitation
 from .CreateNewUser import CreateNewUser
-from .utils import decode, is_admin
+from .utils import decode, is_admin, extract_link_info
 
 
 class Query(graphene.ObjectType):
@@ -14,6 +14,8 @@ class Query(graphene.ObjectType):
     tags = graphene.List(Tag)
     categories = graphene.List(Category)
     groups = graphene.List(Group)
+    invitationIsValid = graphene.Boolean(
+        link=graphene.Argument(graphene.String))
 
     # get info by argument
     user = graphene.Field(User, id=graphene.Argument(
@@ -74,6 +76,13 @@ class Query(graphene.ObjectType):
             return None
         userId = decoded['sub']
         return post if userId == post.authorId else None
+
+    def resolve_invitationIsValid(self, args, context, info):
+        # for debug purpose only
+        link = args.get('link')
+        if extract_link_info(link)[0] is not None:
+            return True
+        return False
 
 
 class Mutation(graphene.ObjectType):
