@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Row, Col, Tag } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import Prism from '../_global/Prism';
 import { DRAFT_VISIBILITY_ID } from '../../constants/api';
 import _ from 'lodash';
 import 'moment/locale/zh-cn';
@@ -22,28 +21,14 @@ class BlogPostCard extends PureComponent {
 
     componentDidMount = () => {
         window.addEventListener('scroll', this.handleScroll);
-        this.highlight();
     };
 
     componentDidUpdate = (prevProps, prevState) => {
         if (this.props.post === prevProps.post) return;
-        this.highlight();
     };
 
     componentWillUnmount = () => {
         window.removeEventListener('scroll', this.handleScroll);
-    };
-
-    highlight = () => {
-        if (!this.excerpt) return;
-        let code = this.excerpt.getElementsByTagName('code');
-        for (let c of code) {
-            Prism.highlightElement(c);
-        }
-    };
-
-    createExceprt = excerpt => {
-        return { __html: excerpt };
     };
 
     handleScroll = ev => {
@@ -100,12 +85,7 @@ class BlogPostCard extends PureComponent {
                     </Row>
                     <Row>
                         <Col className="post-excerpt">
-                            <div
-                                ref={excerpt => (this.excerpt = excerpt)}
-                                dangerouslySetInnerHTML={this.createExceprt(
-                                    excerpt
-                                )}
-                            />
+                            {excerpt}
                         </Col>
                     </Row>
                     <Row>

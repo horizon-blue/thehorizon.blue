@@ -9,7 +9,6 @@ import { gql, graphql } from 'react-apollo';
 import 'draft-js/dist/Draft.css';
 import ToolBar from './ToolBar';
 import styleMap from './styleMap';
-import { stateToHTML } from 'draft-js-export-html';
 import keyboardBindingFn from './keyboardBindingFn';
 import LoadingPage from '../_global/LoadingPage';
 import { connect } from 'react-redux';
@@ -46,35 +45,6 @@ const initialState = {
     excerpt: '',
 };
 
-/* global Prism */
-const blockRenderers = {};
-blockRenderers['code-block'] = block => {
-    const language = block.getData().get('language');
-    if (typeof Prism.languages[language] === 'object')
-        return `<pre class="line-numbers"><code class="language-${language}">${block.getText()}</code></pre>`;
-};
-
-const exportHTMLOptions = {
-    entityStyleFn: entity => {
-        const entityType = entity.get('type').toLowerCase();
-
-        if (entityType === 'img') {
-            const data = entity.getData();
-
-            return {
-                element: 'img',
-                attributes: {
-                    src: data.src,
-                },
-                style: {
-                    // put styles here...
-                },
-            };
-        }
-    },
-    blockRenderers,
-};
-
 const getTagsAndCateegories = gql`
   query getTagsAndCateegories {
     tags {
@@ -87,7 +57,7 @@ const getTagsAndCateegories = gql`
 `;
 
 const CreateNewPost = gql`
-    mutation CreateNewPost($title: String!, $content: String!, $link: String, $tags: [String], $category: String!, $visibilityId: Int!, $excerpt: String) {
+    mutation CreateNewPost($title: String!, $content: String!, $link: String, $tags: [String], $category: String!, $visibilityId: Int!, $excerpt: String!) {
         CreateNewPost(title: $title, content: $content, link: $link, tags: $tags, category: $category, visibilityId: $visibilityId, excerpt: $excerpt) {
             success
             link
@@ -135,7 +105,9 @@ class PostEditor extends PureComponent {
                           ...props.draft,
                           editorState: props.draft.content
                               ? EditorState.createWithContent(
-                                    convertFromRaw(props.draft.content)
+                                    convertFromRaw(
+                                        JSON.parse(props.draft.content)
+                                    )
                                 )
                               : initialState.editorState,
                       }
@@ -225,8 +197,8 @@ class PostEditor extends PureComponent {
             type: SAVE_DRAFT,
             draft: {
                 title: this.state.title,
-                content: convertToRaw(
-                    this.state.editorState.getCurrentContent()
+                content: JSON.stringify(
+                    convertToRaw(this.state.editorState.getCurrentContent())
                 ),
                 link: this.state.link,
                 tags: this.state.tags,
@@ -274,9 +246,13 @@ class PostEditor extends PureComponent {
 
     handleUpload = (draft = false) => {
         // finally!! upload the post
-        const parsedContent = stateToHTML(
-            this.state.editorState.getCurrentContent(),
-            exportHTMLOptions
+        // const parsedContent = stateToHTML(
+        //     this.state.editorState.getCurrentContent(),
+        //     exportHTMLOptions
+        // );
+
+        const parsedContent = JSON.stringify(
+            convertToRaw(this.state.editorState.getCurrentContent())
         );
 
         if (!this.state.title || !parsedContent || !this.state.category) {
@@ -297,7 +273,12 @@ class PostEditor extends PureComponent {
                     : this.state.visibility,
                 category: this.state.category,
                 tags: this.state.tags,
-                excerpt: this.state.excerpt,
+                excerpt:
+                    this.state.excerpt ||
+                        this.state.editorState
+                            .getCurrentContent()
+                            .getPlainText()
+                            .substr(0, 160),
             },
         })
             .then(({ data }) => {

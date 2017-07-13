@@ -15,7 +15,7 @@ class CreateNewPost(graphene.Mutation):
     class Input:
         title = graphene.NonNull(graphene.String)
         content = graphene.NonNull(graphene.String)
-        excerpt = graphene.String()
+        excerpt = graphene.NonNull(graphene.String)
         tags = graphene.List(graphene.String)
         category = graphene.NonNull(graphene.String)
         link = graphene.String()
@@ -35,10 +35,7 @@ class CreateNewPost(graphene.Mutation):
         # begin creating the post
         try:
             new_post = Post(title=args['title'], content=args[
-                            'content'], author=user)
-
-            if 'excerpt' in args and args['excerpt'] is not None and args['excerpt'] != '':
-                new_post.excerpt = args['excerpt']
+                            'content'], author=user, excerpt=args['excerpt'])
             if 'link' in args:
                 link = args['link']
             if link is None or link == '':

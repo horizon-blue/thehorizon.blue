@@ -1,7 +1,6 @@
 import models
 from graphene_sqlalchemy import SQLAlchemyObjectType
 from sqlalchemy import and_, or_
-from bs4 import BeautifulSoup
 from .utils import Utils, decode
 
 
@@ -15,13 +14,6 @@ class Post(Utils, SQLAlchemyObjectType):
     class Meta:
         model = models.Post
         exclude_fields = ['deleted', 'authorId', 'categoryId']
-
-    def resolve_excerpt(self, args, context, info):
-        # return first 160 of content in case excerpt is empty
-        if self.excerpt is None or self.excerpt == '':
-            # use beautifulsoup to make sure the html line is complete
-            return BeautifulSoup(self.content[:160], 'html.parser')
-        return self.excerpt
 
     @classmethod
     def get_all(cls, context):
