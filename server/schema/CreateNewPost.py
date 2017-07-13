@@ -2,7 +2,7 @@ import graphene
 from database import db_session
 from models import Post, Tag, Category
 from .objectTypes import User
-from .utils import decode
+from .utils import decode, is_admin
 from shortuuid import uuid
 
 # for visibility
@@ -27,7 +27,7 @@ class CreateNewPost(graphene.Mutation):
     @staticmethod
     def mutate(root, args, context, info):
         decoded = decode(context.headers.get('Authorization'))[0]
-        if decoded is None:
+        if decoded is None or not(is_admin(decoded)):
             return CreateNewPost(success=False, link=None)
         userId = decoded['sub']
         user = User.get_query(context).get(userId)

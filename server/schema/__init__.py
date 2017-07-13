@@ -58,10 +58,20 @@ class Query(graphene.ObjectType):
 
     def resolve_post(self, args, context, info):
         if "category" not in args:
-            return Post.get_query(context).filter_by(link=args['link']).first()
-        cate = Category.get_query(context).filter_by(
-            name=args['category']).first()
-        return Post.get_query(context).filter_by(link=args['link'], category=cate).first()
+            post = Post.get_query(context).filter_by(
+                link=args['link'], deleted=False).first()
+        else:
+            cate = Category.get_query(context).filter_by(
+                name=args['category']).first()
+            post = Post.get_query(context).filter_by(
+                link=args['link'], category=cate, deleted=False).first()
+        if post is None or post.visibilityId != 4:
+            return post
+        decoded = decode(context.headers.get('Authorization'))[0]
+        if decoded is None:
+            return None
+        userId = decoded['sub']
+        return post if userId == post.authorId else None
 
 
 class Mutation(graphene.ObjectType):
