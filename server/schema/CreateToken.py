@@ -6,7 +6,7 @@ from .utils import secret
 
 
 def get_tomorrow():
-    return datetime.datetime.combine(datetime.date.today() + datetime.timedelta(days=1), datetime.datetime.min.time())
+    return datetime.datetime.now() + datetime.timedelta(days=1)
 
 
 class CreateToken(graphene.Mutation):
@@ -31,5 +31,6 @@ class CreateToken(graphene.Mutation):
                 'groupId': user.groupId
             },
                 secret, algorithm='HS256').decode()
+            print(token)
             return CreateToken(token=token, success=True)
         return CreateToken(token=None, success=False)
