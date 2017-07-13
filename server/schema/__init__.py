@@ -16,6 +16,8 @@ class Query(graphene.ObjectType):
     # get info by argument
     user = graphene.Field(User, id=graphene.Argument(
         graphene.Int), name=graphene.Argument(graphene.String))
+    post = graphene.Field(Post, link=graphene.Argument(graphene.NonNull(
+        graphene.String)), category=graphene.Argument(graphene.String))
 
     def resolve_users(self, args, context, info):
         # must have admin privilege to view all users
@@ -53,6 +55,13 @@ class Query(graphene.ObjectType):
             return user if not user.deleted else None  # don't send deleted user info
         else:
             return User.get_query(context).filter_by(**args, deleted=False).first()
+
+    def resolve_post(self, args, context, info):
+        if "category" not in args:
+            return Post.get_query(context).filter_by(link=args['link']).first()
+        cate = Category.get_query(context).filter_by(
+            name=args['category']).first()
+        return Post.get_query(context).filter_by(link=args['link'], category=cate).first()
 
 
 class Mutation(graphene.ObjectType):

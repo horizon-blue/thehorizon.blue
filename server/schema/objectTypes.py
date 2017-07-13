@@ -1,6 +1,7 @@
 import models
 from graphene_sqlalchemy import SQLAlchemyObjectType
-from .utils import Utils, cleanhtml
+from bs4 import BeautifulSoup
+from .utils import Utils
 
 
 class User(Utils, SQLAlchemyObjectType):
@@ -17,7 +18,9 @@ class Post(Utils, SQLAlchemyObjectType):
     def resolve_excerpt(self, args, context, info):
         # return first 160 of content in case excerpt is empty
         if self.excerpt is None or self.excerpt == '':
-            return cleanhtml(self.content)[:160]
+            # use beautifulsoup to make sure the html line is complete
+            return BeautifulSoup(self.content[:160], 'html.parser')
+        return self.excerpt
 
     @classmethod
     def get_all(cls):
