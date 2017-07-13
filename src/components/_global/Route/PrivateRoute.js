@@ -36,12 +36,16 @@ class TempPage extends PureComponent {
 
   state = {};
 
+  componentDidMount = () => {
+    this.validateUser(this.props);
+  };
+
   componentWillReceiveProps = nextProps => {
-    if (
-      nextProps.token &&
-      !this.state.validating &&
-      !this.state.sessionIsValid
-    ) {
+    this.validateUser(nextProps);
+  };
+
+  validateUser = props => {
+    if (props.token && !this.state.validating && !this.state.sessionIsValid) {
       this.setState({ validating: true });
       this.props
         .mutate()

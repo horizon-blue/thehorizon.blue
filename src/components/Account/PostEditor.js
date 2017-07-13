@@ -13,7 +13,6 @@ import { stateToHTML } from 'draft-js-export-html';
 import keyboardBindingFn from './keyboardBindingFn';
 import LoadingPage from '../_global/LoadingPage';
 import { connect } from 'react-redux';
-import './prism.css';
 import { SAVE_DRAFT } from '../../store/reducer/actionTypes';
 import { POST_ROOT } from '../../constants/api';
 
@@ -47,6 +46,14 @@ const initialState = {
     excerpt: '',
 };
 
+/* global Prism */
+const blockRenderers = {};
+blockRenderers['code-block'] = block => {
+    const language = block.getData().get('language');
+    if (typeof Prism.languages[language] === 'object')
+        return `<pre class="line-numbers"><code class="language-${language}">${block.getText()}</code></pre>`;
+};
+
 const exportHTMLOptions = {
     entityStyleFn: entity => {
         const entityType = entity.get('type').toLowerCase();
@@ -65,6 +72,7 @@ const exportHTMLOptions = {
             };
         }
     },
+    blockRenderers,
 };
 
 const getTagsAndCateegories = gql`
@@ -371,7 +379,10 @@ class PostEditor extends PureComponent {
                                                 className="editor-field"
                                                 value={this.state.link}
                                                 onChange={this.onLinkChange}
-                                                placeholder={this.state.title}
+                                                placeholder={this.state.title.replace(
+                                                    /\s+/g,
+                                                    '-'
+                                                )}
                                             />
                                         </span>
                                     </label>
