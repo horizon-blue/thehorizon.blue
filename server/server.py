@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, abort
+from flask import Flask, jsonify, request, abort, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_graphql import GraphQLView
 from flask_cors import CORS
@@ -27,7 +27,7 @@ def allowed_photo(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/upload', methods=['POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload_photo():
     if request.method == 'POST':
         # check if the post request has the file part
@@ -42,7 +42,22 @@ def upload_photo():
             filename = secure_filename(str(uuid4()))
             photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return jsonify({"url": filename, "success": True})
-    abort(500)
+        abort(500)
+    return '''
+    <!doctype html>
+    <title>上传照片 | 天际蓝 thehorizon.blue</title>
+    <h1>上传照片</h1>
+    <form method=post enctype=multipart/form-data>
+      <p><input type=file name=photo>
+         <input type=submit value=Upload>
+    </form>
+    '''
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 # for ssl authentication
