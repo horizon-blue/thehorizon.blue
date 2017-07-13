@@ -13,7 +13,6 @@ const getPostInfo = gql`
       title
       publishDate
       content
-      title
       excerpt
       author {
         name
@@ -28,8 +27,11 @@ const getPostInfo = gql`
 const blockRenderers = {};
 blockRenderers['code-block'] = block => {
   const language = block.getData().get('language');
-  if (typeof Prism.languages[language] === 'object')
-    return `<pre class="line-numbers"><code class="language-${language}">${block.getText()}</code></pre>`;
+  const languageObj = Prism.languages[language];
+  if (typeof languageObj === 'object') {
+    const renderedCode = Prism.highlight(block.getText(), languageObj);
+    return `<pre><code>${renderedCode}</code></pre>`;
+  }
 };
 
 const exportHTMLOptions = {
@@ -43,9 +45,10 @@ const exportHTMLOptions = {
         element: 'img',
         attributes: {
           src: data.src,
+          alt: data.alt,
         },
         style: {
-          // put styles here...
+          maxWidth: '100%',
         },
       };
     }
@@ -67,15 +70,6 @@ class Post extends PureComponent {
     }).isRequired,
   };
 
-  componentDidMount = () => {
-    this.highlight();
-  };
-
-  componentDidUpdate = (prevProps, prevState) => {
-    if (this.props.data.post === prevProps.data.post) return;
-    this.highlight();
-  };
-
   createContent = content => {
     if (!content) return;
     const parsedContent = stateToHTML(
@@ -85,20 +79,15 @@ class Post extends PureComponent {
     return { __html: parsedContent };
   };
 
-  highlight = () => {
-    if (!this.content) return;
-    let code = this.content.getElementsByTagName('code');
-    for (let c of code) {
-      Prism.highlightElement(c);
-    }
-  };
-
   render() {
     const { data: { loading, post } } = this.props;
     if (loading) return <LoadingPage />;
     if (!loading && !post) return <Redirect to="/404" />; // post does not exist
     return (
       <div>
+        <h1 className="centered-horizontal post-title">
+          {post.title}
+        </h1>
         <div
           ref={content => (this.content = content)}
           dangerouslySetInnerHTML={this.createContent(post.content)}
