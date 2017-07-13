@@ -15,6 +15,7 @@ MarkupSafe==1.0
 promise==2.0.2
 pycparser==2.18
 PyJWT==1.5.2
+shortuuid==0.5.0
 singledispatch==3.4.0.3
 six==1.10.0
 SQLAlchemy==1.1.11
