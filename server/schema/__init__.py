@@ -16,6 +16,8 @@ class Query(graphene.ObjectType):
     groups = graphene.List(Group)
     invitationIsValid = graphene.Boolean(
         link=graphene.Argument(graphene.String))
+    usernameIsAvailable = graphene.Boolean(
+        name=graphene.Argument(graphene.String))
 
     # get info by argument
     user = graphene.Field(User, id=graphene.Argument(
@@ -83,6 +85,11 @@ class Query(graphene.ObjectType):
         if extract_link_info(link)[0] is not None:
             return True
         return False
+
+    def resolve_usernameIsAvailable(self, args, context, info):
+        # for debug purpose only
+        name = args.get('name')
+        return User.get_query(context).filter_by(name=name).count() == 0
 
 
 class Mutation(graphene.ObjectType):

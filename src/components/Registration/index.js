@@ -3,8 +3,8 @@ import { Spin, Row, Col } from 'antd';
 import { gql, graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
 import Content from '../_global/Content';
+import RegistrationForm from './RegistrationForm';
 
 const validateLink = gql`
   query validateLink($link: String!) {
@@ -12,13 +12,11 @@ const validateLink = gql`
   }
 `;
 
-@connect()
 @graphql(validateLink, {
   options: ({ match }) => ({ variables: { ...match.params } }),
 })
 class Registration extends PureComponent {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
     data: PropTypes.shape({
       loading: PropTypes.bool.isRequired,
       invitationIsValid: PropTypes.bool,
@@ -41,17 +39,18 @@ class Registration extends PureComponent {
     const {
       data: { loading, invitationIsValid },
       match: { params },
+      history,
     } = this.props;
     if (loading) return <Spin tip="加载中..." size="large" />;
     if (!invitationIsValid) return <Redirect to="/404" />;
-    return <div>{params.link}</div>;
+    return <RegistrationForm link={params.link} history={history} />;
   };
 
   render = () => {
     return (
       <Content title={Registration.routeConfig.title}>
         <Row type="flex" justify="center">
-          <Col>
+          <Col xs={24} sm={20} md={16}>
             {this.renderContent()}
           </Col>
         </Row>
