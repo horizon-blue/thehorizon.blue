@@ -1,18 +1,13 @@
 import graphene
 import jwt
-import datetime
 from .objectTypes import User
-from .utils import secret
-
-
-def get_tomorrow():
-    return datetime.datetime.now() + datetime.timedelta(days=1)
+from .utils import secret, get_tomorrow, get_now
 
 
 class CreateToken(graphene.Mutation):
     class Input:
-        name = graphene.String()
-        password = graphene.String()
+        name = graphene.NonNull(graphene.String)
+        password = graphene.NonNull(graphene.String)
 
     success = graphene.Boolean()
     token = graphene.String()
@@ -26,11 +21,10 @@ class CreateToken(graphene.Mutation):
             token = jwt.encode({
                 'sub': user.id,
                 'exp': get_tomorrow(),
-                'iat': datetime.datetime.utcnow(),
+                'iat': get_now(),
                 'name': user.name,
                 'groupId': user.groupId
             },
                 secret, algorithm='HS256').decode()
-            print(token)
             return CreateToken(token=token, success=True)
         return CreateToken(token=None, success=False)

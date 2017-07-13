@@ -1,8 +1,15 @@
 import jwt
 import re
+import datetime
 
 
 secret = '***REMOVED***'
+
+invitation_secret = '***REMOVED***'
+
+ADMIN_GROUP_ID = 1
+GUEST_GROUP_ID = 2
+INSIDER_GROUP_ID = 3
 
 
 class Utils:
@@ -23,7 +30,15 @@ def decode(token):
 
 
 def is_admin(decoded):
-    return decoded is not None and decoded["groupId"] == 1
+    return decoded is not None and decoded["groupId"] == ADMIN_GROUP_ID
+
+
+def get_tomorrow():
+    return datetime.datetime.now() + datetime.timedelta(days=1)
+
+
+def get_now():
+    return datetime.datetime.utcnow()
 
 
 cleanr = re.compile('<.*?>')
