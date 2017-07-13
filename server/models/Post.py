@@ -6,7 +6,7 @@ from .Tag import tagIdentifier
 
 
 def default_link(context):
-    return context.current_parameters.get('title')
+    return context.current_parameters.get('title').replace(' ', '-')
 
 
 class Post(Base):

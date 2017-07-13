@@ -16,7 +16,7 @@ class CreateNewPost(graphene.Mutation):
         content = graphene.NonNull(graphene.String)
         excerpt = graphene.String()
         tags = graphene.List(graphene.String)
-        category = graphene.String()
+        category = graphene.NonNull(graphene.String)
         link = graphene.String()
         visibilityId = graphene.Int()
 
@@ -38,8 +38,11 @@ class CreateNewPost(graphene.Mutation):
 
             if 'excerpt' in args and args['excerpt'] is not None and args['excerpt'] != '':
                 new_post.excerpt = args['excerpt']
-            if 'link' in args and args['link'] is not None and args['link'] != '':
-                new_post.link = args['link']
+            if 'link' in args:
+                link = args['link']
+            if link is None or link == '':
+                link = args['title'].replace(' ', '-')
+            new_post.link = link
             # resolve visibility. default public
             new_post.visibilityId = args[
                 'visibilityId'] if 'visibilityId' in args else 1
@@ -60,6 +63,12 @@ class CreateNewPost(graphene.Mutation):
                     name=args['category']).first()
                 if category:
                     new_post.category = category
+
+            # check if there exist other post with given name
+            pre_post_num = Post.query.filter_by(
+                link=new_post.link, category=new_post.category).count()
+            if(pre_post_num > 0):
+                new_post.link += '-{}'.format(pre_post_num)
 
             # save the post to database
             db_session.add(new_post)
