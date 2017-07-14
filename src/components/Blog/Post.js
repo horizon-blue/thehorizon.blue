@@ -6,6 +6,7 @@ import LoadingPage from '../_global/LoadingPage';
 import Prism from '../_global/Prism';
 import { stateToHTML } from 'draft-js-export-html';
 import { convertFromRaw } from 'draft-js';
+import Helmet from 'react-helmet';
 
 const getPostInfo = gql`
   query getPostInfo($link: String!, $category: String!) {
@@ -85,6 +86,10 @@ class Post extends PureComponent {
     if (!loading && !post) return <Redirect to="/404" />; // post does not exist
     return (
       <div>
+        <Helmet>
+          <title>{post.title} | 天际蓝 - thehorizon.blue</title>
+          <meta name="description" content={post.excerpt} />
+        </Helmet>
         <h1 className="centered-horizontal post-title">
           {post.title}
         </h1>
