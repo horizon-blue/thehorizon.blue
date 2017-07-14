@@ -263,6 +263,14 @@ class PostEditor extends PureComponent {
         this.setState({ uploading: true });
 
         const { mutate, history } = this.props;
+        let excerpt = this.state.excerpt;
+        if (!excerpt) {
+            const content = this.state.editorState
+                .getCurrentContent()
+                .getPlainText();
+            if (content.length > 160) excerpt = content.substr(0, 160) + '...';
+            else excerpt = content;
+        }
         mutate({
             variables: {
                 title: this.state.title,
@@ -273,12 +281,7 @@ class PostEditor extends PureComponent {
                     : this.state.visibility,
                 category: this.state.category,
                 tags: this.state.tags,
-                excerpt:
-                    this.state.excerpt ||
-                        this.state.editorState
-                            .getCurrentContent()
-                            .getPlainText()
-                            .substr(0, 160),
+                excerpt,
             },
         })
             .then(({ data }) => {
