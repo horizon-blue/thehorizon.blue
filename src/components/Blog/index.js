@@ -10,6 +10,7 @@ import Content from '../_global/Content';
 import BlogPostCard from './BlogPostCard';
 import Post from './Post';
 import FadeView from '../_global/FadeView';
+import PostEditor from '../PostEditor';
 
 const getAllPosts = gql`
   query getAllPosts {
@@ -107,7 +108,8 @@ class Blog extends PureComponent {
       >
         <Switch>
           <Route path="/blog" exact component={BlogHome} />
-          <Route path="/blog/:category/:link" component={Post} />
+          <Route path="/blog/:category/:link" exact component={Post} />
+          <Route path="/blog/:category/:link/edit" component={PostEditor} />
         </Switch>
       </Content>
     );

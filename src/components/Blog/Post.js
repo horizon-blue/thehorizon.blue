@@ -1,15 +1,18 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import LoadingPage from '../_global/LoadingPage';
 import Prism from '../_global/Prism';
 import FontAwesome from '../_global/FontAwesome';
 import { stateToHTML } from 'draft-js-export-html';
 import { convertFromRaw } from 'draft-js';
+import jwtDecode from 'jwt-decode';
+import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import { IMG_ROOT } from '../../constants/api';
+import _ from 'lodash';
 import 'moment/locale/zh-cn';
 
 const getPostInfo = gql`
@@ -21,6 +24,7 @@ const getPostInfo = gql`
       excerpt
       author {
         name
+        id
       }
       tags {
         name
@@ -69,6 +73,13 @@ const exportHTMLOptions = {
   blockRenderers,
 };
 
+function mapStateToProps(state, ownProps) {
+  return {
+    token: state.token,
+  };
+}
+
+@connect(mapStateToProps)
 @graphql(getPostInfo, {
   options: ({ match }) => ({ variables: { ...match.params } }),
 })
@@ -77,10 +88,24 @@ class Post extends PureComponent {
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
+    token: PropTypes.string,
     data: PropTypes.shape({
       loading: PropTypes.bool.isRequired,
       post: PropTypes.object,
     }).isRequired,
+  };
+
+  isAuthor = () => {
+    if (this.props.data.loading) return;
+    // avoid decoding for multiple times
+    if (_.isUndefined(this.userId)) {
+      const { token } = this.props;
+      if (!token) return;
+      const info = jwtDecode(token);
+      if (!info || _.isUndefined(info.sub)) return;
+      this.userId = info.sub.toString();
+    }
+    return this.userId === this.props.data.post.author.id;
   };
 
   createContent = content => {
@@ -93,7 +118,7 @@ class Post extends PureComponent {
   };
 
   render() {
-    const { data: { loading, post } } = this.props;
+    const { data: { loading, post }, match: { params } } = this.props;
     if (loading) return <LoadingPage />;
     if (!loading && !post) return <Redirect to="/404" />; // post does not exist
     return (
@@ -113,6 +138,11 @@ class Post extends PureComponent {
                 <FontAwesome name="calendar" />
                 {' ' + moment.utc(post.publishDate).format('l')}
               </span>
+              {this.isAuthor() &&
+                <Link to={`/blog/${params.category}/${params.link}/edit`}>
+                  <FontAwesome name="pencil-square-o" />
+                  编辑
+                </Link>}
             </div>
           </header>
           <main

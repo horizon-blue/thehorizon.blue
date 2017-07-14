@@ -72,3 +72,12 @@ pre {
 .post-article-content p {
     text-indent: 20px;
 }
+
+.post-article-content a {
+    color: rgb(81, 119, 163);
+    transition: color 300ms ease-in;
+}
+
+.post-article-content a:hover {
+    color: rgb(80, 142, 233);
+}

@@ -6,9 +6,7 @@ import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
 import classNames from 'classnames';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import Loading from '../_global/Loading';
 import MediaQuery from 'react-responsive';
-import Loadable from 'react-loadable';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
@@ -16,11 +14,7 @@ import FadeView from '../_global/FadeView';
 import UploadAvatarModal from './UploadAvatarModal';
 import { IMG_ROOT, ADMIN_GROUP_ID } from '../../constants/api';
 import './style.css';
-
-const LoadableEditor = Loadable({
-  loader: () => import(/* webpackChunkName: "PostEditor" */ `./PostEditor`),
-  loading: Loading,
-});
+import LoadableEditor from '../PostEditor';
 
 const getSelfInfo = gql`
   query getSelfInfo {
