@@ -36,8 +36,13 @@
     color: #8cbae2;
 }
 
-.post-title {
-    margin-bottom: 3vh;
+.post-title div {
+    margin: 1vh 0 3vh 0;
+}
+
+.post-title span {
+    margin: 0 1vw;
+    color: rgba(105, 117, 145, 0.8);
 }
 
 :not(pre) > code {
@@ -49,3 +54,20 @@
     color: rgba(255, 255, 255, 0.9);
 }
 
+pre {
+    overflow: scroll;
+}
+
+.post-article-content {
+    font-size: 110%;
+    margin-bottom: 3vh;
+}
+
+.post-article-content p {
+    margin: 3px 0;
+}
+
+//
+.post-article-content p {
+    text-indent: 20px;
+}

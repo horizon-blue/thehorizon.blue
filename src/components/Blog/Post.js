@@ -4,9 +4,12 @@ import { gql, graphql } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 import LoadingPage from '../_global/LoadingPage';
 import Prism from '../_global/Prism';
+import FontAwesome from '../_global/FontAwesome';
 import { stateToHTML } from 'draft-js-export-html';
 import { convertFromRaw } from 'draft-js';
 import Helmet from 'react-helmet';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 
 const getPostInfo = gql`
   query getPostInfo($link: String!, $category: String!) {
@@ -90,13 +93,26 @@ class Post extends PureComponent {
           <title>{post.title} | 天际蓝 - thehorizon.blue</title>
           <meta name="description" content={post.excerpt} />
         </Helmet>
-        <h1 className="centered-horizontal post-title">
-          {post.title}
-        </h1>
-        <div
-          ref={content => (this.content = content)}
-          dangerouslySetInnerHTML={this.createContent(post.content)}
-        />
+        <article>
+          <header className="centered-horizontal post-title">
+            <h1>
+              {post.title}
+            </h1>
+            <div>
+              <span><FontAwesome name="user" />{' ' + post.author.name}</span>
+              <span>
+                <FontAwesome name="calendar" />
+                {' ' + moment.utc(post.publishDate).format('l')}
+              </span>
+            </div>
+          </header>
+          <main
+            ref={content => (this.content = content)}
+            dangerouslySetInnerHTML={this.createContent(post.content)}
+            className="post-article-content"
+          />
+        </article>
+        <hr />
       </div>
     );
   }
