@@ -52,6 +52,7 @@
     margin: 0px 3px;
     border-radius: 5px;
     color: rgba(255, 255, 255, 0.9);
+    word-break: break-all;
 }
 
 pre {
