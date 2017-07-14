@@ -3,6 +3,7 @@ import { Modal, message, Upload, Icon, Button } from 'antd';
 import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
 import { UPLOAD_PHOTO, IMG_ROOT } from '../../constants/api';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 
 const Dragger = Upload.Dragger;
@@ -29,6 +30,13 @@ const updateAvatar = gql`
     }
 `;
 
+function mapStateToProps(state, ownProps) {
+    return {
+        token: state.token,
+    };
+}
+
+@connect(mapStateToProps)
 @graphql(updateAvatar)
 class UploadAvatarModal extends PureComponent {
     static propTypes = {
@@ -36,6 +44,7 @@ class UploadAvatarModal extends PureComponent {
         closeModal: PropTypes.func.isRequired,
         mutate: PropTypes.func.isRequired,
         onSubmit: PropTypes.func.isRequired,
+        token: PropTypes.string.isRequired,
     };
 
     state = {};
@@ -81,7 +90,7 @@ class UploadAvatarModal extends PureComponent {
     };
 
     render = () => {
-        const { visible } = this.props;
+        const { visible, token } = this.props;
         const { uploading, url } = this.state;
         return (
             <Modal
@@ -109,6 +118,7 @@ class UploadAvatarModal extends PureComponent {
                         multiple={false}
                         showUploadList={false}
                         action={UPLOAD_PHOTO}
+                        headers={{ Authorization: 'Bearer ' + token }}
                         beforeUpload={beforeUpload}
                         onChange={this.handleChange}
                     >

@@ -33,20 +33,20 @@ def upload_photo():
     if request.method == 'POST':
         # check if this is a user with valid token
         if 'Authorization' not in request.headers:
-            abort(500, {'message': 'no token found'})
+            abort(401, {'message': 'no token found'})
         if decode(request.headers.get('Authorization'))[0] is None:
-            abort(500, {'message': 'invalid token'})
+            abort(401, {'message': 'invalid token'})
 
         # begin processing the photo
 
         # check if the post request has the file part
         if 'photo' not in request.files:
-            abort(500, {'message': 'no photo found'})
+            abort(400, {'message': 'no photo found'})
         photo = request.files['photo']
         # if user does not select file, browser also
         # submit a empty part without filename
         if not photo or photo.filename == '':
-            abort(500, {'message': 'no photo found'})
+            abort(400, {'message': 'no photo found'})
 
         extension = get_extension(photo.filename)
         if allowed_photo(extension):
