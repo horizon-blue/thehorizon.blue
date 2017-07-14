@@ -9,6 +9,7 @@ import { stateToHTML } from 'draft-js-export-html';
 import { convertFromRaw } from 'draft-js';
 import Helmet from 'react-helmet';
 import moment from 'moment';
+import { IMG_ROOT } from '../../constants/api';
 import 'moment/locale/zh-cn';
 
 const getPostInfo = gql`
@@ -45,11 +46,19 @@ const exportHTMLOptions = {
     if (entityType === 'img') {
       const data = entity.getData();
 
+      let { alt, src } = data;
+      // check for my custom markdown notation
+      if (alt[0] === '*') {
+        alt = alt.substr(1);
+        src = IMG_ROOT + src;
+      }
+
       return {
         element: 'img',
         attributes: {
-          src: data.src,
-          alt: data.alt,
+          src: src,
+          alt: alt,
+          title: data.title,
         },
         style: {
           maxWidth: '100%',
