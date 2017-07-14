@@ -5,43 +5,56 @@ from flask_cors import CORS
 from database import db_session
 from schema import schema
 from uuid import uuid4
-import platform
+from schema.utils import decode
+from bucket import bucket
 import os
 
 app = Flask(__name__)
 # Enable cross domain fetch
 CORS(app)
 
-
-# setup file directory for photo uploads
-UPLOAD_FOLDER = os.path.dirname(os.path.realpath(
-    __file__)) + '/photo' if platform.system() == 'Darwin' else '/home/horizon/photo'
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif', 'bmp'])
 
 
-def allowed_photo(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def allowed_photo(extension):
+    return extension in ALLOWED_EXTENSIONS
+
+
+def get_extension(filename):
+    if '.' not in filename:
+        return None
+    return filename.rsplit('.', 1)[1].lower()
 
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload_photo():
     if request.method == 'POST':
+        # check if this is a user with valid token
+        if 'Authorization' not in request.headers:
+            abort(401, {'message': 'no token found'})
+        if decode(request.headers.get('Authorization'))[0] is None:
+            abort(401, {'message': 'invalid token'})
+
+        # begin processing the photo
+
         # check if the post request has the file part
         if 'photo' not in request.files:
-            abort(500, {'message': 'no photo found'})
+            abort(400, {'message': 'no photo found'})
         photo = request.files['photo']
         # if user does not select file, browser also
         # submit a empty part without filename
-        if photo.filename == '':
-            abort(500, {'message': 'no photo found'})
-        if photo and allowed_photo(photo.filename):
-            filename = secure_filename(str(uuid4()))
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return jsonify({"url": filename, "success": True})
+        if not photo or photo.filename == '':
+            abort(400, {'message': 'no photo found'})
+
+        extension = get_extension(photo.filename)
+        if allowed_photo(extension):
+            filename = secure_filename(str(uuid4()) + '.' + extension)
+
+            retval = bucket.put_object("img/" + filename, photo)
+            if(retval.status == 200):
+                return jsonify({"url": filename, "success": True})
         abort(500)
     return '''
     <!doctype html>
