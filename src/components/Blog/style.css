@@ -81,3 +81,7 @@ pre {
 .post-article-content a:hover {
     color: rgb(80, 142, 233);
 }
+
+.post-category {
+    font-style: italic;
+}

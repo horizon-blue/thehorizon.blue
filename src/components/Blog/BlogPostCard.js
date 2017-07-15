@@ -7,6 +7,8 @@ import _ from 'lodash';
 import 'moment/locale/zh-cn';
 import './style.css';
 
+const Separator = props => <span className="separator">|</span>;
+
 class BlogPostCard extends PureComponent {
     static propTypes = {
         history: PropTypes.object.isRequired,
@@ -51,7 +53,15 @@ class BlogPostCard extends PureComponent {
 
     render() {
         const {
-            post: { title, excerpt, publishDate, author, tags, visibilityId },
+            post: {
+                title,
+                excerpt,
+                publishDate,
+                author,
+                tags,
+                visibilityId,
+                category,
+            },
         } = this.props;
         return (
             <div>
@@ -91,7 +101,12 @@ class BlogPostCard extends PureComponent {
                     <Row>
                         <Col className="post-meta">
                             {author.name} 发布于{' '}
-                            {moment.utc(publishDate).fromNow()}
+                            {moment.utc(publishDate).fromNow() + ' '}
+                            <Separator />
+                            {' '}
+                            <span className="post-category">
+                                {category.name}
+                            </span>
                         </Col>
                     </Row>
                 </article>
