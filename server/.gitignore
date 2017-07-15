@@ -4,3 +4,7 @@ __pycache__/
 
 # ignore python virtualenv
 serverenv/
+
+# ignore database and secret data
+database/db.sqlite3
+secrets.py

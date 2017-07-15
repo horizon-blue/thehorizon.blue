@@ -1,11 +1,8 @@
 import jwt
 import re
 import datetime
+from secrets import TOKEN_SECRET as secret, INVITATION_SECRET as invitation_secret
 
-
-secret = '***REMOVED***'
-
-invitation_secret = '***REMOVED***'
 
 ADMIN_GROUP_ID = 1
 GUEST_GROUP_ID = 2
