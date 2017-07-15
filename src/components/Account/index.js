@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Spin, Row, Col, Button, Icon } from 'antd';
+import { Spin, Row, Col, Button, Icon, Input, message } from 'antd';
 import { connect } from 'react-redux';
 import Content from '../_global/Content';
 import PropTypes from 'prop-types';
@@ -32,8 +32,17 @@ const getSelfInfo = gql`
   }
 `;
 
+const updateUserName = gql`
+    mutation updateUserName($name: String!) {
+        UpdateUserInfo(name: $name) {
+            success
+        }
+    }
+`;
+
 @connect()
 @graphql(getSelfInfo)
+@graphql(updateUserName)
 class Account extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -43,6 +52,7 @@ class Account extends PureComponent {
       user: PropTypes.object,
     }).isRequired,
     history: PropTypes.object.isRequired,
+    mutate: PropTypes.func.isRequired,
   };
 
   static routeConfig = {
@@ -55,12 +65,45 @@ class Account extends PureComponent {
 
   state = { avatarVModalVisible: false };
 
+  componentDidUpdate = (prevProps, prevState) => {
+    if (this.nameInput) this.nameInput.focus();
+  };
+
   handleLogout = () => {
     this.props.dispatch({ type: LOGOUT_REQUEST });
   };
 
   haneldInfoUpdate = () => {
     this.props.data.refetch();
+  };
+
+  handleClickName = () => {
+    this.setState({ name: this.props.data.user.name, editingName: true });
+  };
+
+  handleChangeName = e => {
+    this.setState({ name: e.target.value });
+  };
+
+  submitChangedName = () => {
+    if (this.state.name !== this.props.data.user.name) {
+      this.props
+        .mutate({
+          variables: { name: this.state.name },
+        })
+        .then(({ data }) => {
+          data.UpdateUserInfo.success
+            ? message.success('设置成功', 5)
+            : message.error('设置失败', 5);
+          this.haneldInfoUpdate();
+        })
+        .catch(error => {
+          console.log('setting info', error);
+          this.setState({ settingInfo: false });
+          message.error(error.message);
+        });
+    }
+    this.setState({ editingName: false });
   };
 
   renderTopRow = () => {
@@ -89,7 +132,17 @@ class Account extends PureComponent {
                   match ? undefined : 'centered-horizontal account-margin-top'
                 }
               >
-                <h2>{user.name}</h2>
+                {this.state.editingName
+                  ? <Input
+                      ref={nameInput => (this.nameInput = nameInput)}
+                      value={this.state.name}
+                      onChange={this.handleChangeName}
+                      onBlur={this.submitChangedName}
+                      defaultValue={user.name}
+                      onPressEnter={this.submitChangedName}
+                      className="changing-name-input"
+                    />
+                  : <h2 onClick={this.handleClickName}>{user.name}</h2>}
                 <p>
                   加入日期：{moment.utc(user.joinDate).format('L')}（{moment.utc(user.joinDate).fromNow()}）
                 </p>

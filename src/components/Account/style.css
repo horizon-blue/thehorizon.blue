@@ -324,3 +324,10 @@ pre {
 .editor-field.editor-excerpt {
     width: 80%;
 }
+
+.changing-name-input {
+    width: 20vw;
+    font-weight: bold;
+    font-size: 20px;
+    color: rgba(200, 233, 255, 0.9);
+}
