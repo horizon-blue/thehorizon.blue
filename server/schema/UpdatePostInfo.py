@@ -65,13 +65,22 @@ class UpdatePostInfo(graphene.Mutation):
 
             # resolve tags
             tags = args['tags'] if 'tags' in args else []
-            tagList = []
+            # remove tags that are deleted
+            existed_tags = list(post.tags)
+            for tag in existed_tags:
+                if tag.name in tags:
+                    # skip it for next action
+                    tags[tags.index(tag.name)] = None
+                else:
+                    # remove it
+                    post.tags.remove(tag)
             for tag in tags:
+                if tag is None:
+                    continue
                 t = Tag.query.filter_by(name=tag).first()
                 if t is None:
                     t = Tag(name=tag)  # create new tag if none exist
-                tagList.append(t)
-            post.tags = tagList
+                post.tags.append(t)
             # update the updateDate
             post.updateDate = datetime.datetime.utcnow()
 

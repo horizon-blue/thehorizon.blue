@@ -1,11 +1,12 @@
-from sqlalchemy import Column, Integer, Text, ForeignKey, Table, Boolean
+from sqlalchemy import Column, Integer, Text, ForeignKey, Table, Boolean, PrimaryKeyConstraint
 from sqlalchemy.orm import relationship
 from database import Base
 
 # many to many relationship
 tagIdentifier = Table('tagIdentifier', Base.metadata,
                       Column('postId', Integer, ForeignKey('post.id')),
-                      Column('tagId', Integer, ForeignKey('tag.id'))
+                      Column('tagId', Integer, ForeignKey('tag.id')),
+                      PrimaryKeyConstraint('postId', 'tagId'),
                       )
 
 
