@@ -24,7 +24,7 @@ var Image = function Image(_ref) {
 
   if (alt[0] === '*') {
     alt = alt.substr(1);
-    src = 'http://horizonblue.oss-us-west-1.aliyuncs.com/img/' + src;
+    src = 'https://s3-us-west-1.amazonaws.com/horizonblue/img/' + src;
   }
 
   return _react2.default.createElement(

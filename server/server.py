@@ -52,8 +52,9 @@ def upload_photo():
         if allowed_photo(extension):
             filename = secure_filename(str(uuid4()) + '.' + extension)
 
-            retval = bucket.put_object("img/" + filename, photo)
-            if(retval.status == 200):
+            retval = bucket.put_object(
+                Key="img/" + filename, Body=photo, ACL='public-read')
+            if retval:
                 return jsonify({"url": filename, "success": True})
         abort(500)
     return '''

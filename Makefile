@@ -57,4 +57,7 @@ backup/index.html: package.json
 	@touch backup/index.html
 	@echo "${GREEN}Done.${NC}"
 
+install:
+	npm install && cd patch && ./applyPatch.sh && cd ..
+
 
