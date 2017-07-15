@@ -80,41 +80,44 @@ class PostEditor extends PureComponent {
             tags: PropTypes.array,
             categories: PropTypes.array,
         }).isRequired,
+        editContent: PropTypes.object,
     };
 
     state = {};
 
     componentDidMount = () => {
-        this.loadDraft(this.props);
+        if (this.props.editContent) this.loadDraft(this.props.editContent);
+        else if (this.props.rehydrated) this.loadDraft(this.props.draft);
     };
 
     componentWillReceiveProps = nextProps => {
-        this.loadDraft(nextProps);
+        if (
+            !nextProps.editContent &&
+            nextProps.rehydrated &&
+            !this.state.editorState
+        )
+            this.loadDraft(nextProps.draft);
     };
 
     componentWillUnmount = () => {
         clearInterval(this.autosave);
     };
 
-    loadDraft = props => {
-        if (props.rehydrated && !this.state.editorState) {
-            this.setState(
-                props.draft
-                    ? {
-                          ...initialState,
-                          ...props.draft,
-                          editorState: props.draft.content
-                              ? EditorState.createWithContent(
-                                    convertFromRaw(
-                                        JSON.parse(props.draft.content)
-                                    )
-                                )
-                              : initialState.editorState,
-                      }
-                    : initialState
-            );
-            this.autosave = setInterval(this.handleSave, 300000);
-        }
+    loadDraft = draft => {
+        this.setState(
+            draft
+                ? {
+                      ...initialState,
+                      ...draft,
+                      editorState: draft.content
+                          ? EditorState.createWithContent(
+                                convertFromRaw(JSON.parse(draft.content))
+                            )
+                          : initialState.editorState,
+                  }
+                : initialState
+        );
+        this.autosave = setInterval(this.handleSave, 300000);
     };
 
     setFocus = () => {
@@ -126,10 +129,6 @@ class PostEditor extends PureComponent {
     };
 
     onChange = editorState => this.setState({ editorState });
-
-    renderWordCountFooter = () => {
-        return <div />;
-    };
 
     onTagChange = tags => {
         this.setState({ tags });

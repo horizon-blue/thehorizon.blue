@@ -118,7 +118,7 @@ class Post extends PureComponent {
   };
 
   render() {
-    const { data: { loading, post }, match: { params } } = this.props;
+    const { data: { loading, post } } = this.props;
     if (loading) return <LoadingPage />;
     if (!loading && !post) return <Redirect to="/404" />; // post does not exist
     return (
@@ -139,7 +139,12 @@ class Post extends PureComponent {
                 {' ' + moment.utc(post.publishDate).format('l')}
               </span>
               {this.isAuthor() &&
-                <Link to={`/blog/${params.category}/${params.link}/edit`}>
+                <Link
+                  to={{
+                    pathname: this.props.location.pathname + '/edit',
+                    state: { userId: this.userId },
+                  }}
+                >
                   <FontAwesome name="pencil-square-o" />
                   编辑
                 </Link>}
