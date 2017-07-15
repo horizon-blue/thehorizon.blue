@@ -15,6 +15,7 @@ import MutationEditor from '../PostEditor/MutationEditor';
 const getAllPosts = gql`
   query getAllPosts {
     posts {
+      id
       title
       link
       publishDate
@@ -22,12 +23,15 @@ const getAllPosts = gql`
       excerpt
       visibilityId
       author {
+        id
         name
       }
       tags {
+        id
         name
       }
       category {
+        id
         name
       }
     }

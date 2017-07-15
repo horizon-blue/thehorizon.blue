@@ -20,6 +20,7 @@ const getPostInfo = gql`
         id
       }
       tags {
+      	id
         name
       }
       visibilityId

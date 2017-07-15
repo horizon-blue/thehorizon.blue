@@ -283,6 +283,7 @@ pre {
 
 .post-link .editor-field {
     color: rgb(124, 190, 255);
+    width: 25vw;
 }
 
 .ant-select-dropdown-menu-item.ant-select-dropdown-menu-item-active {

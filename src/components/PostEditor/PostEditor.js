@@ -48,9 +48,11 @@ const initialState = {
 const getTagsAndCateegories = gql`
   query getTagsAndCateegories {
     tags {
+        id
         name
     }
     categories {
+        id
         name
     }
   }
@@ -65,7 +67,17 @@ const CreateNewPost = gql`
     }
 `;
 
-@graphql(CreateNewPost)
+const UpdatePostInfo = gql`
+    mutation UpdatePostInfo($postId: Int!, $title: String!, $content: String!, $link: String, $tags: [String], $category: String!, $visibilityId: Int!, $excerpt: String!) {
+        UpdatePostInfo(postId: $postId, title: $title, content: $content, link: $link, tags: $tags, category: $category, visibilityId: $visibilityId, excerpt: $excerpt) {
+            success
+            link
+        }
+    }
+`;
+
+@graphql(CreateNewPost, { name: 'CreateNewPostMutation' })
+@graphql(UpdatePostInfo, { name: 'UpdatePostInfoMutation' })
 @connect(mapStateToProps)
 @graphql(getTagsAndCateegories)
 class PostEditor extends PureComponent {
@@ -74,7 +86,8 @@ class PostEditor extends PureComponent {
         rehydrated: PropTypes.bool,
         dispatch: PropTypes.func.isRequired,
         history: PropTypes.object.isRequired,
-        mutate: PropTypes.func.isRequired,
+        CreateNewPostMutation: PropTypes.func.isRequired,
+        UpdatePostInfoMutation: PropTypes.func.isRequired,
         data: PropTypes.shape({
             loading: PropTypes.bool.isRequired,
             tags: PropTypes.array,
@@ -261,7 +274,42 @@ class PostEditor extends PureComponent {
 
         this.setState({ uploading: true });
 
-        const { mutate, history } = this.props;
+        const {
+            history,
+            UpdatePostInfoMutation,
+            CreateNewPostMutation,
+        } = this.props;
+
+        const mutate = this.props.editContent
+            ? UpdatePostInfoMutation
+            : CreateNewPostMutation;
+
+        mutate({
+            variables: this.stateToSubmitInfo(draft, parsedContent),
+        })
+            .then(({ data }) => {
+                const { success, link } = this.props.editContent
+                    ? data.UpdatePostInfo
+                    : data.CreateNewPost;
+                success ? message.success('发布成功', 5) : message.error('发布失败', 5);
+                this.setState({ uploading: false });
+                if (success) {
+                    // clear the draft
+                    this.removeDraft();
+                    this.props.dispatch({
+                        type: UPDATE_POST,
+                    });
+                    history.push(`/blog/${this.state.category}/${link}`);
+                }
+            })
+            .catch(error => {
+                console.log('upload post', error);
+                this.setState({ uploading: false });
+                message.error(error.message);
+            });
+    };
+
+    stateToSubmitInfo = (draft, parsedContent) => {
         let excerpt = this.state.excerpt;
         if (!excerpt) {
             const content = this.state.editorState
@@ -270,38 +318,19 @@ class PostEditor extends PureComponent {
             if (content.length > 160) excerpt = content.substr(0, 160) + '...';
             else excerpt = content;
         }
-        mutate({
-            variables: {
-                title: this.state.title,
-                content: parsedContent,
-                link: this.state.link,
-                visibilityId: draft
-                    ? DRAFT_VISIBILITY_ID
-                    : this.state.visibility,
-                category: this.state.category,
-                tags: this.state.tags,
-                excerpt,
-            },
-        })
-            .then(({ data }) => {
-                data.CreateNewPost.success
-                    ? message.success('发布成功', 5)
-                    : message.error('发布失败', 5);
-                this.setState({ uploading: false });
-                // clear the draft
-                this.removeDraft();
-                this.props.dispatch({
-                    type: UPDATE_POST,
-                });
-                history.push(
-                    `/blog/${this.state.category}/${data.CreateNewPost.link}`
-                );
-            })
-            .catch(error => {
-                console.log('upload post', error);
-                this.setState({ uploading: false });
-                message.error(error.message);
-            });
+        const addtional = this.props.editContent
+            ? { postId: this.props.editContent.id }
+            : {};
+        return {
+            title: this.state.title,
+            content: parsedContent,
+            link: this.state.link,
+            visibilityId: draft ? DRAFT_VISIBILITY_ID : this.state.visibility,
+            category: this.state.category,
+            tags: this.state.tags,
+            excerpt,
+            ...addtional,
+        };
     };
 
     handleDraft = e => {

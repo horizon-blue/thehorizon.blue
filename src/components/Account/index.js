@@ -19,6 +19,7 @@ import LoadableEditor from '../PostEditor';
 const getSelfInfo = gql`
   query getSelfInfo {
     user {
+      id
       name
       biography
       joinDate

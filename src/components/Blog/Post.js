@@ -19,6 +19,7 @@ const getPostInfo = gql`
   query getPostInfo($link: String!, $category: String!) {
     post(link: $link, category: $category) {
       title
+      id
       publishDate
       content
       excerpt
@@ -27,6 +28,7 @@ const getPostInfo = gql`
         id
       }
       tags {
+        id
         name
       }
     }
