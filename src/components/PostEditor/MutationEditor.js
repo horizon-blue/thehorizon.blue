@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 const getPostInfo = gql`
   query getPostInfo($link: String!, $category: String!) {
     post(link: $link, category: $category) {
+      id
       title
       content
       excerpt
@@ -62,6 +63,7 @@ class MutationEditor extends PureComponent {
 
         // convert the post info to editor-redable state
         const postState = {
+            id: post.id,
             title: post.title,
             content: post.content,
             link: params.link,

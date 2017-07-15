@@ -9,6 +9,7 @@ from shortuuid import uuid
 # 1 = public
 # 2 = archive
 # 3 = private
+# 4 = draft
 
 
 class CreateNewPost(graphene.Mutation):
