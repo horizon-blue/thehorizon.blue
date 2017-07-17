@@ -12,8 +12,15 @@ import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import moment from 'moment';
 import { IMG_ROOT } from '../../constants/api';
+import Loadable from 'react-loadable';
+import Loading from '../_global/Loading';
 import _ from 'lodash';
 import 'moment/locale/zh-cn';
+
+const LoadableComments = Loadable({
+  loader: () => import(/* webpackChunkName: "Comments" */ `./Comments`),
+  loading: Loading,
+});
 
 const getPostInfo = gql`
   query getPostInfo($link: String!, $category: String!) {
@@ -159,6 +166,7 @@ class Post extends PureComponent {
           />
         </article>
         <hr />
+        <LoadableComments postId={post.id} />
       </div>
     );
   }

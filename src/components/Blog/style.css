@@ -85,3 +85,42 @@ pre {
 .post-category {
     font-style: italic;
 }
+
+.post-comments-container {
+    margin-top: 3vh;
+}
+
+.post-comments-container h2 {
+    color: rgba(200, 233, 255, 0.8);
+}
+
+.post-comment-card {
+    margin: 1vh 0;
+    opacity: 0.9;
+    transition: all 200ms ease-in;
+    padding: 10px;
+    background-color: transparent;
+}
+
+.post-comment-card:hover {
+    opacity: 1;
+    background-color: rgba(12, 96, 170, 0.1);
+}
+
+.post-comment-card .post-comment-meta {
+    display: flex;
+}
+
+.post-comment-card .post-comment-meta .post-comment-author-name {
+    margin: 0 10px;
+    font-size: 20px;
+}
+.post-comment-card .post-comment-meta .post-comment-created-date {
+    position: relative;
+    top: 6px;
+    color: rgba(203, 233, 255, 0.5);
+}
+
+.post-comment-card .post-comment-content {
+    margin-top: 10px;
+}
