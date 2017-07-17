@@ -25,6 +25,8 @@ class Query(graphene.ObjectType):
         graphene.Int), name=graphene.Argument(graphene.String))
     post = graphene.Field(Post, link=graphene.Argument(graphene.NonNull(
         graphene.String)), category=graphene.Argument(graphene.String))
+    comments = graphene.Field(graphene.List(Comment), postId=graphene.Argument(graphene.Int),
+                              commentId=graphene.Argument(graphene.Int))
 
     def resolve_users(self, args, context, info):
         # must have admin privilege to view all users
@@ -91,6 +93,19 @@ class Query(graphene.ObjectType):
         # for debug purpose only
         name = args.get('name')
         return User.get_query(context).filter_by(name=name).count() == 0
+
+    def resolve_comments(self, args, context, info):
+        if 'postId' not in args and 'commentId' not in args:
+            return Comment.get_all()
+        if 'postId' in args:
+            post = Post.get_query(context).get(args.get('postId'))
+            if post is not None:
+                return post.comments
+        elif 'commentId' in args:
+            comment = Comment.get_query(context).get(args.get('commentId'))
+            if comment is not None:
+                return comment.subComments
+        return None
 
 
 class Mutation(graphene.ObjectType):
