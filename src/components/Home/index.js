@@ -197,16 +197,7 @@ class Home extends PureComponent {
           >
             <TransitionGroup>
               <FadeView key={this.props.location.key}>
-                <h1
-                  style={{
-                    marginTop: '3vh',
-                    marginBottom: '3vh',
-                    fontFamily: 'consolas',
-                    wordBreak: 'break-all',
-                    color: '#4b84f4',
-                    textAlign: 'center',
-                  }}
-                >
+                <h1 className="site-header">
                   {this.props.title}
                 </h1>
               </FadeView>
