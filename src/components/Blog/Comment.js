@@ -156,9 +156,11 @@ class Comment extends PureComponent {
                                     icon="user"
                                     size={isSub ? 'small' : 'default'}
                                 />
-                                <span className="post-comment-author-name">
-                                    {author.name}
-                                </span>
+                                <Tooltip title={author.biography}>
+                                    <span className="post-comment-author-name">
+                                        {author.name}
+                                    </span>
+                                </Tooltip>
                                 <Tooltip
                                     title={moment
                                         .utc(createDate)
@@ -173,7 +175,14 @@ class Comment extends PureComponent {
                         </Col>
                         <Col><a onClick={this.createComment}>回复</a></Col>
                     </Row>
-                    <div className="post-comment-content">{content}</div>
+                    <div className="post-comment-content">
+                        {content.split('\n').map((item, index) =>
+                            <span key={index}>
+                                {item}
+                                <br />
+                            </span>
+                        )}
+                    </div>
                     {subComments &&
                         subComments.map(comment =>
                             <Comment

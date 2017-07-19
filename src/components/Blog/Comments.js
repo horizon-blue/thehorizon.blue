@@ -16,6 +16,7 @@ const getComments = gql`
         id
         name
         avatar
+        biography
       }
       subComments {
         id
@@ -25,6 +26,7 @@ const getComments = gql`
           id
           name
           avatar
+          biography
         }
       }
     }
