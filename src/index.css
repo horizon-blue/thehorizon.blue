@@ -83,3 +83,14 @@ hr {
     border-color: rgb(35, 35, 45);
 }
 
+html {
+    overflow-y: scroll;
+}
+
+body::-webkit-scrollbar {
+    width: 5px;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: rgba(92, 150, 242, 0.4);
+}
