@@ -1,1 +1,1 @@
-sudo certbot certonly --webroot -w /home/horizon/thehorizon.blue/build/ -d thehorizon.blue -d www.thehorizon.blue -d blog.thehorizon.blue -w /home/horizon/thehorizon.blue/server/ -d api.thehorizon.blue
+sudo certbot certonly --webroot --webroot-path=/home/horizon/thehorizon.blue/server/ -d api.thehorizon.blue
