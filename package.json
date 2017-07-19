@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "animejs": "^2.0.2",
-    "antd": "^2.11.1",
+    "antd": "^2.12.1",
     "babel-polyfill": "^6.23.0",
     "classnames": "^2.2.5",
     "draft-js": "^0.10.1",

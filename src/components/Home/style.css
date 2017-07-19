@@ -54,6 +54,12 @@
   transition: opacity 350ms ease-in, transform 350ms ease-in-out;
 }
 
+@media (max-width: 350px) {
+  .footer {
+    font-size: 13px;
+  }
+}
+
 .footer {
   color: rgba(72, 107, 175, 0.8);
   height: 20vh;

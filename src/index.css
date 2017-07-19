@@ -87,10 +87,10 @@ html {
     overflow-y: scroll;
 }
 
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 5px;
 }
 
-body::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background-color: rgba(92, 150, 242, 0.4);
 }

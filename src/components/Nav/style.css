@@ -35,3 +35,9 @@
     top: 0;
     transition: opacity 500ms ease-in;
 }
+
+@media (max-width: 350px) {
+    .site-navigation-container {
+        zoom: 0.9;
+    }
+}

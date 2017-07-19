@@ -2,20 +2,30 @@ import React, { PureComponent } from 'react';
 import { Row, Col, Avatar, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import classNames from 'classnames';
+import _ from 'lodash';
 import 'moment/locale/zh-cn';
-import { IMG_ROOT /*, ADMIN_GROUP_ID*/ } from '../../constants/api';
+import { IMG_ROOT } from '../../constants/api';
 
 class Comment extends PureComponent {
     static propTypes = {
         comment: PropTypes.object.isRequired,
+        isSub: PropTypes.bool,
     };
 
     render = () => {
-        const { comment: { author, createDate, content } } = this.props;
+        const {
+            comment: { author, createDate, content, subComments },
+            isSub,
+        } = this.props;
         return (
-            <Row className="post-comment-card">
+            <Row
+                className={classNames('post-comment-card', {
+                    hasSub: !_.isEmpty(subComments),
+                })}
+            >
                 <Col span={24}>
-                    <div className="post-comment-meta">
+                    <div className={classNames('post-comment-meta', { isSub })}>
                         <Avatar
                             src={
                                 author.avatar
@@ -23,6 +33,7 @@ class Comment extends PureComponent {
                                     : undefined
                             }
                             icon="user"
+                            size={isSub ? 'small' : 'default'}
                         />
                         <span className="post-comment-author-name">
                             {author.name}
@@ -34,6 +45,14 @@ class Comment extends PureComponent {
                         </Tooltip>
                     </div>
                     <div className="post-comment-content">{content}</div>
+                    {subComments &&
+                        subComments.map(comment =>
+                            <Comment
+                                comment={comment}
+                                key={comment.id}
+                                isSub={true}
+                            />
+                        )}
                 </Col>
             </Row>
         );

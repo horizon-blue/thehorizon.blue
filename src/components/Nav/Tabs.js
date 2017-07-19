@@ -30,6 +30,7 @@ class Tabs extends PureComponent {
             <Menu
                 mode="horizontal"
                 onClick={this.handleClick}
+                className="site-navigation-container"
                 selectedKeys={[this.props.location.pathname.split('/')[1]]}
             >
                 <Menu.Item key="blog">

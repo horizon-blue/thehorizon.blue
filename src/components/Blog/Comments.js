@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
 import { gql, graphql } from 'react-apollo';
-import { Row, Col, Spin } from 'antd';
+import { Row, Col, Spin, Input, Button } from 'antd';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Comment from './Comment';
+const { TextArea } = Input;
 
 const getComments = gql`
   query getComments($postId: Int) {
@@ -12,23 +13,18 @@ const getComments = gql`
       content
       createDate
       author {
-      	id
-      	name
-      	avatar
-      	group {
-      	  id
-      	}
+        id
+        name
+        avatar
       }
       subComments {
-      	id
+        id
         content
         createDate
         author {
           id
           name
-          group {
-          	id
-          }
+          avatar
         }
       }
     }
@@ -36,40 +32,52 @@ const getComments = gql`
 `;
 
 @graphql(getComments, {
-    options: ({ postId }) => ({ variables: { postId } }),
+  options: ({ postId }) => ({ variables: { postId } }),
 })
 class Comments extends PureComponent {
-    static propTypes = {
-        postId: PropTypes.string.isRequired,
-        data: PropTypes.shape({
-            loading: PropTypes.bool.isRequired,
-            comments: PropTypes.array,
-            refetch: PropTypes.func.isRequired,
-        }).isRequired,
-    };
+  static propTypes = {
+    postId: PropTypes.string.isRequired,
+    data: PropTypes.shape({
+      loading: PropTypes.bool.isRequired,
+      comments: PropTypes.array,
+      refetch: PropTypes.func.isRequired,
+    }).isRequired,
+  };
 
-    renderComments = () => {
-        const { comments } = this.props.data;
+  renderComments = () => {
+    const { comments } = this.props.data;
 
-        if (_.isEmpty(comments))
-            return <div className="centered-horizontal">暂时没有评论</div>;
+    if (_.isEmpty(comments))
+      return <div className="centered-horizontal">暂时没有评论</div>;
 
-        return comments.map(comment =>
-            <Comment comment={comment} key={comment.id} />
-        );
-    };
-    render = () => {
-        return (
-            <footer className="post-comments-container">
-                <Row><Col span={24}><h2>评论</h2></Col></Row>
-                {this.props.data.loading
-                    ? <div className="centered-horizontal">
-                          <Spin tip="加载中..." size="large" />
-                      </div>
-                    : this.renderComments()}
-            </footer>
-        );
-    };
+    return comments.map(comment =>
+      <Comment comment={comment} key={comment.id} />
+    );
+  };
+
+  render = () => {
+    return (
+      <footer className="post-comments-container">
+        <Row><Col span={24}><h2>评论</h2></Col></Row>
+        {this.props.data.loading
+          ? <div className="centered-horizontal">
+              <Spin tip="加载中..." size="large" />
+            </div>
+          : this.renderComments()}
+        <Row><Col span={24}><h3>发表评论</h3></Col></Row>
+        <Row>
+          <Col span={24}>
+            {' '}
+            <TextArea
+              className="comment-box"
+              autosize={{ minRows: 3, maxRows: 6 }}
+            />
+          </Col>
+        </Row>
+        <Row><Col><Button ghost type="primary">发送</Button></Col></Row>
+      </footer>
+    );
+  };
 }
 
 export default Comments;

@@ -90,16 +90,29 @@ pre {
     margin-top: 3vh;
 }
 
-.post-comments-container h2 {
+.post-comments-container h2, .post-comments-container h3 {
     color: rgba(200, 233, 255, 0.8);
+}
+
+.post-comments-container h3 {
+    margin: 20px 0 10px 0;
+}
+
+.post-comments-container .comment-box {
+    resize: none;
+    margin-bottom: 10px;
 }
 
 .post-comment-card {
     margin: 1vh 0;
     opacity: 0.9;
     transition: all 200ms ease-in;
-    padding: 10px;
+    padding: 15px;
     background-color: transparent;
+}
+
+.post-comment-card.hasSub {
+    padding-bottom: 0px;
 }
 
 .post-comment-card:hover {
@@ -115,12 +128,26 @@ pre {
     margin: 0 10px;
     font-size: 20px;
 }
+
+.post-comment-card .post-comment-meta.isSub .post-comment-author-name {
+    margin: 0 10px;
+    font-size: 15px;
+}
+
 .post-comment-card .post-comment-meta .post-comment-created-date {
     position: relative;
     top: 6px;
     color: rgba(203, 233, 255, 0.5);
 }
 
+.post-comment-card .post-comment-meta.isSub .post-comment-created-date {
+    color: rgba(203, 233, 255, 0.5);
+    position: relative;
+    top: 4px;
+    font-size: 12px;
+}
+
 .post-comment-card .post-comment-content {
     margin-top: 10px;
 }
+
