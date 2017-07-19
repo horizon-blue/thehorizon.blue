@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Row, Col, Affix, message, Button, Radio, Select, Spin } from 'antd';
+import { Prompt } from 'react-router-dom';
 import FontAwesome from '../_global/FontAwesome';
 import classNames from 'classnames';
 import Editor from 'draft-js-plugins-editor';
@@ -99,6 +100,8 @@ class PostEditor extends PureComponent {
     state = {};
 
     componentDidMount = () => {
+        window.addEventListener('beforeunload', this.onUnload);
+
         if (this.props.editContent) this.loadDraft(this.props.editContent);
         else if (this.props.rehydrated) this.loadDraft(this.props.draft);
     };
@@ -114,6 +117,11 @@ class PostEditor extends PureComponent {
 
     componentWillUnmount = () => {
         clearInterval(this.autosave);
+        window.removeEventListener('beforeunload', this.onUnload);
+    };
+
+    onUnload = event => {
+        this.handleSave();
     };
 
     loadDraft = draft => {
@@ -346,6 +354,7 @@ class PostEditor extends PureComponent {
         if (!this.state.editorState) return <LoadingPage message="载入中..." />;
         return (
             <div>
+                <Prompt message="确定要离开吗？" />
                 <Row type="flex" justify="center" className="post-editor">
                     <Col sm={22} xs={24}>
                         <div className="affix-container">
