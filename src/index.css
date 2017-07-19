@@ -94,3 +94,7 @@ html {
 ::-webkit-scrollbar-thumb {
     background-color: rgba(92, 150, 242, 0.4);
 }
+
+pre::-webkit-scrollbar {
+    display: none;
+}
