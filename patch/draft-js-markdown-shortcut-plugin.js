@@ -24,7 +24,7 @@ var Image = function Image(_ref) {
 
   if (alt[0] === '*') {
     alt = alt.substr(1);
-    src = 'https://s3-us-west-1.amazonaws.com/horizonblue/img/' + src;
+    src = 'https://www.thehorizon.blue/img/' + src;
   }
 
   return _react2.default.createElement(

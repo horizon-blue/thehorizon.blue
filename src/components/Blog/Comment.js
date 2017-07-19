@@ -160,7 +160,10 @@ class Comment extends PureComponent {
                                     {author.name}
                                 </span>
                                 <Tooltip
-                                    title={moment.utc(createDate).format('LLL')}
+                                    title={moment
+                                        .utc(createDate)
+                                        .local()
+                                        .format('LLL')}
                                 >
                                     <span className="post-comment-created-date">
                                         {moment.utc(createDate).fromNow()}

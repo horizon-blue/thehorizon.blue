@@ -145,7 +145,7 @@ class Post extends PureComponent {
               <span><FontAwesome name="user" />{' ' + post.author.name}</span>
               <span>
                 <FontAwesome name="calendar" />
-                {' ' + moment.utc(post.publishDate).format('l')}
+                {' ' + moment.utc(post.publishDate).local().format('l')}
               </span>
               {this.isAuthor() &&
                 <Link

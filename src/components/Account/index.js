@@ -144,7 +144,7 @@ class Account extends PureComponent {
                     />
                   : <h2 onClick={this.handleClickName}>{user.name}</h2>}
                 <p>
-                  加入日期：{moment.utc(user.joinDate).format('L')}（{moment.utc(user.joinDate).fromNow()}）
+                  加入日期：{moment.utc(user.joinDate).local().format('L')}（{moment.utc(user.joinDate).fromNow()}）
                 </p>
                 <p>
                   用户组：{user.group ? user.group.name : '无'}
