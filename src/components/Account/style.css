@@ -331,3 +331,7 @@ pre {
     font-size: 20px;
     color: rgba(200, 233, 255, 0.9);
 }
+
+.changing-biography-input {
+    width: 25vw;
+}

@@ -32,9 +32,9 @@ const getSelfInfo = gql`
   }
 `;
 
-const updateUserName = gql`
-    mutation updateUserName($name: String!) {
-        UpdateUserInfo(name: $name) {
+const UpdateUserInfo = gql`
+    mutation UpdateUserInfo($name: String, $biography: String) {
+        UpdateUserInfo(name: $name, biography: $biography) {
             success
         }
     }
@@ -42,7 +42,7 @@ const updateUserName = gql`
 
 @connect()
 @graphql(getSelfInfo)
-@graphql(updateUserName)
+@graphql(UpdateUserInfo)
 class Account extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -67,6 +67,7 @@ class Account extends PureComponent {
 
   componentDidUpdate = (prevProps, prevState) => {
     if (this.nameInput) this.nameInput.focus();
+    if (this.bioInput) this.bioInput.focus();
   };
 
   handleLogout = () => {
@@ -81,11 +82,27 @@ class Account extends PureComponent {
     this.setState({ name: this.props.data.user.name, editingName: true });
   };
 
+  handleClickBiography = () => {
+    this.setState({
+      biography: this.props.data.user.biography,
+      editingBiography: true,
+    });
+  };
+
   handleChangeName = e => {
     this.setState({ name: e.target.value });
   };
 
+  handleChangeBiography = e => {
+    this.setState({ biography: e.target.value });
+  };
+
   submitChangedName = () => {
+    if (!this.state.name) {
+      message.error('用户名不能为空', 5);
+      this.setState({ settingInfo: false, editingName: false });
+      return;
+    }
     if (this.state.name !== this.props.data.user.name) {
       this.props
         .mutate({
@@ -104,6 +121,27 @@ class Account extends PureComponent {
         });
     }
     this.setState({ editingName: false });
+  };
+
+  submitChangeBiography = () => {
+    if (this.state.biography !== this.props.data.user.biography) {
+      this.props
+        .mutate({
+          variables: { biography: this.state.biography },
+        })
+        .then(({ data }) => {
+          data.UpdateUserInfo.success
+            ? message.success('设置成功', 5)
+            : message.error('设置失败', 5);
+          this.haneldInfoUpdate();
+        })
+        .catch(error => {
+          console.log('setting info', error);
+          this.setState({ settingInfo: false });
+          message.error(error.message);
+        });
+    }
+    this.setState({ editingBiography: false });
   };
 
   renderTopRow = () => {
@@ -149,8 +187,20 @@ class Account extends PureComponent {
                 <p>
                   用户组：{user.group ? user.group.name : '无'}
                 </p>
-                <p>
-                  简介：{user.biography || '--'}
+                <p style={{ display: 'flex' }}>
+                  简介：{this.state.editingBiography
+                    ? <Input
+                        ref={bioInput => (this.bioInput = bioInput)}
+                        value={this.state.biography}
+                        onChange={this.handleChangeBiography}
+                        onBlur={this.submitChangeBiography}
+                        defaultValue={user.biography}
+                        onPressEnter={this.submitChangeBiography}
+                        className="changing-biography-input"
+                      />
+                    : <span onClick={this.handleClickBiography}>
+                        {user.biography || '--'}
+                      </span>}
                 </p>
               </div>}
           </MediaQuery>
