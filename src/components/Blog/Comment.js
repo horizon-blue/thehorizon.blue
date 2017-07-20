@@ -156,7 +156,7 @@ class Comment extends PureComponent {
                                     icon="user"
                                     size={isSub ? 'small' : 'default'}
                                 />
-                                <Tooltip title={author.biography}>
+                                <Tooltip title={author.biography || '暂无简介'}>
                                     <span className="post-comment-author-name">
                                         {author.name}
                                     </span>

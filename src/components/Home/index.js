@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { bind as Mousetrap } from 'mousetrap';
-import { Row, Col } from 'antd';
+import { Row, Col, BackTop } from 'antd';
 import anime from 'animejs';
 import Typed from 'typed.js';
 import classNames from 'classnames';
@@ -236,6 +236,9 @@ class Home extends PureComponent {
         <nav style={{ position: 'relative' }}>
           {this.renderNav()}
         </nav>
+        <MediaQuery minDeviceWidth={768}>
+          <BackTop />
+        </MediaQuery>
         <main
           style={{ position: 'relative', opacity: 0 }}
           ref={content => (this.content = content)}
