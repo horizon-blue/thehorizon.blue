@@ -25,7 +25,7 @@ class UpdateUserInfo(graphene.Mutation):
             for key, value in args.items():
                 if key == 'name' or key == 'password':
                     if value == '' or value is None:
-                        UpdateUserInfo(success=False)
+                        return UpdateUserInfo(success=False)
                 setattr(user, key, value)
             db_session.commit()
             return UpdateUserInfo(success=True)
