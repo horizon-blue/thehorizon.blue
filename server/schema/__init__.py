@@ -7,7 +7,7 @@ from .CreateInvitation import CreateInvitation
 from .CreateNewUser import CreateNewUser
 from .UpdatePostInfo import UpdatePostInfo
 from .CreateNewComment import CreateNewComment
-from .utils import decode, is_admin, extract_link_info
+from .utils import decode, is_admin, extract_link_info, PUBLIC_VISIBILITY_ID, GUEST_GROUP_ID, RESTRICTED_VISIBILITY_ID
 
 
 class Query(graphene.ObjectType):
@@ -67,6 +67,9 @@ class Query(graphene.ObjectType):
             return User.get_query(context).filter_by(**args, deleted=False).first()
 
     def resolve_post(self, args, context, info):
+        decoded = decode(context.headers.get('Authorization'))[0]
+        if decoded is None:
+            return None
         if "category" not in args:
             post = Post.get_query(context).filter_by(
                 link=args['link'], deleted=False).first()
@@ -75,11 +78,11 @@ class Query(graphene.ObjectType):
                 name=args['category']).first()
             post = Post.get_query(context).filter_by(
                 link=args['link'], category=cate, deleted=False).first()
-        if post is None or post.visibilityId != 4:
+        if post is None or post.visibilityId == PUBLIC_VISIBILITY_ID:
             return post
-        decoded = decode(context.headers.get('Authorization'))[0]
-        if decoded is None:
-            return None
+        groupId = decoded['groupId']
+        if post.visibilityId == RESTRICTED_VISIBILITY_ID and groupId != GUEST_GROUP_ID:
+            return post
         userId = decoded['sub']
         return post if userId == post.authorId else None
 

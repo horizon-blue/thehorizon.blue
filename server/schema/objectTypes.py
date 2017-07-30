@@ -1,7 +1,7 @@
 import models
 from graphene_sqlalchemy import SQLAlchemyObjectType
 from sqlalchemy import and_, or_
-from .utils import Utils, decode
+from .utils import Utils, decode, GUEST_GROUP_ID, PUBLIC_VISIBILITY_ID, RESTRICTED_VISIBILITY_ID
 
 
 class User(Utils, SQLAlchemyObjectType):
@@ -21,9 +21,16 @@ class Post(Utils, SQLAlchemyObjectType):
         decoded = decode(token)[0]
         model = cls._meta.model
         if decoded is None:
-            return model.query.filter(model.deleted == False, model.visibilityId != 4).order_by(model.publishDate.desc()).all()
+            return None
+        groupId = decoded.get('groupId')
+        if(groupId == GUEST_GROUP_ID):
+            # guest can only see public post
+            return model.query.filter(and_(model.deleted == False,
+                                           model.visibilityId == PUBLIC_VISIBILITY_ID)).order_by(model.publishDate.desc()).all()
         userId = decoded.get('sub')
-        return model.query.filter(and_(model.deleted == False, or_(model.visibilityId != 4, model.authorId == userId))).order_by(model.publishDate.desc()).all()
+        return model.query.filter(and_(model.deleted == False,
+                                       or_(model.visibilityId == PUBLIC_VISIBILITY_ID, model.visibilityId == RESTRICTED_VISIBILITY_ID,
+                                           model.authorId == userId))).order_by(model.publishDate.desc()).all()
 
 
 class Comment(Utils, SQLAlchemyObjectType):
