@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Row, Col, Tag } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { DRAFT_VISIBILITY_ID } from 'api';
+import { PUBLIC_VISIBILITY_ID } from 'api';
 import _ from 'lodash';
 import 'moment/locale/zh-cn';
 import './style.css';
@@ -59,7 +59,7 @@ class BlogPostCard extends PureComponent {
                 publishDate,
                 author,
                 tags,
-                visibilityId,
+                visibility,
                 category,
             },
         } = this.props;
@@ -83,13 +83,13 @@ class BlogPostCard extends PureComponent {
                                     {tag.name}
                                 </Tag>
                             )}
-                            {visibilityId === DRAFT_VISIBILITY_ID &&
+                            {visibility.id != PUBLIC_VISIBILITY_ID &&
                                 <Tag
                                     key="draft-tag"
                                     color="rgba(14, 100, 118, 0.2)"
                                     className="post-tag"
                                 >
-                                    草稿
+                                    {visibility.name}
                                 </Tag>}
                         </Col>
                     </Row>

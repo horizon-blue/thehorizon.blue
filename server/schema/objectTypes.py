@@ -13,7 +13,7 @@ class User(Utils, SQLAlchemyObjectType):
 class Post(Utils, SQLAlchemyObjectType):
     class Meta:
         model = models.Post
-        exclude_fields = ['deleted', 'authorId', 'categoryId']
+        exclude_fields = ['deleted', 'authorId', 'categoryId', 'visibilityId']
 
     @classmethod
     def get_all(cls, context):
@@ -54,4 +54,10 @@ class Category(Utils, SQLAlchemyObjectType):
 class Group(Utils, SQLAlchemyObjectType):
     class Meta:
         model = models.Group
+        exclude_fields = ['deleted']
+
+
+class Visibility(Utils, SQLAlchemyObjectType):
+    class Meta:
+        model = models.Visibility
         exclude_fields = ['deleted']
