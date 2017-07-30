@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PostEditor from './index';
 import { Redirect } from 'react-router-dom';
 import { graphql, gql } from 'react-apollo';
-import LoadingPage from '../_global/LoadingPage';
+import LoadingPage from 'components/_global/LoadingPage';
 import PropTypes from 'prop-types';
 
 // A HOC (sort of ?) of post editor that is in charged

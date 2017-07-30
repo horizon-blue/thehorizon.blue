@@ -4,7 +4,7 @@ import MediaQuery from 'react-responsive';
 import { Button, Form, Input, Icon, Row, Col, message } from 'antd';
 import { connect } from 'react-redux';
 
-import { LOGIN_REQUEST } from '../../store/reducer/actionTypes';
+import { LOGIN_REQUEST } from 'actionTypes';
 
 @connect()
 @Form.create()

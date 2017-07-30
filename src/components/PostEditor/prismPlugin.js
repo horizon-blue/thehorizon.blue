@@ -1,5 +1,5 @@
 import React from 'react';
-import Prism from '../_global/Prism';
+import Prism from 'components/_global/Prism';
 import PrismDecorator from 'draft-js-prism';
 
 /* eslint react/prop-types: 0 */ const prismPlugin = {

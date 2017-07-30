@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Row, Col, Tag } from 'antd';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import { DRAFT_VISIBILITY_ID } from '../../constants/api';
+import { DRAFT_VISIBILITY_ID } from 'api';
 import _ from 'lodash';
 import 'moment/locale/zh-cn';
 import './style.css';

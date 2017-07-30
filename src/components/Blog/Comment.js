@@ -5,7 +5,7 @@ import moment from 'moment';
 import classNames from 'classnames';
 import _ from 'lodash';
 import 'moment/locale/zh-cn';
-import { IMG_ROOT } from '../../constants/api';
+import { IMG_ROOT } from 'api';
 const { TextArea } = Input;
 
 class Comment extends PureComponent {

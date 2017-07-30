@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Login from './Login';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import FadeView from '../_global/FadeView';
+import FadeView from 'components/_global/FadeView';
 import Tabs from './Tabs';
 
 import './style.css';

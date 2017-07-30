@@ -6,6 +6,13 @@
         "transform-decorators-legacy",
         "transform-class-properties",
         "lodash",
-        "syntax-dynamic-import"
+        "syntax-dynamic-import",
+		["module-resolver", {
+			"root": ["./src"],
+			"alias": {
+				"actionTypes": "./src/store/reducer/actionTypes",
+				"api": "./src/constants/api",
+			}
+		}]
     ],
 }

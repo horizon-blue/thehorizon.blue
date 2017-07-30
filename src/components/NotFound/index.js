@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Button } from 'antd';
-import Content from '../_global/Content';
+import Content from 'components/_global/Content';
 
 class NotFound extends PureComponent {
   static routeConfig = {

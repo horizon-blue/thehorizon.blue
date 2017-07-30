@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Spin, Row, Col, Button, Icon, Input, message } from 'antd';
 import { connect } from 'react-redux';
-import Content from '../_global/Content';
+import Content from 'components/_global/Content';
 import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
 import classNames from 'classnames';
@@ -9,12 +9,12 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import MediaQuery from 'react-responsive';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-import { LOGOUT_REQUEST } from '../../store/reducer/actionTypes';
-import FadeView from '../_global/FadeView';
+import { LOGOUT_REQUEST } from 'actionTypes';
+import FadeView from 'components/_global/FadeView';
 import UploadAvatarModal from './UploadAvatarModal';
-import { IMG_ROOT, ADMIN_GROUP_ID } from '../../constants/api';
+import { IMG_ROOT, ADMIN_GROUP_ID } from 'api';
 import './style.css';
-import LoadableEditor from '../PostEditor';
+import LoadableEditor from 'components/PostEditor';
 
 const getSelfInfo = gql`
   query getSelfInfo {

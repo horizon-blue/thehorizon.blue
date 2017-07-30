@@ -6,11 +6,11 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { gql, graphql } from 'react-apollo';
-import Content from '../_global/Content';
+import Content from 'components/_global/Content';
 import BlogPostCard from './BlogPostCard';
 import Post from './Post';
-import FadeView from '../_global/FadeView';
-import MutationEditor from '../PostEditor/MutationEditor';
+import FadeView from 'components/_global/FadeView';
+import MutationEditor from 'components/PostEditor/MutationEditor';
 
 const getAllPosts = gql`
   query getAllPosts {
