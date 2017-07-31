@@ -2,51 +2,46 @@ import React, { PureComponent } from 'react';
 import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import Login from './Login';
-import _ from 'lodash';
-import { connect } from 'react-redux';
 import FadeView from 'components/_global/FadeView';
 import Tabs from './Tabs';
 
 import './style.css';
 
-function mapStateToProps(state, ownProps) {
-    return {
-        token: state.token,
-    };
-}
-
-@connect(mapStateToProps)
 class Nav extends PureComponent {
     static propTypes = {
-        token: PropTypes.string,
-        cancelLogin: PropTypes.func.isRequired,
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
     };
+
+    state = { showLogin: false };
 
     renderNav = () => {
         return (
             <FadeView
                 key="nav"
-                in={!_.isNull(this.props.token)}
+                in={!this.state.showLogin}
                 classNames="transitionFade"
             >
                 <Tabs
                     history={this.props.history}
                     location={this.props.location}
+                    switchToLogin={this.switchToLogin}
                 />
             </FadeView>
         );
     };
 
+    cancelLogin = () => this.setState({ showLogin: false });
+    switchToLogin = () => this.setState({ showLogin: true });
+
     renderLogin = () => {
         return (
             <FadeView
                 key="loginPanel"
-                in={_.isNull(this.props.token)}
+                in={this.state.showLogin}
                 classNames="transitionFade"
             >
-                <Login cancelLogin={this.props.cancelLogin} />
+                <Login cancelLogin={this.cancelLogin} />
             </FadeView>
         );
     };

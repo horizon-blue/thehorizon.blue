@@ -2,11 +2,21 @@ import React, { PureComponent } from 'react';
 import { Menu } from 'antd';
 import PropTypes from 'prop-types';
 import anime from 'animejs';
+import { connect } from 'react-redux';
 
+const mapStateToProps = (state, ownProps) => {
+    return {
+        token: state.token,
+    };
+};
+
+@connect(mapStateToProps)
 class Tabs extends PureComponent {
     static propTypes = {
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
+        switchToLogin: PropTypes.func.isRequired,
+        token: PropTypes.string,
     };
 
     componentDidMount = () => {
@@ -22,7 +32,9 @@ class Tabs extends PureComponent {
     menuItems = [];
 
     handleClick = e => {
-        this.props.history.push('/' + e.key);
+        if (e.key === 'account' && !this.props.token)
+            this.props.switchToLogin();
+        else this.props.history.push('/' + e.key);
     };
 
     render = () => {
@@ -55,7 +67,7 @@ class Tabs extends PureComponent {
                 </Menu.Item>
                 <Menu.Item key="account">
                     <div ref={menuItem => this.menuItems.push(menuItem)}>
-                        账号
+                        {this.props.token ? '账号' : '登录'}
                     </div>
                 </Menu.Item>
             </Menu>

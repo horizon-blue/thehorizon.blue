@@ -213,16 +213,11 @@ class Home extends PureComponent {
     );
   };
 
-  hancleCancelLogin = () => {
-    this.props.dispatch({ type: TOGGLE_NAVBAR });
-  };
-
   renderNav = () => {
     return (
       <FadeView in={this.props.showNav && this.state.animationDone}>
         <Nav
           key="NavPanel"
-          cancelLogin={this.hancleCancelLogin}
           history={this.props.history}
           location={this.props.location}
         />

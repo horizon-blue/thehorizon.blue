@@ -22,6 +22,7 @@ export function* resolveloginRequest(action) {
         });
         const { success, token } = res.data.createToken;
         if (success) {
+            client.resetStore();
             onLoginComplete && onLoginComplete();
             yield put({ type: types.AUTH_SUCCESS, token: token });
         } else {
@@ -39,6 +40,16 @@ function* watchLoginRequest() {
     yield takeLatest(types.LOGIN_REQUEST, resolveloginRequest);
 }
 
+// do a cache clear up after log out
+export function* resolvelogoutRequest(action) {
+    yield client.resetStore();
+}
+
+function* watchLogoutRequest() {
+    yield takeLatest(types.LOGOUT_REQUEST, resolvelogoutRequest);
+}
+
 export default function* authRootSaga() {
     yield fork(watchLoginRequest);
+    yield fork(watchLogoutRequest);
 }

@@ -34,10 +34,13 @@ class Router extends PureComponent {
                                 exact
                                 component={PlaceHolder}
                             />
-                            <PrivateRoute path="/blog" component={Blog} />
-                            <PrivateRoute path="/albumn" component={Albumn} />
-                            <PrivateRoute path="/lab" component={Lab} />
-                            <PrivateRoute path="/about" component={About} />
+                            <RouteWithConfig path="/blog" component={Blog} />
+                            <RouteWithConfig
+                                path="/albumn"
+                                component={Albumn}
+                            />
+                            <RouteWithConfig path="/lab" component={Lab} />
+                            <RouteWithConfig path="/about" component={About} />
                             <PrivateRoute path="/account" component={Account} />
                             <RouteWithConfig
                                 path="/a/super/secrete/path/that/nobody/can/find/:link"

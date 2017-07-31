@@ -31,6 +31,7 @@ class Login extends PureComponent {
                         if (error) message.error(error, 5);
                         else {
                             message.success('验证成功。', 5);
+                            this.props.cancelLogin();
                         }
                     },
                 });
