@@ -22,6 +22,7 @@ function mapStateToProps(state, ownProps) {
     title: state.routeConfig.title,
     typingStrings: state.routeConfig.typingStrings,
     showNav: state.status.showNav,
+    rehydrated: state.rehydrated,
   };
 }
 
@@ -53,6 +54,7 @@ class Home extends PureComponent {
     location: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     showNav: PropTypes.bool,
+    rehydrated: PropTypes.bool,
   };
 
   state = {
@@ -226,7 +228,7 @@ class Home extends PureComponent {
   };
 
   render = () => {
-    const { className, ...rest } = this.props;
+    const { className, rehydrated, ...rest } = this.props;
 
     return (
       <div className={classNames(className)}>
@@ -243,7 +245,7 @@ class Home extends PureComponent {
           style={{ position: 'relative', opacity: 0 }}
           ref={content => (this.content = content)}
         >
-          <Router {...rest} />
+          {rehydrated && <Router {...rest} />}
         </main>
         <footer style={{ opacity: 0 }} ref={footer => (this.footer = footer)}>
           <Footer />

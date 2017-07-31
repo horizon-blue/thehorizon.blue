@@ -16,6 +16,7 @@ class Query(graphene.ObjectType):
     tags = graphene.List(Tag)
     categories = graphene.List(Category)
     groups = graphene.List(Group)
+    sessionIsValid = graphene.Boolean()
     invitationIsValid = graphene.Boolean(
         link=graphene.Argument(graphene.String))
     usernameIsAvailable = graphene.Boolean(
@@ -111,23 +112,22 @@ class Query(graphene.ObjectType):
                 return comment.subComments
         return None
 
-
-class Mutation(graphene.ObjectType):
-    create_token = CreateToken.Field()
-    sessionIsValid = graphene.Boolean()
-    UpdateUserInfo = UpdateUserInfo.Field()
-    CreateNewPost = CreateNewPost.Field()
-    CreateInvitation = CreateInvitation.Field()
-    CreateNewUser = CreateNewUser.Field()
-    UpdatePostInfo = UpdatePostInfo.Field()
-    CreateNewComment = CreateNewComment.Field()
-
     def resolve_sessionIsValid(self, args, context, info):
         # for debug purpose only
         token = context.headers.get('Authorization')
         if decode(token)[0] is not None:
             return True
         return False
+
+
+class Mutation(graphene.ObjectType):
+    create_token = CreateToken.Field()
+    UpdateUserInfo = UpdateUserInfo.Field()
+    CreateNewPost = CreateNewPost.Field()
+    CreateInvitation = CreateInvitation.Field()
+    CreateNewUser = CreateNewUser.Field()
+    UpdatePostInfo = UpdatePostInfo.Field()
+    CreateNewComment = CreateNewComment.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)

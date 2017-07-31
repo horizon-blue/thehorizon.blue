@@ -9,7 +9,7 @@ import LoadingPage from '../LoadingPage';
 import { LOGOUT_REQUEST } from '../../../store/reducer/actionTypes';
 
 const validateToken = gql`
-  mutation validateToken {
+  query validateToken {
     sessionIsValid
   }
 `;
@@ -17,55 +17,42 @@ const validateToken = gql`
 function mapStateToProps(state, ownProps) {
   return {
     token: state.token,
-    rehydrated: state.rehydrated,
   };
 }
 
+@graphql(validateToken, {
+  options: { fetchPolicy: 'network-only' },
+})
 @connect(mapStateToProps)
-@graphql(validateToken)
 class TempPage extends PureComponent {
   static propTypes = {
-    rehydrated: PropTypes.bool,
-    mutate: PropTypes.func.isRequired,
     component: PropTypes.func.isRequired,
-    token: PropTypes.string,
     path: PropTypes.string.isRequired,
     location: PropTypes.object,
     dispatch: PropTypes.func.isRequired,
-  };
+    token: PropTypes.string,
 
-  state = {};
-
-  componentDidMount = () => {
-    this.validateUser(this.props);
+    data: PropTypes.shape({
+      loading: PropTypes.bool.isRequired,
+      sessionIsValid: PropTypes.array,
+    }).isRequired,
   };
 
   componentWillReceiveProps = nextProps => {
-    this.validateUser(nextProps);
-  };
-
-  validateUser = props => {
-    if (props.token && !this.state.validating && !this.state.sessionIsValid) {
-      this.setState({ validating: true });
-      this.props
-        .mutate()
-        .then(({ data }) => {
-          if (!data.sessionIsValid)
-            this.props.dispatch({ type: LOGOUT_REQUEST });
-          this.setState({ sessionIsValid: data.sessionIsValid });
-        })
-        .catch(error => {
-          console.log('validation error', error);
-          message.error(error.message);
-          // this.props.dispatch({ type: LOGOUT_REQUEST });
-        });
+    if (nextProps.data.sessionIsValid === false) {
+      this.this.props.dispatch({ type: LOGOUT_REQUEST });
+      message.error('登录状态已过期', 5);
     }
   };
 
   render = () => {
-    const { component: Component, rehydrated, token, ...rest } = this.props;
-    const { sessionIsValid } = this.state;
-    if ((rehydrated && !token) || sessionIsValid === false)
+    const {
+      component: Component,
+      data: { loading, sessionIsValid },
+      ...rest
+    } = this.props;
+    if (loading) return <LoadingPage />;
+    if (sessionIsValid === false)
       return (
         <Redirect
           to={{
@@ -75,8 +62,7 @@ class TempPage extends PureComponent {
           from={this.props.path}
         />
       );
-    if (sessionIsValid) return <Component {...rest} />;
-    return <LoadingPage />;
+    return <Component {...rest} />;
   };
 }
 
@@ -87,14 +73,18 @@ class PrivateRoute extends PureComponent {
     location: PropTypes.object,
   };
 
+  renderPage = props => {
+    const { component: Component } = this.props;
+    return <TempPage component={Component} path={this.props.path} {...props} />;
+  };
+
   render = () => {
     const { component: Component, ...rest } = this.props;
     return (
       <RouteWithConfig
         {...rest}
         routeConfig={Component.routeConfig}
-        render={props =>
-          <TempPage component={Component} path={this.props.path} {...props} />}
+        render={this.renderPage}
       />
     );
   };
