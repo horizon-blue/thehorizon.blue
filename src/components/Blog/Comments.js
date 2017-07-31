@@ -3,6 +3,7 @@ import { gql, graphql } from 'react-apollo';
 import { Row, Col, Spin, Input, Button, message } from 'antd';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import Comment from './Comment';
 const { TextArea } = Input;
 
@@ -41,6 +42,13 @@ const CreateNewComment = gql`
     }
 `;
 
+const mapStateToProps = state => {
+  return {
+    token: state.token,
+  };
+};
+
+@connect(mapStateToProps)
 @graphql(CreateNewComment)
 @graphql(getComments, {
   options: ({ postId }) => ({ variables: { postId } }),
@@ -54,6 +62,7 @@ class Comments extends PureComponent {
       comments: PropTypes.array,
       refetch: PropTypes.func.isRequired,
     }).isRequired,
+    token: PropTypes.string,
   };
 
   state = {};
@@ -124,6 +133,7 @@ class Comments extends PureComponent {
               autosize={{ minRows: 3, maxRows: 6 }}
               onChange={this.onChangeComment}
               value={this.state.comment}
+              disabled={!this.props.token}
             />
           </Col>
         </Row>

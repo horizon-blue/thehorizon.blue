@@ -4,10 +4,18 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
 import _ from 'lodash';
+import { connect } from 'react-redux';
 import 'moment/locale/zh-cn';
 import { IMG_ROOT } from 'api';
 const { TextArea } = Input;
 
+const mapStateToProps = state => {
+    return {
+        token: state.token,
+    };
+};
+
+@connect(mapStateToProps)
 class Comment extends PureComponent {
     static propTypes = {
         comment: PropTypes.object.isRequired,
@@ -16,6 +24,7 @@ class Comment extends PureComponent {
         refetch: PropTypes.func.isRequired,
         openCommentBox: PropTypes.func,
         closeCommentBox: PropTypes.func,
+        token: PropTypes.string,
     };
 
     state = { showCommentBox: false };
@@ -25,7 +34,9 @@ class Comment extends PureComponent {
         if (this.props.openCommentBox) {
             // in sub comment now
             this.props.openCommentBox(
-                '@' + this.props.comment.author.name + ' : '
+                this.props.token
+                    ? '@' + this.props.comment.author.name + ' : '
+                    : ''
             );
         } else {
             this.openCommentBox('');
@@ -101,6 +112,7 @@ class Comment extends PureComponent {
                     autosize={{ minRows: 2, maxRows: 4 }}
                     onChange={this.onChangeComment}
                     value={this.state.comment}
+                    disabled={!this.props.token}
                 />
                 <Row>
                     <Col>
