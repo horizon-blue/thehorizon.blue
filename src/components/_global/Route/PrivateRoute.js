@@ -1,6 +1,4 @@
 import React, { PureComponent } from 'react';
-import { Redirect } from 'react-router-dom';
-import { message } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
@@ -27,41 +25,32 @@ function mapStateToProps(state, ownProps) {
 class TempPage extends PureComponent {
   static propTypes = {
     component: PropTypes.func.isRequired,
-    path: PropTypes.string.isRequired,
     location: PropTypes.object,
+    history: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     token: PropTypes.string,
+    redirect: PropTypes.string,
 
     data: PropTypes.shape({
       loading: PropTypes.bool.isRequired,
-      sessionIsValid: PropTypes.array,
+      sessionIsValid: PropTypes.bool,
     }).isRequired,
   };
 
+  state = {};
+
   componentWillReceiveProps = nextProps => {
-    if (nextProps.data.sessionIsValid === false) {
-      this.this.props.dispatch({ type: LOGOUT_REQUEST });
-      message.error('登录状态已过期', 5);
+    if (!this.props.token) {
+      if (this.props.redirect) this.props.history.push(this.props.redirect);
+    } else if (nextProps.data.sessionIsValid === false) {
+      this.props.dispatch({ type: LOGOUT_REQUEST });
+      if (this.props.redirect) this.props.history.push(this.props.redirect);
     }
   };
 
   render = () => {
-    const {
-      component: Component,
-      data: { loading, sessionIsValid },
-      ...rest
-    } = this.props;
+    const { component: Component, data: { loading }, ...rest } = this.props;
     if (loading) return <LoadingPage />;
-    if (sessionIsValid === false)
-      return (
-        <Redirect
-          to={{
-            pathname: '/',
-            state: { from: this.props.location },
-          }}
-          from={this.props.path}
-        />
-      );
     return <Component {...rest} />;
   };
 }
@@ -69,13 +58,12 @@ class TempPage extends PureComponent {
 class PrivateRoute extends PureComponent {
   static propTypes = {
     component: PropTypes.func.isRequired,
-    path: PropTypes.string.isRequired,
     location: PropTypes.object,
   };
 
   renderPage = props => {
     const { component: Component } = this.props;
-    return <TempPage component={Component} path={this.props.path} {...props} />;
+    return <TempPage component={Component} {...props} />;
   };
 
   render = () => {

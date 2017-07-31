@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { PrivateRoute, RouteWithConfig } from 'components/_global/Route';
+import { PrivateRoute } from 'components/_global/Route';
 import FadeView from 'components/_global/FadeView';
 import { TransitionGroup } from 'react-transition-group';
 import PlaceHolder from './PlaceHolder';
@@ -29,25 +29,26 @@ class Router extends PureComponent {
                 >
                     <div>
                         <Switch location={this.props.location}>
-                            <RouteWithConfig
+                            <PrivateRoute
                                 path="/"
                                 exact
                                 component={PlaceHolder}
                             />
-                            <RouteWithConfig path="/blog" component={Blog} />
-                            <RouteWithConfig
-                                path="/albumn"
-                                component={Albumn}
+                            <PrivateRoute path="/blog" component={Blog} />
+                            <PrivateRoute path="/albumn" component={Albumn} />
+                            <PrivateRoute path="/lab" component={Lab} />
+                            <PrivateRoute path="/about" component={About} />
+                            <PrivateRoute
+                                path="/account"
+                                component={Account}
+                                redirect="/"
                             />
-                            <RouteWithConfig path="/lab" component={Lab} />
-                            <RouteWithConfig path="/about" component={About} />
-                            <PrivateRoute path="/account" component={Account} />
-                            <RouteWithConfig
+                            <PrivateRoute
                                 path="/a/super/secrete/path/that/nobody/can/find/:link"
                                 component={Registration}
                             />
-                            <RouteWithConfig path="/404" component={NotFound} />
-                            <RouteWithConfig component={NotFound} />
+                            <PrivateRoute path="/404" component={NotFound} />
+                            <PrivateRoute component={NotFound} />
                         </Switch>
                     </div>
                 </FadeView>
