@@ -67,9 +67,6 @@ class Query(graphene.ObjectType):
             return User.get_query(context).filter_by(**args, deleted=False).first()
 
     def resolve_post(self, args, context, info):
-        decoded = decode(context.headers.get('Authorization'))[0]
-        if decoded is None:
-            return None
         if "category" not in args:
             post = Post.get_query(context).filter_by(
                 link=args['link'], deleted=False).first()
@@ -80,6 +77,9 @@ class Query(graphene.ObjectType):
                 link=args['link'], category=cate, deleted=False).first()
         if post is None or post.visibilityId == PUBLIC_VISIBILITY_ID:
             return post
+        decoded = decode(context.headers.get('Authorization'))[0]
+        if decoded is None:
+            return None
         groupId = decoded['groupId']
         if post.visibilityId == RESTRICTED_VISIBILITY_ID and groupId != GUEST_GROUP_ID:
             return post

@@ -20,17 +20,16 @@ class Post(Utils, SQLAlchemyObjectType):
         token = context.headers.get('Authorization')
         decoded = decode(token)[0]
         model = cls._meta.model
-        if decoded is None:
-            return None
-        groupId = decoded.get('groupId')
-        if(groupId == GUEST_GROUP_ID):
-            # guest can only see public post
-            return model.query.filter(and_(model.deleted == False,
-                                           model.visibilityId == PUBLIC_VISIBILITY_ID)).order_by(model.publishDate.desc()).all()
-        userId = decoded.get('sub')
+        if decoded is not None:
+            groupId = decoded.get('groupId')
+            if(groupId != GUEST_GROUP_ID):
+                userId = decoded.get('sub')
+                return model.query.filter(and_(model.deleted == False,
+                                               or_(model.visibilityId == PUBLIC_VISIBILITY_ID, model.visibilityId == RESTRICTED_VISIBILITY_ID,
+                                                   model.authorId == userId))).order_by(model.publishDate.desc()).all()
+        # guest can only see public post
         return model.query.filter(and_(model.deleted == False,
-                                       or_(model.visibilityId == PUBLIC_VISIBILITY_ID, model.visibilityId == RESTRICTED_VISIBILITY_ID,
-                                           model.authorId == userId))).order_by(model.publishDate.desc()).all()
+                                       model.visibilityId == PUBLIC_VISIBILITY_ID)).order_by(model.publishDate.desc()).all()
 
 
 class Comment(Utils, SQLAlchemyObjectType):
