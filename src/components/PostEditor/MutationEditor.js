@@ -23,7 +23,9 @@ const getPostInfo = gql`
       	id
         name
       }
-      visibilityId
+      visibility {
+        id
+      }
     }
   }
 `;
@@ -68,7 +70,7 @@ class MutationEditor extends PureComponent {
             title: post.title,
             content: post.content,
             link: params.link,
-            visibility: post.visibilityId,
+            visibility: parseInt(post.visibility.id),
             category: params.category,
             tags: post.tags.map(tag => tag.name),
             excerpt: post.excerpt,

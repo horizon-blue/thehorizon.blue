@@ -307,6 +307,7 @@ class PostEditor extends PureComponent {
                     this.props.dispatch({
                         type: UPDATE_POST,
                     });
+                    this.setState({ uploaded: true });
                     history.push(`/blog/${this.state.category}/${link}`);
                 }
             })
@@ -354,7 +355,10 @@ class PostEditor extends PureComponent {
         if (!this.state.editorState) return <LoadingPage message="载入中..." />;
         return (
             <div>
-                <Prompt message="确定要离开吗？" />
+                <Prompt
+                    message={() =>
+                        this.state.uploaded ? undefined : '确定要离开吗？'}
+                />
                 <Row type="flex" justify="center" className="post-editor">
                     <Col sm={22} xs={24}>
                         <div className="affix-container">
