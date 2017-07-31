@@ -3,4 +3,5 @@ export default {
     routeConfig: {},
     rehydrated: false,
     draft: null,
+    status: {},
 };

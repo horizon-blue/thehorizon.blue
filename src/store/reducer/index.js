@@ -3,6 +3,7 @@ import token from './token.reducer';
 import routeConfig from './routeConfig.reducer';
 import rehydrated from './rehydrated.reducer';
 import draft from './draft.reducer';
+import status from './status.reducer';
 import client from '../../apolloClient';
 
 const rootReducer = combineReducers({
@@ -10,6 +11,7 @@ const rootReducer = combineReducers({
     routeConfig,
     rehydrated,
     draft,
+    status,
     apollo: client.reducer(),
 });
 

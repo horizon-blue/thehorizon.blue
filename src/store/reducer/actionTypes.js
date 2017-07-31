@@ -14,3 +14,6 @@ export const UPDATE_POST = 'UPDATE_POST';
 // Action subscription
 export const SUBSCRIBE_ACTION = 'SUBSCRIBE_ACTION';
 export const ACTION_RESOLVE = 'ACTION_RESOLVE';
+
+// General status
+export const TOGGLE_NAVBAR = 'TOGGLE_NAVBAR';

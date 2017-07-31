@@ -18,7 +18,6 @@ function mapStateToProps(state, ownProps) {
 @connect(mapStateToProps)
 class Nav extends PureComponent {
     static propTypes = {
-        showNav: PropTypes.bool,
         token: PropTypes.string,
         cancelLogin: PropTypes.func.isRequired,
         history: PropTypes.object.isRequired,

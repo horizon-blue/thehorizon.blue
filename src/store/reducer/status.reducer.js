@@ -1,10 +1,10 @@
 import initialState from './initialState';
 import * as types from 'actionTypes';
 
-export default function(state = initialState.routeConfig, action) {
+export default function(state = initialState.status, action) {
     switch (action.type) {
-        case types.UPDATE_ROUTE_CONFIG:
-            return action.routeConfig;
+        case types.TOGGLE_NAVBAR:
+            return { ...state, showNav: !state.showNav };
         default:
             return state;
     }

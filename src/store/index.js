@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'development') {
 function configureStore() {
     const store = createStore(rootReducer, initialState, compose(...enhancer));
     persistStore(store, {
-        whitelist: ['token', 'draft'],
+        whitelist: ['token', 'draft', 'status'],
     });
     applyAuthMiddleWare(store);
 

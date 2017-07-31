@@ -14,12 +14,14 @@ import Router from './Router';
 import Nav from 'components/Nav';
 import Logo from 'components/_global/Logo';
 import Footer from './Footer';
+import { TOGGLE_NAVBAR } from 'actionTypes';
 import './style.css';
 
 function mapStateToProps(state, ownProps) {
   return {
     title: state.routeConfig.title,
     typingStrings: state.routeConfig.typingStrings,
+    showNav: state.status.showNav,
   };
 }
 
@@ -49,17 +51,18 @@ class Home extends PureComponent {
     ]),
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    showNav: PropTypes.bool,
   };
 
   state = {
     buttonState: 0,
-    showNav: false,
   };
 
   componentWillMount = () => {
     // The special hotkeys to enter the main website
     Mousetrap('left right right left', () =>
-      this.setState({ showNav: !this.state.showNav })
+      this.props.dispatch({ type: TOGGLE_NAVBAR })
     );
   };
 
@@ -112,6 +115,7 @@ class Home extends PureComponent {
         easing: 'easeInOutQuad',
         duration: 500,
         offset: '-=200',
+        begin: () => this.setState({ animationDone: true }),
       })
       .add({
         targets: this.footer,
@@ -158,9 +162,10 @@ class Home extends PureComponent {
       this.state.buttonState,
       buttonIndex
     );
-    if (buttonState === 5)
-      this.setState({ showNav: !this.state.showNav, buttonState: 0 });
-    else this.setState({ buttonState });
+    if (buttonState === 5) {
+      this.setState({ buttonState: 0 });
+      this.props.dispatch({ type: TOGGLE_NAVBAR });
+    } else this.setState({ buttonState });
   };
 
   findNextButtonState = (state, buttonIndex) => {
@@ -209,12 +214,12 @@ class Home extends PureComponent {
   };
 
   hancleCancelLogin = () => {
-    this.setState({ showNav: false });
+    this.props.dispatch({ type: TOGGLE_NAVBAR });
   };
 
   renderNav = () => {
     return (
-      <FadeView in={this.state.showNav}>
+      <FadeView in={this.props.showNav && this.state.animationDone}>
         <Nav
           key="NavPanel"
           cancelLogin={this.hancleCancelLogin}
