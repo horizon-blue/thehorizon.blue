@@ -7,6 +7,7 @@ export default function(state = initialState.token, action) {
             return action.token;
         case types.AUTH_ERROR:
         case types.LOGOUT_REQUEST:
+        case types.SESSION_EXPIRED:
             return null;
         default:
             return state;

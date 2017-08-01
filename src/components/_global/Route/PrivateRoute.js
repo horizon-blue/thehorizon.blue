@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { gql, graphql } from 'react-apollo';
+import { gql, withApollo } from 'react-apollo';
 import RouteWithConfig from './RouteWithConfig';
-import LoadingPage from '../LoadingPage';
-import { LOGOUT_REQUEST } from '../../../store/reducer/actionTypes';
+import LoadingPage from 'components/_global/LoadingPage';
+import { SESSION_EXPIRED } from 'actionTypes';
 
 const validateToken = gql`
   query validateToken {
@@ -18,9 +18,7 @@ function mapStateToProps(state, ownProps) {
   };
 }
 
-@graphql(validateToken, {
-  options: { fetchPolicy: 'network-only' },
-})
+@withApollo
 @connect(mapStateToProps)
 class TempPage extends PureComponent {
   static propTypes = {
@@ -30,27 +28,34 @@ class TempPage extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     token: PropTypes.string,
     redirect: PropTypes.string,
-
-    data: PropTypes.shape({
-      loading: PropTypes.bool.isRequired,
-      sessionIsValid: PropTypes.bool,
-    }).isRequired,
+    client: PropTypes.object.isRequired,
   };
 
-  state = {};
+  state = { checking: true };
 
-  componentWillReceiveProps = nextProps => {
-    if (!this.props.token) {
-      if (this.props.redirect) this.props.history.push(this.props.redirect);
-    } else if (nextProps.data.sessionIsValid === false) {
-      this.props.dispatch({ type: LOGOUT_REQUEST });
-      if (this.props.redirect) this.props.history.push(this.props.redirect);
+  componentWillMount = () => {
+    const { client, token, redirect, history, dispatch } = this.props;
+    if (!token) {
+      if (redirect) history.push(redirect);
+      this.setState({ checking: false });
+    } else {
+      client.networkInterface
+        .query({
+          query: validateToken,
+        })
+        .then(res => {
+          if (!res.data.sessionIsValid) {
+            dispatch({ type: SESSION_EXPIRED });
+            if (redirect) history.push(redirect);
+          }
+          this.setState({ checking: false });
+        });
     }
   };
 
   render = () => {
-    const { component: Component, data: { loading }, ...rest } = this.props;
-    if (loading) return <LoadingPage />;
+    const { component: Component, token, ...rest } = this.props;
+    if (this.state.checking) return <LoadingPage />;
     return <Component {...rest} />;
   };
 }

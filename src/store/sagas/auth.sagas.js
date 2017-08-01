@@ -1,5 +1,6 @@
 import { put, takeLatest, fork } from 'redux-saga/effects';
 import { gql } from 'react-apollo';
+import { message } from 'antd';
 import * as types from '../reducer/actionTypes';
 import client from '../../apolloClient';
 
@@ -42,11 +43,15 @@ function* watchLoginRequest() {
 
 // do a cache clear up after log out
 export function* resolvelogoutRequest(action) {
+    if (action.type === types.SESSION_EXPIRED) message.error('登录状态已过期', 5);
     yield client.resetStore();
 }
 
 function* watchLogoutRequest() {
-    yield takeLatest(types.LOGOUT_REQUEST, resolvelogoutRequest);
+    yield takeLatest(
+        [types.LOGOUT_REQUEST, types.SESSION_EXPIRED],
+        resolvelogoutRequest
+    );
 }
 
 export default function* authRootSaga() {
