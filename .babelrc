@@ -12,6 +12,7 @@
 			"alias": {
 				"actionTypes": "./src/store/reducer/actionTypes",
 				"api": "./src/constants/api",
+				 "^@(.+)": "./src/components/\\1",
 			}
 		}]
     ],

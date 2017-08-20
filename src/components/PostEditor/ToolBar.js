@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from 'antd';
-import FontAwesome from 'components/_global/FontAwesome';
+import FontAwesome from '@_global/FontAwesome';
 import classNames from 'classnames';
 import _ from 'lodash';
 

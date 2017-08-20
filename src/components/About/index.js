@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Spin, Row, Col } from 'antd';
-import Content from 'components/_global/Content';
+import Content from '@_global/Content';
 
 class About extends Component {
   static routeConfig = {

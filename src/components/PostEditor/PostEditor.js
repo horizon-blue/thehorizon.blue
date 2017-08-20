@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Row, Col, Affix, message, Button, Radio, Select, Spin } from 'antd';
 import { Prompt } from 'react-router-dom';
-import FontAwesome from 'components/_global/FontAwesome';
+import FontAwesome from '@_global/FontAwesome';
 import classNames from 'classnames';
 import Editor from 'draft-js-plugins-editor';
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import 'draft-js/dist/Draft.css';
 import ToolBar from './ToolBar';
 import styleMap from './styleMap';
 import keyboardBindingFn from './keyboardBindingFn';
-import LoadingPage from 'components/_global/LoadingPage';
+import LoadingPage from '@_global/LoadingPage';
 import { connect } from 'react-redux';
 import { SAVE_DRAFT, UPDATE_POST } from 'actionTypes';
 import { POST_ROOT, DRAFT_VISIBILITY_ID } from 'api';

@@ -3,7 +3,7 @@ import { Spin, Row, Col } from 'antd';
 import { gql, graphql } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Content from 'components/_global/Content';
+import Content from '@_global/Content';
 import RegistrationForm from './RegistrationForm';
 
 const validateLink = gql`

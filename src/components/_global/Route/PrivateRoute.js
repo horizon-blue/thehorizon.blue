@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { gql, withApollo } from 'react-apollo';
 import RouteWithConfig from './RouteWithConfig';
-import LoadingPage from 'components/_global/LoadingPage';
+import LoadingPage from '@_global/LoadingPage';
 import { SESSION_EXPIRED } from 'actionTypes';
 
 const validateToken = gql`

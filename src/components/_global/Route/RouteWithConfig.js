@@ -1,27 +1,24 @@
 import React, { PureComponent } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { UPDATE_ROUTE_CONFIG } from 'actionTypes';
 import PropTypes from 'prop-types';
-import * as routeActions from './route.actions';
 
-function mapDispatchToProps(dispatch) {
-  return { actions: bindActionCreators(routeActions, dispatch) };
-}
 
-@connect(undefined, mapDispatchToProps)
+@connect()
 class RouteWithConfig extends PureComponent {
   static propTypes = {
     component: PropTypes.func,
     routeConfig: PropTypes.object,
-    actions: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
   };
 
   componentWillMount = () => {
-    const { component: Component, actions, routeConfig } = this.props;
-    actions.updateConfig(
-      routeConfig || (Component && Component.routeConfig) || {}
-    );
+    const { component: Component, dispatch, routeConfig } = this.props;
+    dispatch({
+        type: UPDATE_ROUTE_CONFIG,
+        routeConfig: routeConfig || (Component && Component.routeConfig) || {},
+    });
   };
 
   render = () => {

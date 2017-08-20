@@ -1,17 +1,17 @@
 import React, { PureComponent } from 'react';
 import { Switch } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { PrivateRoute } from 'components/_global/Route';
-import FadeView from 'components/_global/FadeView';
+import { PrivateRoute } from '@_global/Route';
+import FadeView from '@_global/FadeView';
 import { TransitionGroup } from 'react-transition-group';
 import PlaceHolder from './PlaceHolder';
-import Blog from 'components/Blog';
-import Albumn from 'components/Albumn';
-import Lab from 'components/Lab';
-import About from 'components/About';
-import Account from 'components/Account';
-import Registration from 'components/Registration';
-import NotFound from 'components/NotFound';
+import Blog from '@Blog';
+import Albumn from '@Albumn';
+import Lab from '@Lab';
+import About from '@About';
+import Account from '@Account';
+import Registration from '@Registration';
+import NotFound from '@NotFound';
 
 class Router extends PureComponent {
     static propTypes = {

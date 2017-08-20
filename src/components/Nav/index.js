@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Row, Col } from 'antd';
 import PropTypes from 'prop-types';
 import Login from './Login';
-import FadeView from 'components/_global/FadeView';
+import FadeView from '@_global/FadeView';
 import Tabs from './Tabs';
 
 import './style.css';
