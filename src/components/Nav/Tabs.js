@@ -52,7 +52,7 @@ class Tabs extends PureComponent {
                 </Menu.Item>
                 <Menu.Item key="albumn">
                     <div ref={menuItem => this.menuItems.push(menuItem)}>
-                        相册
+                        图像
                     </div>
                 </Menu.Item>
                 <Menu.Item key="lab">
