@@ -1,21 +1,18 @@
 import React, { PureComponent } from 'react';
 import { CSSGrid, layout, measureItems, makeResponsive } from 'react-stonecutter';
+import { Switch, Route } from 'react-router-dom';
 import Content from '@_global/Content';
 import ImageGrid from './ImageGrid';
+import Image from './Image';
 import './style.css';
 
 const Grid = makeResponsive(measureItems(CSSGrid, { measureImages: true }), { maxWidth: 1000 });
 
-const data = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const data = Array(10).fill("https://avatars1.githubusercontent.com/u/18493382?v=4&s=460");
 
-class Albumn extends PureComponent {
-  static routeConfig = {
-    title: '虚影',
-    typingStrings: ["一些梦到的，^1000想起的，^1000见证过的东西。"]
-  };
+class AlbumnHome extends PureComponent {
   render() {
     return (
-      <Content title={Albumn.routeConfig.title}>
         <div className="centered-horizontal">
           <Grid
             component="ul"
@@ -26,8 +23,26 @@ class Albumn extends PureComponent {
             duration={800}
             easing="ease-out"
           >
-            {data.map(value => <li key={value}><ImageGrid /></li>)}
+            {data.map((value, index) => (<li key={value + index}><ImageGrid src={value} alt={"test " + index}/></li>))}
           </Grid>
+        </div>
+    );
+  }
+}
+
+class Albumn extends PureComponent {
+  static routeConfig = {
+    title: '虚影',
+    typingStrings: ["一些梦到的，^1000想起的，^1000见证过的东西。"]
+  };
+  render() {
+    return (
+      <Content title={Albumn.routeConfig.title}>
+        <div className="centered-horizontal">
+          <Switch>
+            <Route path="/albumn" exact component={AlbumnHome} />
+            <Route path="/albumn/:albumn/:series/:id" exact component={Image} />
+        </Switch>
         </div>
       </Content>
     );

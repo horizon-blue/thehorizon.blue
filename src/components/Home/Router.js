@@ -44,7 +44,7 @@ class Router extends PureComponent {
                                 redirect="/"
                             />
                             <PrivateRoute
-                                path="/a/super/secrete/path/that/nobody/can/find/:link"
+                                path="/a/super/secret/path/that/nobody/can/find/:link"
                                 component={Registration}
                             />
                             <PrivateRoute path="/404" component={NotFound} />

@@ -1,11 +1,21 @@
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 class ImageGrid extends PureComponent {
+    static propTypes = {
+        src: PropTypes.string.isRequired,
+        alt: PropTypes.string,
+    };
+
 	render = () => {
+        const { src, alt } = this.props;
 		return (
-        <div className="image-grid-container">
-            <img src="https://avatars1.githubusercontent.com/u/18493382?v=4&s=460" alt="test" width={150}/>
-        </div>
+            <Link to="/albumn/foo/bar/1">
+                <div className="image-grid-container">
+                    <img src={src} alt={alt} width={150}/>
+                </div>
+            </Link>
         );
 	}
 }
