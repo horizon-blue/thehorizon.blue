@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import 'moment/locale/zh-cn';
-import { IMG_ROOT } from 'api';
+import { SMALL_IMG } from 'api';
 const { TextArea } = Input;
 
 const mapStateToProps = state => {
@@ -162,7 +162,7 @@ class Comment extends PureComponent {
                                 <Avatar
                                     src={
                                         author.avatar
-                                            ? IMG_ROOT + author.avatar
+                                            ? `${SMALL_IMG}/${author.avatar}`
                                             : undefined
                                     }
                                     icon="user"

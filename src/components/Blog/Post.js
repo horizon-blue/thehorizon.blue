@@ -11,7 +11,7 @@ import jwtDecode from 'jwt-decode';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
 import moment from 'moment';
-import { IMG_ROOT } from 'api';
+import { LARGE_IMG } from 'api';
 import Loadable from 'react-loadable';
 import Loading from '@_global/Loading';
 import _ from 'lodash';
@@ -63,7 +63,7 @@ const exportHTMLOptions = {
       // check for my custom markdown notation
       if (alt[0] === '*') {
         alt = alt.substr(1);
-        src = IMG_ROOT + src;
+        src = `${LARGE_IMG}/${src}`;
       }
 
       return {

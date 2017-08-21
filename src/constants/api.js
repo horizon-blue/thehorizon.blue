@@ -3,8 +3,11 @@ export const UPLOAD_PHOTO = process.env.API_SERVER === 'test'
     : 'https://api.thehorizon.blue/upload';
 
 export const WEB_ROOT = 'https://thehorizon.blue';
-export const IMG_ROOT = 'https://thehorizon.blue/img/';
-export const POST_ROOT = `${WEB_ROOT}/blog/post/`;
+export const IMG_ROOT = `${WEB_ROOT}/img`;
+export const SMALL_IMG = `${IMG_ROOT}/resized/small`;
+export const LARGE_IMG = `${IMG_ROOT}/resized/large`;
+export const ORIG_IMG = IMG_ROOT;
+
 
 export const DRAFT_VISIBILITY_ID = 4;
 export const PRIVATE_VISIBILITY_ID = 3;

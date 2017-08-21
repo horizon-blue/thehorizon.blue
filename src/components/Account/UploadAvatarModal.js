@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Modal, message, Upload, Icon, Button } from 'antd';
 import PropTypes from 'prop-types';
 import { gql, graphql } from 'react-apollo';
-import { UPLOAD_PHOTO, IMG_ROOT } from 'api';
+import { UPLOAD_PHOTO, SMALL_IMG } from 'api';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 
@@ -124,7 +124,7 @@ class UploadAvatarModal extends PureComponent {
                     >
                         {url
                             ? <img
-                                  src={IMG_ROOT + url}
+                                  src={`${SMALL_IMG}/${url}`}
                                   alt="avatar"
                                   className="avatar-img"
                               />

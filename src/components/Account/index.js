@@ -12,7 +12,7 @@ import 'moment/locale/zh-cn';
 import { LOGOUT_REQUEST } from 'actionTypes';
 import FadeView from '@_global/FadeView';
 import UploadAvatarModal from './UploadAvatarModal';
-import { IMG_ROOT, ADMIN_GROUP_ID } from 'api';
+import { SMALL_IMG, ADMIN_GROUP_ID } from 'api';
 import './style.css';
 import LoadableEditor from '@PostEditor';
 
@@ -153,7 +153,7 @@ class Account extends PureComponent {
             <div className="account-avatar">
               {user.avatar
                 ? <img
-                    src={IMG_ROOT + user.avatar}
+                    src={`${SMALL_IMG}/${user.avatar}`}
                     alt="avatar"
                     className="avatar-img-in-setting-page"
                   />

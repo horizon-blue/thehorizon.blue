@@ -1,0 +1,15 @@
+{
+  "bucket": "horizonblue",
+  "acl": "public-read",
+  "resizes": [
+    {
+      "size": 300,
+      "directory": "img/resized/small"
+    },
+    {
+      "size": 900,
+      "directory": "img/resized/large",
+      "quality": 90
+    }
+  ]
+}
