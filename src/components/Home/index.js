@@ -14,15 +14,14 @@ import Router from './Router';
 import Nav from '@Nav';
 import Logo from '@_global/Logo';
 import Footer from './Footer';
-import { TOGGLE_NAVBAR } from 'actionTypes';
 import './style.css';
 
 function mapStateToProps(state, ownProps) {
   return {
     title: state.routeConfig.title,
     typingStrings: state.routeConfig.typingStrings,
-    showNav: state.status.showNav,
     rehydrated: state.rehydrated,
+    token: state.token,
   };
 }
 
@@ -53,22 +52,17 @@ class Home extends PureComponent {
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    showNav: PropTypes.bool,
     rehydrated: PropTypes.bool,
+    token: PropTypes.string,
   };
 
   state = {
     buttonState: 0,
   };
 
-  componentWillMount = () => {
-    // The special hotkeys to enter the main website
-    Mousetrap('left right right left', () =>
-      this.props.dispatch({ type: TOGGLE_NAVBAR })
-    );
-  };
-
   componentDidMount = () => {
+    // The special hotkeys to enter the main website
+    Mousetrap('left right right left', this.handleToggleLogin);
     this.timeline = anime.timeline();
     this.timeline
       .add({
@@ -159,6 +153,12 @@ class Home extends PureComponent {
     }
   };
 
+  handleToggleLogin = () => {
+    this.state.showLogin
+      ? this.setState({ showLogin: false })
+      : !this.props.token && this.setState({ showLogin: true });
+  };
+
   handleHiddenButtonPress = buttonIndex => {
     const buttonState = this.findNextButtonState(
       this.state.buttonState,
@@ -166,7 +166,7 @@ class Home extends PureComponent {
     );
     if (buttonState === 5) {
       this.setState({ buttonState: 0 });
-      this.props.dispatch({ type: TOGGLE_NAVBAR });
+      this.handleToggleLogin();
     } else this.setState({ buttonState });
   };
 
@@ -217,11 +217,13 @@ class Home extends PureComponent {
 
   renderNav = () => {
     return (
-      <FadeView in={this.props.showNav && this.state.animationDone}>
+      <FadeView in={this.state.animationDone}>
         <Nav
           key="NavPanel"
           history={this.props.history}
+          showLogin={this.state.showLogin}
           location={this.props.location}
+          toggleLogin={this.handleToggleLogin}
         />
       </FadeView>
     );
