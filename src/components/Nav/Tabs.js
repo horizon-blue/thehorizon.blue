@@ -57,9 +57,9 @@ class Tabs extends PureComponent {
                         工坊
                     </div>
                 </Menu.Item>
-                <Menu.Item key="about">
+                <Menu.Item key="signpost">
                     <div ref={menuItem => this.menuItems.push(menuItem)}>
-                        关于
+                        路标
                     </div>
                 </Menu.Item>
                 {!!this.props.token &&

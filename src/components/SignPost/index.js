@@ -4,7 +4,8 @@ import Content from '@_global/Content';
 
 class About extends Component {
   static routeConfig = {
-    title: '关于',
+    title: '空港',
+    typingStrings: ['你的下一站是哪里呢？'],
   };
 
   render = () => {

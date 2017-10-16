@@ -8,7 +8,7 @@ import PlaceHolder from './PlaceHolder';
 import Blog from '@Blog';
 import Albumn from '@Albumn';
 import Lab from '@Lab';
-import About from '@About';
+import SignPost from '@SignPost';
 import Account from '@Account';
 import Registration from '@Registration';
 import NotFound from '@NotFound';
@@ -37,7 +37,10 @@ class Router extends PureComponent {
                             <PrivateRoute path="/blog" component={Blog} />
                             <PrivateRoute path="/albumn" component={Albumn} />
                             <PrivateRoute path="/lab" component={Lab} />
-                            <PrivateRoute path="/about" component={About} />
+                            <PrivateRoute
+                                path="/signpost"
+                                component={SignPost}
+                            />
                             <PrivateRoute
                                 path="/account"
                                 component={Account}
