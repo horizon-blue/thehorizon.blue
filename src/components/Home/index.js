@@ -21,7 +21,6 @@ function mapStateToProps(state, ownProps) {
   return {
     title: state.routeConfig.title,
     typingStrings: state.routeConfig.typingStrings,
-    showNav: state.status.showNav,
     rehydrated: state.rehydrated,
   };
 }
@@ -53,7 +52,6 @@ class Home extends PureComponent {
     history: PropTypes.object.isRequired,
     location: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    showNav: PropTypes.bool,
     rehydrated: PropTypes.bool,
   };
 
@@ -217,7 +215,7 @@ class Home extends PureComponent {
 
   renderNav = () => {
     return (
-      <FadeView in={this.props.showNav && this.state.animationDone}>
+      <FadeView in={this.state.animationDone}>
         <Nav
           key="NavPanel"
           history={this.props.history}
