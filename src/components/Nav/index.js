@@ -11,37 +11,33 @@ class Nav extends PureComponent {
     static propTypes = {
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
+        showLogin: PropTypes.bool,
+        toggleLogin: PropTypes.func.isRequired,
     };
-
-    state = { showLogin: false };
 
     renderNav = () => {
         return (
             <FadeView
                 key="nav"
-                in={!this.state.showLogin}
+                in={!this.props.showLogin}
                 classNames="transitionFade"
             >
                 <Tabs
                     history={this.props.history}
                     location={this.props.location}
-                    switchToLogin={this.switchToLogin}
                 />
             </FadeView>
         );
     };
 
-    cancelLogin = () => this.setState({ showLogin: false });
-    switchToLogin = () => this.setState({ showLogin: true });
-
     renderLogin = () => {
         return (
             <FadeView
                 key="loginPanel"
-                in={this.state.showLogin}
+                in={this.props.showLogin}
                 classNames="transitionFade"
             >
-                <Login cancelLogin={this.cancelLogin} />
+                <Login cancelLogin={this.props.toggleLogin} />
             </FadeView>
         );
     };

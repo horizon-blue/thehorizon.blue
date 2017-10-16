@@ -15,7 +15,6 @@ class Tabs extends PureComponent {
     static propTypes = {
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
-        switchToLogin: PropTypes.func.isRequired,
         token: PropTypes.string,
     };
 
@@ -32,9 +31,7 @@ class Tabs extends PureComponent {
     menuItems = [];
 
     handleClick = e => {
-        if (e.key === 'account' && !this.props.token)
-            this.props.switchToLogin();
-        else this.props.history.push('/' + e.key);
+        this.props.history.push('/' + e.key);
     };
 
     render = () => {
@@ -65,11 +62,12 @@ class Tabs extends PureComponent {
                         关于
                     </div>
                 </Menu.Item>
-                <Menu.Item key="account">
-                    <div ref={menuItem => this.menuItems.push(menuItem)}>
-                        {this.props.token ? '账号' : '登录'}
-                    </div>
-                </Menu.Item>
+                {!!this.props.token &&
+                    <Menu.Item key="account">
+                        <div ref={menuItem => this.menuItems.push(menuItem)}>
+                            账号
+                        </div>
+                    </Menu.Item>}
             </Menu>
         );
     };
